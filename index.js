@@ -26,8 +26,10 @@ app.get('/', (request, response) => {
     app.put('/projects/:id', db.updateProject);
     app.delete('/projects/:id', db.deleteProject);
     app.get('/bugs', db.getBugs);
-    app.get('/bugs/:project_id', db.getBugsByProjectId);
-
+    app.get('/bugs/:bug_id', db.getBugsById);
+    app.post('/bugs/', db.createBug);
+    app.put('/bugs/:bug_id', db.updateBug);
+    app.delete('/bugs/:bug_id', db.deleteBug);
 
   app.listen(port, () => {
     console.log(`App running on port ${port}.`)
