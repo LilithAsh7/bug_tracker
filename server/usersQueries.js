@@ -1,4 +1,6 @@
 const Pool = require('pg').Pool
+const bcrypt = require('bcrypt')
+const saltRounds = 10;
 
 const pool = new Pool({
   user: 'postgres',
@@ -31,15 +33,21 @@ const getUsers = (request, response) => {
   }
 
   const createUser = (request, response) => {
-    const { id, username, password } = request.body
-  
-    pool.query('INSERT INTO users (id, username, password) VALUES ($1,$2, $3) RETURNING *', [id, username, password], (error, results) => {
-      if (error) {
-        throw error
-      }
-      response.status(201).send(`User added with ID: ${results.rows[0].id}`)
-    })
-  }
+    const { id, username, password } = request.body;
+
+    bcrypt.hash(password, saltRounds, (err, hashedPassword) => {
+        if (err) {
+            throw err;
+        }
+
+        pool.query('INSERT INTO users (id, username, password) VALUES ($1, $2, $3) RETURNING *', [id, username, hashedPassword], (error, results) => {
+            if (error) {
+                throw error;
+            }
+            response.status(201).send(`User added with ID: ${results.rows[0].id}`);
+        });
+    });
+};
 
   const updateUser = (request, response) => {
     const id = parseInt(request.params.id)
