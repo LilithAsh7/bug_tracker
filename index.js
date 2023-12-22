@@ -24,7 +24,7 @@ app.use(
   }),
   
   session({
-    secret: secret,
+    secret: process.env.secret_key,
     resave: false,
     saveUninitialized: false
   })
@@ -38,6 +38,7 @@ app.get('/', (request, response) => {
     app.get('/users', usersQueries.getUsers);
     app.get('/users/:id', usersQueries.getUserById);
     app.post('/users', usersQueries.createUser);
+    app.post('/login', usersQueries.loginUser);
     app.put('/users/:id', usersQueries.updateUser);
     app.delete('/users/:id', usersQueries.deleteUser);
     app.get('/projects', projectsQueries.getProjects);

@@ -83,10 +83,41 @@ const updateUser = (request, response) => {
     })
   }
 
+  const loginUser = (request, response) => {
+    const { username, password } = request.body;
+  
+    pool.query('SELECT * FROM users WHERE username = $1', [username], (error, results) => {
+      if (error) {
+        response.status(500).send("Idk what the heck happen");
+      }
+  
+      if (results.rows.length === 0) {
+        response.status(401).send('Authentication failed. User not found.');
+      } else {
+        const hashedPassword = results.rows[0].password;
+  
+        bcrypt.compare(password, hashedPassword, (err, passwordMatch) => {
+          if (err) {
+            throw err;
+          }
+  
+          if (passwordMatch) {
+            // Passwords match, authentication successful
+            response.status(200).send('Authentication successful.');
+          } else {
+            // Passwords do not match
+            response.status(401).send('Authentication failed. Incorrect password.');
+          }
+        });
+      }
+    });
+  };
+
   module.exports = {
     getUsers,
     getUserById,
     createUser,
     updateUser,
-    deleteUser
+    deleteUser,
+    loginUser
   };
