@@ -7,32 +7,29 @@ const bugsQueries = require('./server/bugsQueries');
 const app = express();
 const port = 3000;
 const passport = require("passport");
-const LocalStrategy = require("passport-local").Strategy;
-const bcrypt = require('bcrypt')
-
-const crypto = require('crypto');
-const secret = crypto.randomBytes(32).toString('hex');
+const initializePassport = require('./server/passport-config');
 
 require('dotenv').config();
+initializePassport(passport);
 
 app.use(bodyParser.json());
-app.use(passport.initialize());
+
+app.use(bodyParser.urlencoded({extended: true}))
+
 app.use(
-  
-  bodyParser.urlencoded({
-    extended: true
-  }),
-  
   session({
     secret: process.env.secret_key,
     resave: false,
     saveUninitialized: false
   })
+);
+app.use(passport.initialize());
+app.use(passport.session());
 
-  );
+app.set('view engine', 'ejs');
 
 app.get('/', (request, response) => {
-    response.json({ info: 'Node.js, Express, and Postgres API' })
+    response.render('login');
   })
 
     app.get('/users', usersQueries.getUsers);
