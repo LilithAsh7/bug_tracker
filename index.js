@@ -1,15 +1,33 @@
-const express = require('express')
-const bodyParser = require('body-parser')
-const db = require('./server/queries')
-const app = express()
-const port = 3000
+const express = require('express');
+const session = require("express-session");
+const bodyParser = require('body-parser');
+const db = require('./server/queries');
+const app = express();
+const port = 3000;
+const passport = require("passport");
+const LocalStrategy = require("passport-local").Strategy;
+const bcrypt = require('bcrypt');
 
-app.use(bodyParser.json())
+const crypto = require('crypto');
+const secret = crypto.randomBytes(32).toString('hex');
+
+require('dotenv').config();
+
+app.use(bodyParser.json());
+app.use(passport.initialize());
 app.use(
+  
   bodyParser.urlencoded({
-    extended: true,
+    extended: true
+  }),
+  
+  session({
+    secret: secret,
+    resave: false,
+    saveUninitialized: false
   })
-)
+
+  );
 
 app.get('/', (request, response) => {
     response.json({ info: 'Node.js, Express, and Postgres API' })
