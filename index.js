@@ -3,6 +3,7 @@ const session = require("express-session");
 const bodyParser = require('body-parser');
 const usersQueries = require('./server/usersQueries');
 const projectsQueries = require('./server/projectsQueries');
+const path = require('path');
 const bugsQueries = require('./server/bugsQueries');
 const app = express();
 const port = 3000;
@@ -13,6 +14,8 @@ require('dotenv').config();
 initializePassport(passport);
 
 app.use(bodyParser.json());
+
+app.use(express.static(path.join(__dirname, 'views')));
 
 app.use(bodyParser.urlencoded({extended: true}))
 
