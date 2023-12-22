@@ -8,7 +8,7 @@ const app = express();
 const port = 3000;
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt')
 
 const crypto = require('crypto');
 const secret = crypto.randomBytes(32).toString('hex');
