@@ -1,7 +1,9 @@
 const express = require('express');
 const session = require("express-session");
 const bodyParser = require('body-parser');
-const db = require('./server/queries');
+const usersQueries = require('./server/usersQueries');
+const projectsQueries = require('./server/projectsQueries');
+const bugsQueries = require('./server/bugsQueries');
 const app = express();
 const port = 3000;
 const passport = require("passport");
@@ -33,21 +35,21 @@ app.get('/', (request, response) => {
     response.json({ info: 'Node.js, Express, and Postgres API' })
   })
 
-    app.get('/users', db.getUsers);
-    app.get('/users/:id', db.getUserById);
-    app.post('/users', db.createUser);
-    app.put('/users/:id', db.updateUser);
-    app.delete('/users/:id', db.deleteUser);
-    app.get('/projects', db.getProjects);
-    app.get('/projects/:id', db.getProjectById);
-    app.post('/projects', db.createProject);
-    app.put('/projects/:id', db.updateProject);
-    app.delete('/projects/:id', db.deleteProject);
-    app.get('/bugs', db.getBugs);
-    app.get('/bugs/:bug_id', db.getBugsById);
-    app.post('/bugs/', db.createBug);
-    app.put('/bugs/:bug_id', db.updateBug);
-    app.delete('/bugs/:bug_id', db.deleteBug);
+    app.get('/users', usersQueries.getUsers);
+    app.get('/users/:id', usersQueries.getUserById);
+    app.post('/users', usersQueries.createUser);
+    app.put('/users/:id', usersQueries.updateUser);
+    app.delete('/users/:id', usersQueries.deleteUser);
+    app.get('/projects', projectsQueries.getProjects);
+    app.get('/projects/:id', projectsQueries.getProjectById);
+    app.post('/projects', projectsQueries.createProject);
+    app.put('/projects/:id', projectsQueries.updateProject);
+    app.delete('/projects/:id', projectsQueries.deleteProject);
+    app.get('/bugs', bugsQueries.getBugs);
+    app.get('/bugs/:bug_id', bugsQueries.getBugsById);
+    app.post('/bugs/', bugsQueries.createBug);
+    app.put('/bugs/:bug_id', bugsQueries.updateBug);
+    app.delete('/bugs/:bug_id', bugsQueries.deleteBug);
 
   app.listen(port, () => {
     console.log(`App running on port ${port}.`)
