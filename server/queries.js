@@ -1,11 +1,12 @@
 const Pool = require('pg').Pool
+
 const pool = new Pool({
   user: 'postgres',
   host: 'localhost',
   database: 'bug_tracker',
   password: 'postgres',
   port: 5432,
-})
+});
 
 // Queries for users table
 
