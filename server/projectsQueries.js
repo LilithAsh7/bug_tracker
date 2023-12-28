@@ -30,6 +30,19 @@ const getProjects= (request, response) => {
     })
   }
 
+  /*
+  const getProjectByCurrentUserId = (request, response) => {
+    const id = parseInt(request.params.id)
+  
+    pool.query('SELECT * FROM projects WHERE id = $1', [id], (error, results) => {
+      if (error) {
+        throw error
+      }
+      response.status(200).json(results.rows)
+    })
+  }
+*/
+
   const createProject = (request, response) => {
     const { id, name, user_id } = request.body
   
