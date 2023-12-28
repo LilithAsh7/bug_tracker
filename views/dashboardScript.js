@@ -36,14 +36,14 @@ document.addEventListener('DOMContentLoaded', function () {
   // Define function to handle creating a bug
 function createBug() {
   // Prompt the user for each field value
-  const bug_type = prompt("Enter bug_type:");
-  const bug_description = prompt("Enter bug_description:");
+  const bug_type = prompt("Enter bug_type: (Required)");
+  const bug_description = prompt("Enter bug_description: (Required)");
   const file = prompt("Enter file:");
   const line = prompt("Enter line:");
-  const priority = prompt("Enter priority:");
-  const status = prompt("Enter status:");
-  const user_id = prompt("Enter user_id:");
-  const project_id = prompt("Enter project_id:");
+  const priority = prompt("Enter priority: (Required)");
+  const status = prompt("Enter status: (Required)");
+  const user_id = prompt("Enter user_id: (Required)");
+  const project_id = prompt("Enter project_id: (Required)");
   const fixer_notes = prompt("Enter fixer_notes:");
   const reason = prompt("Enter reason:");
 
@@ -133,14 +133,14 @@ function updateBug() {
     .then(existingBugData => {
       if (existingBugData !== null) {
         // Prompt the user for each field value with pre-filled existing values
-        const bug_type = prompt("Enter bug_type:", existingBugData.bug_type);
-        const bug_description = prompt("Enter bug_description:", existingBugData.bug_description);
+        const bug_type = prompt("Enter bug_type: (Required)", existingBugData.bug_type);
+        const bug_description = prompt("Enter bug_description: (Required)", existingBugData.bug_description);
         const file = prompt("Enter file:", existingBugData.file);
         const line = prompt("Enter line:", existingBugData.line);
-        const priority = prompt("Enter priority:", existingBugData.priority);
-        const status = prompt("Enter status:", existingBugData.status);
-        const user_id = prompt("Enter user_id:", existingBugData.user_id);
-        const project_id = prompt("Enter project_id:", existingBugData.project_id);
+        const priority = prompt("Enter priority: (Required)", existingBugData.priority);
+        const status = prompt("Enter status: (Required)", existingBugData.status);
+        const user_id = prompt("Enter user_id: (Required)", existingBugData.user_id);
+        const project_id = prompt("Enter project_id: (Required)", existingBugData.project_id);
         const fixer_notes = prompt("Enter fixer_notes:", existingBugData.fixer_notes);
         const reason = prompt("Enter reason:", existingBugData.reason);
 
@@ -184,8 +184,8 @@ function updateBug() {
   // Define function to handle creating a project
   function createProject() {
     // Prompt the user for each field value
-    const name = prompt("Enter project name:");
-    const user_id = prompt("Enter your user_id:");
+    const name = prompt("Enter project name: (Required)");
+    const user_id = prompt("Enter your user_id: (Required)");
 
 
     // Check if the user canceled the prompt
@@ -266,8 +266,8 @@ function updateProject() {
     .then(existingProjectData => {
       if (existingProjectData !== null) {
         // Prompt the user for each field value with pre-filled existing values
-        const name = prompt("Enter name:", existingProjectData.name);
-        const user_id = prompt("Enter user_id:", existingProjectData.user_id);
+        const name = prompt("Enter name: (Required)", existingProjectData.name);
+        const user_id = prompt("Enter user_id: (Required)", existingProjectData.user_id);
 
         // Construct the updated project data object
         const updatedProjectData = {
@@ -301,8 +301,8 @@ function updateProject() {
   // Define function to handle creating a user
   function createUser() {
     // Prompt the user for each field value
-    const username = prompt("Enter username:");
-    const password = prompt("Enter your password:");
+    const username = prompt("Enter username: (Required)");
+    const password = prompt("Enter your password: (Required)");
 
 
     // Check if the user canceled the prompt
@@ -383,8 +383,8 @@ function updateUser() {
     .then(existingUserData => {
       if (existingUserData !== null) {
         // Prompt the user for each field value with pre-filled existing values
-        const username = prompt("Enter username:", existingUserData.username);
-        const password = prompt("Enter password:", existingUserData.password);
+        const username = prompt("Enter username: (Required)", existingUserData.username);
+        const password = prompt("Enter password: (Required)", existingUserData.password);
 
         // Construct the updated user data object
         const updatedUserData = {
