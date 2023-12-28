@@ -87,6 +87,8 @@ function createBug() {
     .catch(error => console.error('Error creating bug:', error));
 }
 
+// Delete bug function
+
   function deleteBug() {
     // Prompt the user for bug_id
     const bugIdToDelete = prompt("Enter the bug_id of the bug you would like to delete:");
@@ -179,3 +181,42 @@ function updateBug() {
     .catch(error => console.error('Error fetching bug data:', error));
 }
 
+  // Define function to handle creating a project
+  function createProject() {
+    // Prompt the user for each field value
+    const name = prompt("Enter project name:");
+    const user_id = prompt("Enter your user_id:");
+
+
+    // Check if the user canceled the prompt
+    if (name === null) {
+      console.log('Prompt canceled.');
+      return;
+    }
+  
+    // Construct the project data object
+    const projectData = {
+      name: name || null, // Use null if the field is empty
+      user_id: user_id || null,
+    };
+  
+    // Make a POST request to the server
+    fetch('http://localhost:3000/projects/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(projectData),
+    })
+      .then(response => {
+        if (response.ok) {
+          console.log('Project created successfully.');
+          // Reload the dashboard page
+          window.location.reload();
+        } else {
+          console.error('Failed to create project.');
+        }
+      })
+      .catch(error => console.error('Error creating project:', error));
+  }
+  
