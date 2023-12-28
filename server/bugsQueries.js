@@ -9,7 +9,7 @@ const pool = new Pool({
 });
 
 const getBugs = (request, response) => {
-    pool.query('SELECT * FROM bugs ORDER BY status ASC, project_id ASC', (error, results) => {
+    pool.query('SELECT * FROM bugs ORDER BY project_id ASC, status ASC', (error, results) => {
       if (error) {
         throw error
       }
