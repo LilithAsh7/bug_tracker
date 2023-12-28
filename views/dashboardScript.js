@@ -219,4 +219,28 @@ function updateBug() {
       })
       .catch(error => console.error('Error creating project:', error));
   }
+
+  // Delete project function
+
+  function deleteProject() {
+    // Prompt the user for id
+    const projectIdToDelete = prompt("Enter the id of the project you would like to delete:");
+  
+    if (projectIdToDelete !== null && projectIdToDelete !== "") {
+      // Make a DELETE request to the server
+      fetch(`http://localhost:3000/projects/${projectIdToDelete}`, {
+        method: 'DELETE',
+      })
+        .then(response => {
+          if (response.ok) {
+            console.log(`Project with id ${projectIdToDelete} deleted successfully.`);
+            // Reload the dashboard page
+            window.location.reload();
+          } else {
+            console.error(`Failed to delete project with id ${projectIdToDelete}.`);
+          }
+        })
+        .catch(error => console.error('Error deleting project:', error));
+    }
+  }
   
