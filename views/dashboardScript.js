@@ -243,4 +243,58 @@ function updateBug() {
         .catch(error => console.error('Error deleting project:', error));
     }
   }
+
+  // Define function to handle updating a project
+function updateProject() {
+  // Prompt the user for the id to update
+  const projectIdToUpdate = prompt("Enter the id of the project you would like to update:");
+
+  // Check if user canceled the prompt or entered an empty string
+  if (projectIdToUpdate === null || projectIdToUpdate.trim() === '') {
+    return;
+  }
+
+  // Fetch existing project data from the server
+  fetch(`http://localhost:3000/projects/${projectIdToUpdate}`)
+    .then(response => {
+      if (!response.ok) {
+        console.error(`Failed to fetch project data for id ${projectIdToUpdate}.`);
+        return null;
+      }
+      return response.json();
+    })
+    .then(existingProjectData => {
+      if (existingProjectData !== null) {
+        // Prompt the user for each field value with pre-filled existing values
+        const name = prompt("Enter name:", existingProjectData.name);
+        const user_id = prompt("Enter user_id:", existingProjectData.user_id);
+
+        // Construct the updated project data object
+        const updatedProjectData = {
+          name: name || existingProjectData.name,
+          user_id: user_id || existingProjectData.user_id
+        };
+
+        // Make a PUT request to update the project
+        fetch(`http://localhost:3000/projects/${projectIdToUpdate}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(updatedProjectData),
+        })
+          .then(response => {
+            if (response.ok) {
+              console.log(`Project with id ${projectIdToUpdate} updated successfully.`);
+              // Reload the dashboard page
+              window.location.reload();
+            } else {
+              console.error(`Failed to update project with id ${projectIdToUpdate}.`);
+            }
+          })
+          .catch(error => console.error('Error updating project:', error));
+      }
+    })
+    .catch(error => console.error('Error fetching project data:', error));
+}
   
