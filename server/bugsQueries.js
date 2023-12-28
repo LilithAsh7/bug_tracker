@@ -1,5 +1,6 @@
+// Importing and creating new instance of Pool class
+// The pg library is a postgres client for node
 const Pool = require('pg').Pool
-
 const pool = new Pool({
   user: 'postgres',
   host: 'localhost',
@@ -8,65 +9,82 @@ const pool = new Pool({
   port: 5432,
 });
 
+// API call for getting all data from the bugs table
 const getBugs = (request, response) => {
-    pool.query('SELECT * FROM bugs ORDER BY project_id ASC, status ASC', (error, results) => {
-      if (error) {
+  // Actual sql code  
+  pool.query('SELECT * FROM bugs ORDER BY project_id ASC, status ASC', (error, results) => {
+    // Error handling  
+    if (error) {
         throw error
       }
+      // Returns all rows gotten by get request
       response.status(200).json(results.rows)
-    })
-  };
+  })
+};
 
-  const getBugsById = (request, response) => {
-    const bug_id = parseInt(request.params.bug_id)
-    
-    pool.query('SELECT * FROM bugs WHERE bug_id = $1', [bug_id], (error, results) => {
-      if (error) {
-        throw error
-      }
-      response.status(200).json(results.rows)
-    })
+  // API call for getting specific bug by ID from bugs table
+const getBugsById = (request, response) => {
+  // ID of specific bug you want the data from
+  const bug_id = parseInt(request.params.bug_id)
+  // Works similarly to getBugs()
+  pool.query('SELECT * FROM bugs WHERE bug_id = $1', [bug_id], (error, results) => {
+    if (error) {
+      throw error
+    }
+    response.status(200).json(results.rows)
+  })
 }
 
-  const createBug = (request, response) => {
-    const { bug_type, bug_description, file, line, priority, status, user_id, project_id, fixer_notes, reason } = request.body
-  
-    pool.query('INSERT INTO bugs ( bug_type, bug_description, file, line, priority, status, user_id, project_id, fixer_notes, reason ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *', 
-    [bug_type, bug_description, file, line, priority, status, user_id, project_id, fixer_notes, reason], (error, results) => {
+// API call for creating an entry into the bugs table
+const createBug = (request, response) => {
+  // Variables to fill each field
+  const { bug_type, bug_description, file, line, priority, status, user_id, project_id, fixer_notes, reason } = request.body
+  // Constructs sql code
+  pool.query('INSERT INTO bugs ( bug_type, bug_description, file, line, priority, status, user_id, project_id, fixer_notes, reason ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *', 
+  [bug_type, bug_description, file, line, priority, status, user_id, project_id, fixer_notes, reason], (error, results) => {
+    // Error handling
+    if (error) {
+      throw error
+    }
+    response.status(201).send(`Bug added with ID: ${results.rows[0].bug_id}`)
+  })
+}
+
+// API call for updating an entry into the bug table
+const updateBug = (request, response) => {
+  // ID of specific but to be updated
+  const bug_id = parseInt(request.params.bug_id)
+  // Variables to fill each field
+  const { bug_type, bug_description, file, line, priority, status, user_id, project_id, fixer_notes, reason } = request.body
+  // Constructs sql code
+  pool.query(
+    'UPDATE bugs SET bug_type = $2, bug_description = $3, file = $4, line = $5, priority = $6, status = $7, user_id = $8, project_id = $9, fixer_notes = $10, reason = $11 WHERE bug_id = $1',
+    [bug_id, bug_type, bug_description, file, line, priority, status, user_id, project_id, fixer_notes, reason],
+    // Error handling
+    (error, results) => {
       if (error) {
         throw error
       }
-      response.status(201).send(`Bug added with ID: ${results.rows[0].bug_id}`)
-    })
-  }
+      response.status(200).send(`Bug modified with ID: ${bug_id}`)
+    }
+  )
+}
 
-  const updateBug = (request, response) => {
-    const bug_id = parseInt(request.params.bug_id)
-    const { bug_type, bug_description, file, line, priority, status, user_id, project_id, fixer_notes, reason } = request.body
-  
-    pool.query(
-      'UPDATE bugs SET bug_type = $2, bug_description = $3, file = $4, line = $5, priority = $6, status = $7, user_id = $8, project_id = $9, fixer_notes = $10, reason = $11 WHERE bug_id = $1',
-      [bug_id, bug_type, bug_description, file, line, priority, status, user_id, project_id, fixer_notes, reason],
-      (error, results) => {
-        if (error) {
-          throw error
-        }
-        response.status(200).send(`Bug modified with ID: ${bug_id}`)
-      }
-    )
-  }
+// API call for deleting entry in bug table
+const deleteBug = (request, response) => {
+  //ID of specific bug to be deleted
+  const bug_id = parseInt(request.params.bug_id)
+  // Constructs sql code
+  pool.query('DELETE FROM bugs WHERE bug_id = $1', [bug_id], (error, results) => {
+    //Error handling
+    if (error) {
+      throw error
+    }
+    response.status(200).send(`Bug deleted with ID: ${bug_id}`)
+  })
+}
 
-  const deleteBug = (request, response) => {
-    const bug_id = parseInt(request.params.bug_id)
-  
-    pool.query('DELETE FROM bugs WHERE bug_id = $1', [bug_id], (error, results) => {
-      if (error) {
-        throw error
-      }
-      response.status(200).send(`Bug deleted with ID: ${bug_id}`)
-    })
-  }
-
+// Exporting API calls
 module.exports = {
     getBugs,
     getBugsById,
