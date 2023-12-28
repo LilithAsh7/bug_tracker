@@ -103,7 +103,7 @@ const updateUser = (request, response) => {
   
           if (passwordMatch) {
             // Passwords match, authentication successful
-            response.status(200).send('Authentication successful.');
+            response.render('dashboard');
           } else {
             // Passwords do not match
             response.status(401).send('Authentication failed. Incorrect password.');
