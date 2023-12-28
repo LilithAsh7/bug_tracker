@@ -1,0 +1,39 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background-color: #f2f2f2; /* Light grey background */
+  }
+  
+  h1, h2 {
+    color: #fb9ec3; /* Pink color for headings */
+  }
+  
+  #table1-container,
+  #table2-container,
+  #table3-container {
+    margin-bottom: 20px;
+    background-color: #ffffff; /* White background for table containers */
+    border: 1px solid #d9d9d9; /* Light grey border */
+    border-radius: 5px; /* Rounded corners */
+    padding: 15px; /* Add padding for better visual appearance */
+  }
+  
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 10px; /* Add space between table header and content */
+  }
+  
+  table, th, td {
+    border: 1px solid #fb9ec3; /* Pink border for table and cells */
+  }
+  
+  th, td {
+    padding: 10px;
+    text-align: left;
+  }
+  
+  th {
+    background-color: #fb9ec3; /* Pink background for table headers */
+    color: #ffffff; /* White text color for table headers */
+  }
