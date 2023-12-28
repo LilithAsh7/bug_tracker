@@ -44,9 +44,9 @@ const getProjects= (request, response) => {
 */
 
   const createProject = (request, response) => {
-    const { id, name, user_id } = request.body
+    const { name, user_id } = request.body
   
-    pool.query('INSERT INTO projects (id, name, user_id) VALUES ($1,$2, $3) RETURNING *', [id, name, user_id], (error, results) => {
+    pool.query('INSERT INTO projects (name, user_id) VALUES ($1,$2) RETURNING *', [name, user_id], (error, results) => {
       if (error) {
         throw error
       }

@@ -33,14 +33,14 @@ const getUsers = (request, response) => {
   }
 
   const createUser = (request, response) => {
-    const { id, username, password } = request.body;
+    const { username, password } = request.body;
 
     bcrypt.hash(password, saltRounds, (err, hashedPassword) => {
         if (err) {
             throw err;
         }
 
-        pool.query('INSERT INTO users (id, username, password) VALUES ($1, $2, $3) RETURNING *', [id, username, hashedPassword], (error, results) => {
+        pool.query('INSERT INTO users (username, password) VALUES ($1, $2) RETURNING *', [username, hashedPassword], (error, results) => {
             if (error) {
                 throw error;
             }
