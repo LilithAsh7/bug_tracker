@@ -41,6 +41,21 @@ const getUserById = (request, response) => {
   })
 }
 
+// API call to get user by a specific username
+const getUserByUsername = (request, response) => {
+  // Specified username to grab
+  const username = parseInt(request.params.username)
+  // Constructs sql code
+  pool.query('SELECT * FROM users WHERE id = $1', [username], (error, results) => {
+    // Error handling
+    if (error) {
+      throw error
+    }
+    // Returns all data gotten by sql code
+    response.status(200).json(results.rows)
+  })
+}
+
 // API call to create entry into user database
 const createUser = (request, response) => {
   // Variables to be inserted into database
@@ -149,5 +164,6 @@ module.exports = {
   createUser,
   updateUser,
   deleteUser,
-  loginUser
+  loginUser,
+  getUserByUsername
 };

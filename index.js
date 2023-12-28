@@ -51,6 +51,7 @@ app.get('/', (request, response) => {
 // Sets up api calls for use in app
 app.get('/users', usersQueries.getUsers);
 app.get('/users/:id', usersQueries.getUserById);
+app.get('/users/:username', usersQueries.getUserByUsername)
 app.post('/users', usersQueries.createUser);
 app.post('/login', usersQueries.loginUser);
 app.put('/users/:id', usersQueries.updateUser);
