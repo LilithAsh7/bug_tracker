@@ -12,7 +12,7 @@ const pool = new Pool({
 // API call for getting all data from the bugs table
 const getBugs = (request, response) => {
   // Actual sql code  
-  pool.query('SELECT * FROM bugs ORDER BY project_id ASC, status ASC', (error, results) => {
+  pool.query("SELECT * FROM bugs ORDER BY project_id ASC, status ASC, bug_type ASC, CASE priority WHEN 'high' THEN 1 WHEN 'medium' THEN 2 WHEN 'low' THEN 3 ELSE 4 END", (error, results) => {
     // Error handling  
     if (error) {
         throw error
