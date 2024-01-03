@@ -11,10 +11,47 @@
 
   <!-- Buttons for Table 1 -->
   <div id="table1-buttons">
-    <button onclick="createBug()">Create Bug</button>
+    <button onclick="togglePopup()">Create Bug</button>
     <button onclick="updateBug()">Update Bug</button>
     <button onclick="deleteBug()">Delete Bug</button>
-    <button onclick="testCreateBug()">Test Create Bug</button>
+  </div>
+
+  <div id="popup-container" style="display: none;">
+    <span id="close-btn" onclick="togglePopup()">&times;</span>
+    <h2>Create Bug</h2>
+    <form>
+      <label for="bug_type">Bug type:</label>
+      <input type="text" id="bug_type" name="bug_type" required>
+      <br>
+      <label for="bug_description">Bug description:</label>
+      <input type="text" id="bug_description" name="bug_description" required>
+      <br>
+      <label for="file">File:</label>
+      <input type="text" id="file" name="file">
+      <br>
+      <label for="line">Line:</label>
+      <input type="text" id="line" name="line">
+      <br>
+      <label for="priority">Priority:</label>
+      <input type="text" id="priority" name="priority" required>
+      <br>
+      <label for="status">Status:</label>
+      <input type="text" id="status" name="status" required>
+      <br>
+      <label for="user_id">User ID:</label>
+      <input type="text" id="user_id" name="user_id" required>
+      <br>
+      <label for="project_id">Project ID:</label>
+      <input type="text" id="project_id" name="project_id" required>
+      <br>
+      <label for="fixer_notes">Fixer Notes:</label>
+      <input type="text" id="fixer_notes" name="fixer_notes">
+      <br>
+      <label for="reason">Reason:</label>
+      <input type="text" id="reason" name="reason">
+      <br>
+      <button type="button" onclick="submitForm()">Submit</button>
+    </form>
   </div>
 
   <div id="table1-container">
@@ -52,6 +89,36 @@
     </table>
   </div>
 
+  <script>
+
+    function togglePopup() {
+      const popup = document.getElementById('popup-container');
+      popup.style.display = (popup.style.display === 'none' || popup.style.display === '') ? 'block' : 'none';
+    }
+    function submitForm() {
+
+    // Create an object with all field values
+    const formValues = {
+      bug_type: document.getElementById('bug_type').value,
+      bug_description: document.getElementById('bug_description').value,
+      file: document.getElementById('file').value,
+      line: document.getElementById('line').value,
+      priority: document.getElementById('priority').value,
+      status: document.getElementById('status').value,
+      user_id: document.getElementById('user_id').value,
+      project_id: document.getElementById('project_id').value,
+      fixer_notes: document.getElementById('fixer_notes').value,
+      reason: document.getElementById('reason').value
+    };
+
+    // Call createBug with the array of values
+    createBug(formValues);
+
+    // Close the popup
+    togglePopup();
+  }
+  </script>
   <script src="dashboardScript.js"></script>
+
 </body>
 </html>

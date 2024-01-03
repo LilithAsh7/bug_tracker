@@ -50,40 +50,22 @@ function testCreateBug(){
 };
 
   // Define function to handle creating a bug
-function createBug() {
-  // Prompt the user for each field value
-  const bug_type = prompt("Enter bug_type: (Required)");
-  const bug_description = prompt("Enter bug_description: (Required)");
-  const file = prompt("Enter file:");
-  const line = prompt("Enter line:");
-  const priority = prompt('Enter priority "low, medium, or high": (Required)');
-  const status = prompt("Enter status: (Required)");
-  const user_id = prompt("Enter user_id: (Required)");
-  const project_id = prompt("Enter project_id: (Required)");
-  const fixer_notes = prompt("Enter fixer_notes:");
-  const reason = prompt("Enter reason:");
+function createBug(formValues) {
 
-  // Stop server from crashing if fields are left empty
-  if (!bug_type || !bug_description || !priority || !status || !user_id || !project_id) {
-    alert('One or more required fields left empty. Prompt canceled.');
-    return;
-  } else if (priority !== "low" || priority !== "medium" || priority !== "high") {
-    alert('Incorrect priority input. Must be low, medium, or high Prompt canceled.');
-    return;
-  }
+  console.log('createBug called with:', formValues);
 
   // Construct bug data object
   const bugData = {
-    bug_type: bug_type || null, 
-    bug_description: bug_description || null,
-    file: file || null,
-    line: line || null,
-    priority: priority || null,
-    status: status || null,
-    user_id: user_id || null,
-    project_id: project_id || null,
-    fixer_notes: fixer_notes || null,
-    reason: reason || null,
+    bug_type: formValues.bug_type || null, 
+    bug_description: formValues.bug_description || null,
+    file: formValues.file || null,
+    line: formValues.line || null,
+    priority: formValues.priority || null,
+    status: formValues.status || null,
+    user_id: formValues.user_id || null,
+    project_id: formValues.project_id || null,
+    fixer_notes: formValues.fixer_notes || null,
+    reason: formValues.reason || null,
   };
 
   // Make POST request to the server
