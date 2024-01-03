@@ -45,6 +45,10 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
+function testCreateBug(){
+  return null;
+};
+
   // Define function to handle creating a bug
 function createBug() {
   // Prompt the user for each field value
