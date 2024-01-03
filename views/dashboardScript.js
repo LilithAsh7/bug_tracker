@@ -56,16 +56,19 @@ function createBug() {
   const bug_description = prompt("Enter bug_description: (Required)");
   const file = prompt("Enter file:");
   const line = prompt("Enter line:");
-  const priority = prompt("Enter priority: (Required)");
+  const priority = prompt('Enter priority "low, medium, or high": (Required)');
   const status = prompt("Enter status: (Required)");
   const user_id = prompt("Enter user_id: (Required)");
   const project_id = prompt("Enter project_id: (Required)");
   const fixer_notes = prompt("Enter fixer_notes:");
   const reason = prompt("Enter reason:");
 
-  // Check if the user canceled the prompt
-  if (bug_type === null) {
-    console.log('Prompt canceled.');
+  // Stop server from crashing if fields are left empty
+  if (!bug_type || !bug_description || !priority || !status || !user_id || !project_id) {
+    alert('One or more required fields left empty. Prompt canceled.');
+    return;
+  } else if (priority !== "low" || priority !== "medium" || priority !== "high") {
+    alert('Incorrect priority input. Must be low, medium, or high Prompt canceled.');
     return;
   }
 
@@ -153,12 +156,21 @@ function updateBug() {
         const bug_description = prompt("Enter bug_description: (Required)", existingBugData.bug_description);
         const file = prompt("Enter file:", existingBugData.file);
         const line = prompt("Enter line:", existingBugData.line);
-        const priority = prompt("Enter priority: (Required)", existingBugData.priority);
+        const priority = prompt('Enter priority "low, medium, or high": (Required)', existingBugData.priority);
         const status = prompt("Enter status: (Required)", existingBugData.status);
         const user_id = prompt("Enter user_id: (Required)", existingBugData.user_id);
         const project_id = prompt("Enter project_id: (Required)", existingBugData.project_id);
         const fixer_notes = prompt("Enter fixer_notes:", existingBugData.fixer_notes);
         const reason = prompt("Enter reason:", existingBugData.reason);
+
+          // Stop server from crashing if fields are left empty
+        if (!bug_type || !bug_description || !priority || !status || !user_id || !project_id) {
+          alert('One or more required fields left empty. Prompt canceled.');
+          return;
+        } else if (priority !== "low" || priority !== "medium" || priority !== "high") {
+          alert('Incorrect priority input. Must be low, medium, or high Prompt canceled.');
+          return;
+        }
 
         // Construct the updated bug data object
         const updatedBugData = {
@@ -204,9 +216,9 @@ function updateBug() {
     const user_id = prompt("Enter your user_id: (Required)");
 
 
-    // Check if the user canceled the prompt
-    if (name === null) {
-      console.log('Prompt canceled.');
+    // Stop server from crashing if a field is left empty
+    if (!name || !user_id) {
+      alert('One or more required fields left empty. Prompt canceled.');
       return;
     }
   
@@ -285,6 +297,12 @@ function updateProject() {
         const name = prompt("Enter name: (Required)", existingProjectData.name);
         const user_id = prompt("Enter user_id: (Required)", existingProjectData.user_id);
 
+        // Stop server from crashing if a field is left empty
+        if (!name || !user_id) {
+          alert('One or more required fields left empty. Prompt canceled.');
+          return;
+        }
+
         // Construct the updated project data object
         const updatedProjectData = {
           name: name || existingProjectData.name,
@@ -320,10 +338,9 @@ function updateProject() {
     const username = prompt("Enter username: (Required)");
     const password = prompt("Enter your password: (Required)");
 
-
-    // Check if the user canceled the prompt
-    if (username === null) {
-      console.log('Prompt canceled.');
+    // Prevent server from crashing when prompts left empty
+    if (!username || !password) {
+      alert('One or more fields left blank. Prompt canceled.');
       return;
     }
   
@@ -401,6 +418,12 @@ function updateUser() {
         // Prompt the user for each field value with pre-filled existing values
         const username = prompt("Enter username: (Required)", existingUserData.username);
         const password = prompt("Enter password: (Required)", existingUserData.password);
+
+        // Prevent server from crashing when prompts left empty
+        if (!username || !password) {
+          alert('One or more fields left blank. Prompt canceled.');
+          return;
+        }
 
         // Construct the updated user data object
         const updatedUserData = {
