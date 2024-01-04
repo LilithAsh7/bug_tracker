@@ -45,10 +45,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-function testCreateBug(){
-  return null;
-};
-
   // Define function to handle creating a bug
 function createBug(formValues) {
 
