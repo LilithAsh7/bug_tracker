@@ -435,3 +435,30 @@ function updateUser() {
     })
     .catch(error => console.error('Error fetching user data:', error));
 }
+
+function submitForm() {
+  // Create an object with all field values
+  const formValues = {
+    bug_type: document.getElementById('bug_type').value,
+    bug_description: document.getElementById('bug_description').value,
+    file: document.getElementById('file').value,
+    line: document.getElementById('line').value,
+    priority: document.getElementById('priority').value,
+    status: document.getElementById('status').value,
+    user_id: document.getElementById('user_id').value,
+    project_id: document.getElementById('project_id').value,
+    fixer_notes: document.getElementById('fixer_notes').value,
+    reason: document.getElementById('reason').value
+  };
+
+  // Call createBug with the array of values
+  createBug(formValues);
+}
+
+function openCreateBugForm(){
+  var url = 'http://localhost:3000/createBug';
+  var newWindow = window.open(url, '_blank', 'scrollbars=yes,resizable=yes,width=400,height=400');
+  if (newWindow) {
+    newWindow.focus();
+  }
+}
