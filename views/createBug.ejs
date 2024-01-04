@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bug Bridge</title>
+  <link rel="stylesheet" href="dashboardStyles.css">
+</head>
+<body>
+<h2>Create Bug</h2>
+    <form>
+      <label for="bug_type">Bug type:</label>
+      <input type="text" id="bug_type" name="bug_type" required>
+      <br>
+      <label for="bug_description">Bug description:</label>
+      <input type="text" id="bug_description" name="bug_description" required>
+      <br>
+      <label for="file">File:</label>
+      <input type="text" id="file" name="file">
+      <br>
+      <label for="line">Line:</label>
+      <input type="text" id="line" name="line">
+      <br>
+      <label for="priority">Priority:</label>
+      <input type="text" id="priority" name="priority" required>
+      <br>
+      <label for="status">Status:</label>
+      <input type="text" id="status" name="status" required>
+      <br>
+      <label for="user_id">User ID:</label>
+      <input type="text" id="user_id" name="user_id" required>
+      <br>
+      <label for="project_id">Project ID:</label>
+      <input type="text" id="project_id" name="project_id" required>
+      <br>
+      <label for="fixer_notes">Fixer Notes:</label>
+      <input type="text" id="fixer_notes" name="fixer_notes">
+      <br>
+      <label for="reason">Reason:</label>
+      <input type="text" id="reason" name="reason">
+      <br>
+      <button type="button" onclick="submitForm()">Submit</button>
+    </form>
+</body>
+
+<script src="buttonLogic.js"></script>
+<script src="dashboardScript.js"></script>
+</html>

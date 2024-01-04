@@ -48,6 +48,11 @@ app.get('/', (request, response) => {
     response.render('login');
   });
 
+app.get('/createBug', (request, response) => {
+  // Add authenticated check here
+  response.render('createBug');
+})
+
 // Sets up api calls for use in app
 app.get('/users', usersQueries.getUsers);
 app.get('/users/:id', usersQueries.getUserById);
