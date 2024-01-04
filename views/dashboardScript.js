@@ -149,7 +149,7 @@ function updateBug() {
         if (!bug_type || !bug_description || !priority || !status || !user_id || !project_id) {
           alert('One or more required fields left empty. Prompt canceled.');
           return;
-        } else if (priority !== "low" || priority !== "medium" || priority !== "high") {
+        } else if (!(priority === "low" || priority === "medium" || priority === "high")) {
           alert('Incorrect priority input. Must be low, medium, or high Prompt canceled.');
           return;
         }
