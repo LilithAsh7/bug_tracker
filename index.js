@@ -53,6 +53,11 @@ app.get('/createBug', (request, response) => {
   response.render('createBug');
 })
 
+app.get('/updateBug', (request, response) => {
+  // Add authenticated check here
+  response.render('updateBug');
+})
+
 // Sets up api calls for use in app
 app.get('/users', usersQueries.getUsers);
 app.get('/users/:id', usersQueries.getUserById);
