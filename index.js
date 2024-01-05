@@ -58,6 +58,11 @@ app.get('/projectForm', (request, response) => {
   response.render('projectForm');
 });
 
+app.get('/userForm', (request, response) => {
+  // Add authenticated check here
+  response.render('userForm');
+});
+
 // Sets up api calls for use in app
 app.get('/users', usersQueries.getUsers);
 app.get('/users/:id', usersQueries.getUserById);

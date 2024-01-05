@@ -1,20 +1,19 @@
+  let user_id;
+  
   // Define function to handle creating a user
-  function createUser() {
-    // Prompt the user for each field value
-    const username = prompt("Enter username: (Required)");
-    const password = prompt("Enter your password: (Required)");
+  function createUser(formValues) {
+   
+    // Construct user data object
+    const userData = {
+      username: formValues.username || null, 
+      password: formValues.password || null
+    };
 
     // Prevent server from crashing when prompts left empty
-    if (!username || !password) {
+    if (!(userData.username || userData.password)) {
       alert('One or more fields left blank. Prompt canceled.');
       return;
     }
-  
-    // Construct the user data object
-    const userData = {
-      username: username || null, // Use null if the field is empty
-      password: password || null
-    };
   
     // Make a POST request to the server
     fetch('http://localhost:3000/users/', {
@@ -37,7 +36,6 @@
   }
 
   // Delete user function
-
   function deleteUser() {
     // Prompt the user for id
     const userIdToDelete = prompt("Enter the id of the user you would like to delete:");
@@ -61,14 +59,9 @@
   }
 
   // Define function to handle updating a user
-function updateUser() {
-  // Prompt the user for the id to update
-  const userIdToUpdate = prompt("Enter the id of the user you would like to update:");
+function updateUser(formValues, user_id) {
 
-  // Check if user canceled the prompt or entered an empty string
-  if (userIdToUpdate === null || userIdToUpdate.trim() === '') {
-    return;
-  }
+  const userIdToUpdate = user_id;
 
   // Fetch existing user data from the server
   fetch(`http://localhost:3000/users/${userIdToUpdate}`)
@@ -81,21 +74,16 @@ function updateUser() {
     })
     .then(existingUserData => {
       if (existingUserData !== null) {
-        // Prompt the user for each field value with pre-filled existing values
-        const username = prompt("Enter username: (Required)", existingUserData.username);
-        const password = prompt("Enter password: (Required)", existingUserData.password);
-
+        // Construct user data object
+        const userData = {
+          username: formValues.username || null, 
+          password: formValues.password || null
+        };
         // Prevent server from crashing when prompts left empty
-        if (!username || !password) {
+        if (!(userData.username || userData.password)) {
           alert('One or more fields left blank. Prompt canceled.');
           return;
         }
-
-        // Construct the updated user data object
-        const updatedUserData = {
-          username: username || existingUserData.username,
-          password: password || existingUserData.password
-        };
 
         // Make a PUT request to update the user
         fetch(`http://localhost:3000/users/${userIdToUpdate}`, {
@@ -103,7 +91,7 @@ function updateUser() {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(updatedUserData),
+          body: JSON.stringify(userData),
         })
           .then(response => {
             if (response.ok) {
@@ -118,4 +106,42 @@ function updateUser() {
       }
     })
     .catch(error => console.error('Error fetching user data:', error));
+}
+
+function submitForm() {
+    
+  const urlParams = new URLSearchParams(window.location.search);
+  user_id = urlParams.get('user_id');
+  let mode = urlParams.get('mode');
+  
+  // Create an object with all field values
+  const formValues = {
+    username: document.getElementById('username').value,
+    password: document.getElementById('password').value
+  };
+
+  // Call correct function with the array of values
+  if (mode === 'create') {
+      createUser(formValues);
+  } else if (mode === 'update') {
+      updateUser(formValues, user_id);
+  }
+}
+
+function openUserForm(mode){
+  
+  if (mode === 'create') {
+    var url = 'http://localhost:3000/userForm?mode=create';
+  } else {
+    user_id = prompt("Enter the id of the user you would like to update:");
+    if (user_id === null || user_id.trim() === '') {
+      return;
+    }
+    var url = `http://localhost:3000/userForm?user_id=${user_id}&mode=update`;
+  }
+  
+  var newWindow = window.open(url, '_blank', 'scrollbars=yes,resizable=yes,width=400,height=200');
+  if (newWindow) {
+    newWindow.focus();
+  }
 }
