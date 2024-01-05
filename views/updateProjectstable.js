@@ -1,21 +1,19 @@
+  let project_id;
+  
   // Define function to handle creating a project
-  function createProject() {
-    // Prompt the user for each field value
-    const name = prompt("Enter project name: (Required)");
-    const user_id = prompt("Enter your user_id: (Required)");
+  function createProject(formValues) {
 
+    // Construct project data object
+    const projectData = {
+      name: formValues.name || null, 
+      user_id: formValues.user_id || null
+    };
 
     // Stop server from crashing if a field is left empty
-    if (!name || !user_id) {
+    if (!(projectData.name || projectData.user_id)) {
       alert('One or more required fields left empty. Prompt canceled.');
       return;
     }
-  
-    // Construct the project data object
-    const projectData = {
-      name: name || null, // Use null if the field is empty
-      user_id: user_id || null,
-    };
   
     // Make a POST request to the server
     fetch('http://localhost:3000/projects/', {
@@ -62,14 +60,9 @@
   }
 
   // Define function to handle updating a project
-function updateProject() {
-  // Prompt the user for the id to update
-  const projectIdToUpdate = prompt("Enter the id of the project you would like to update:");
+function updateProject(formValues, project_id) {
 
-  // Check if user canceled the prompt or entered an empty string
-  if (projectIdToUpdate === null || projectIdToUpdate.trim() === '') {
-    return;
-  }
+  const projectIdToUpdate = project_id;
 
   // Fetch existing project data from the server
   fetch(`http://localhost:3000/projects/${projectIdToUpdate}`)
@@ -82,21 +75,17 @@ function updateProject() {
     })
     .then(existingProjectData => {
       if (existingProjectData !== null) {
-        // Prompt the user for each field value with pre-filled existing values
-        const name = prompt("Enter name: (Required)", existingProjectData.name);
-        const user_id = prompt("Enter user_id: (Required)", existingProjectData.user_id);
+        // Construct project data object
+        const projectData = {
+          name: formValues.name || null, 
+          user_id: formValues.user_id || null
+        };
 
         // Stop server from crashing if a field is left empty
-        if (!name || !user_id) {
+        if (!(projectData.name || projectData.user_id)) {
           alert('One or more required fields left empty. Prompt canceled.');
           return;
         }
-
-        // Construct the updated project data object
-        const updatedProjectData = {
-          name: name || existingProjectData.name,
-          user_id: user_id || existingProjectData.user_id
-        };
 
         // Make a PUT request to update the project
         fetch(`http://localhost:3000/projects/${projectIdToUpdate}`, {
@@ -104,7 +93,7 @@ function updateProject() {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(updatedProjectData),
+          body: JSON.stringify(projectData),
         })
           .then(response => {
             if (response.ok) {
@@ -119,4 +108,42 @@ function updateProject() {
       }
     })
     .catch(error => console.error('Error fetching project data:', error));
+}
+
+function submitForm() {
+    
+  const urlParams = new URLSearchParams(window.location.search);
+  project_id = urlParams.get('project_id');
+  let mode = urlParams.get('mode');
+  
+  // Create an object with all field values
+  const formValues = {
+    name: document.getElementById('name').value,
+    user_id: document.getElementById('user_id').value
+  };
+
+  // Call correct function with the array of values
+  if (mode === 'create') {
+      createProject(formValues);
+  } else if (mode === 'update') {
+      updateProject(formValues, project_id);
+  }
+}
+
+function openProjectForm(mode){
+  
+  if (mode === 'create') {
+    var url = 'http://localhost:3000/projectForm?mode=create';
+  } else {
+    project_id = prompt("Enter the id of the project you would like to update:");
+    if (project_id === null || project_id.trim() === '') {
+      return;
+    }
+    var url = `http://localhost:3000/projectForm?project_id=${project_id}&mode=update`;
+  }
+  
+  var newWindow = window.open(url, '_blank', 'scrollbars=yes,resizable=yes,width=400,height=200');
+  if (newWindow) {
+    newWindow.focus();
+  }
 }

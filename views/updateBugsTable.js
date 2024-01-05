@@ -72,7 +72,7 @@
   
   // Define function to handle updating a bug
   function updateBug(formValues, bug_id) {
-    // Prompt the user for the bug_id to update
+
     const bugIdToUpdate = bug_id;
   
     // Fetch existing bug data from the server
@@ -165,7 +165,7 @@
     if (mode === 'create') {
       var url = 'http://localhost:3000/bugForm?mode=create';
     } else {
-      bug_id = prompt("Enter the id of the project you would like to update:");
+      bug_id = prompt("Enter the id of the bug you would like to update:");
       if (bug_id === null || bug_id.trim() === '') {
         return;
       }

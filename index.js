@@ -51,12 +51,12 @@ app.get('/', (request, response) => {
 app.get('/bugForm', (request, response) => {
   // Add authenticated check here
   response.render('bugForm');
-})
+});
 
-app.get('/updateBug', (request, response) => {
+app.get('/projectForm', (request, response) => {
   // Add authenticated check here
-  response.render('updateBug');
-})
+  response.render('projectForm');
+});
 
 // Sets up api calls for use in app
 app.get('/users', usersQueries.getUsers);
