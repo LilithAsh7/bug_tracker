@@ -99,9 +99,6 @@
                 fixer_notes: formValues.fixer_notes || null,
                 reason: formValues.reason || null,
             };
-  
-            console.log(formValues);
-            console.log(bugData);
 
             // Stop server from crashing if fields are left empty
           if (!(bugData.bug_type || bugData.bug_description || bugData.priority || bugData.status || bugData.user_id || bugData.project_id)) {
@@ -135,10 +132,11 @@
       .catch(error => console.error('Error fetching bug data:', error));
   }
 
-  function submitForm(mode) {
+  function submitForm() {
     
     const urlParams = new URLSearchParams(window.location.search);
     bug_id = urlParams.get('bug_id');
+    let mode = urlParams.get('mode');
     
     // Create an object with all field values
     const formValues = {
@@ -163,20 +161,15 @@
   }
   
   function openBugForm(mode){
-    console.log(mode);
-    console.log("Bug id is: " + bug_id);
     
     if (mode === 'create') {
-      console.log("Running create Bug pop up");
-      var url = 'http://localhost:3000/createBug';
+      var url = 'http://localhost:3000/bugForm?mode=create';
     } else {
-      console.log("Prompting for bug_id");
       bug_id = prompt("Enter the id of the project you would like to update:");
       if (bug_id === null || bug_id.trim() === '') {
         return;
       }
-      console.log("Bug id is: " + bug_id);
-      var url = `http://localhost:3000/updateBug?bug_id=${bug_id}`;
+      var url = `http://localhost:3000/bugForm?bug_id=${bug_id}&mode=update`;
     }
     
     var newWindow = window.open(url, '_blank', 'scrollbars=yes,resizable=yes,width=400,height=400');

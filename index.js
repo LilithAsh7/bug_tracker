@@ -48,9 +48,9 @@ app.get('/', (request, response) => {
     response.render('login');
   });
 
-app.get('/createBug', (request, response) => {
+app.get('/bugForm', (request, response) => {
   // Add authenticated check here
-  response.render('createBug');
+  response.render('bugForm');
 })
 
 app.get('/updateBug', (request, response) => {
