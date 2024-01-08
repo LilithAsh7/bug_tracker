@@ -1,3 +1,19 @@
+function updateTableByStatus(status) {
+  fetchData(status, 'http://localhost:3000/bugs/status/', 'table1');
+
+  document.getElementById('statusDropdownBtn').textContent = `Status: ${status}`;
+}
+
+function reloadData(table) {
+  if (table === 'bugs'){
+    fetchData('all', 'http://localhost:3000/bugs/status/', 'table1');
+  } else if (table === 'projects') {
+    fetchData(null, 'http://localhost:3000/projects', 'table2');
+  } else if (table === 'users') {
+    fetchData(null, 'http://localhost:3000/users', 'table3');
+  }
+}
+
 // Creates listener and performs the following fetchData functions
 document.addEventListener('DOMContentLoaded', function () {
     // Calls the below fetchData function 3 times. Once for each table.
@@ -24,17 +40,25 @@ document.addEventListener('DOMContentLoaded', function () {
   // the data variable is an array of objects and tableName is the name of the table to be populated from the data.
   function populateTable(data, tableName) {
     const table = document.getElementById(tableName);
+    
+      // Clear existing rows
+      while (table.rows.length > 1) {
+        table.deleteRow(1);
+      }
+    
     // Gets table headers (categories)
     const headers = Object.keys(data[0]);
   
     // Create table header
-    const headerRow = table.insertRow(0);
-    // Iterates through headers and creates table cell for each
-    headers.forEach(headerText => {
-      const th = document.createElement('th');
-      th.textContent = headerText;
-      headerRow.appendChild(th);
-    });
+    if (table.rows.length === 0) {
+      const headerRow = table.insertRow(0);
+      // Iterates through headers and creates table cell for each
+      headers.forEach(headerText => {
+        const th = document.createElement('th');
+        th.textContent = headerText;
+        headerRow.appendChild(th);
+      });
+    }
   
     // Create table rows
     data.forEach(rowData => {
