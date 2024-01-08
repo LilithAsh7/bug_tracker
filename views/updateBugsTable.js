@@ -120,8 +120,7 @@
             .then(response => {
               if (response.ok) {
                 console.log(`Bug with bug_id ${bugIdToUpdate} updated successfully.`);
-                // Reload the dashboard page
-                window.location.reload();
+                window.close()
               } else {
                 console.error(`Failed to update bug with bug_id ${bugIdToUpdate}.`);
               }
