@@ -84,11 +84,27 @@ const deleteBug = (request, response) => {
   })
 }
 
+// API call for deleting entry in bug table
+const setBugToInactive = (request, response) => {
+  //ID of specific bug to be deleted
+  const bug_id = parseInt(request.params.bug_id)
+  // Constructs sql code
+  pool.query('UPDATE bugs SET status = inactive WHERE bug_id = $1',
+    [bug_id], (error, results) => {
+    //Error handling
+    if (error) {
+      throw error
+    }
+    response.status(200).send(`Bug with ID ${bug_id} set to inactive.`)
+  })
+}
+
 // Exporting API calls
 module.exports = {
     getBugs,
     getBugsById,
     createBug,
     updateBug, 
-    deleteBug
+    deleteBug,
+    setBugToInactive
   };
