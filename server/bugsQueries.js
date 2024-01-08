@@ -12,7 +12,7 @@ const pool = new Pool({
 // API call for getting all data from the bugs table
 const getBugs = (request, response) => {
   // Actual sql code  
-  pool.query("SELECT * FROM bugs ORDER BY project_id ASC, status ASC, bug_type ASC, CASE priority WHEN 'high' THEN 1 WHEN 'medium' THEN 2 WHEN 'low' THEN 3 ELSE 4 END", (error, results) => {
+  pool.query("SELECT * FROM bugs WHERE status <> 'inactive' ORDER BY project_id ASC, status ASC, bug_type ASC, CASE priority WHEN 'high' THEN 1 WHEN 'medium' THEN 2 WHEN 'low' THEN 3 ELSE 4 END", (error, results) => {
     // Error handling  
     if (error) {
         throw error
@@ -89,7 +89,7 @@ const setBugToInactive = (request, response) => {
   //ID of specific bug to be deleted
   const bug_id = parseInt(request.params.bug_id)
   // Constructs sql code
-  pool.query('UPDATE bugs SET status = inactive WHERE bug_id = $1',
+  pool.query("UPDATE bugs SET status = 'inactive' WHERE bug_id = $1",
     [bug_id], (error, results) => {
     //Error handling
     if (error) {

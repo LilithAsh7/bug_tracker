@@ -54,8 +54,8 @@
     
       if (bugIdToDelete !== null && bugIdToDelete !== "") {
         // Make a DELETE request to the server
-        fetch(`http://localhost:3000/bugs/${bugIdToDelete}`, {
-          method: 'DELETE',
+        fetch(`http://localhost:3000/bugs/inactive/${bugIdToDelete}`, {
+          method: 'PUT',
         })
           .then(response => {
             if (response.ok) {
