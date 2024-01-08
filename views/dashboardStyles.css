@@ -41,7 +41,6 @@
   /* Dropdown styles */
   .dropdown {
     position: relative;
-    display: inline-block;
     float: right;
   }
   
