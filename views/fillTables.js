@@ -1,13 +1,16 @@
 // Creates listener and performs the following fetchData functions
 document.addEventListener('DOMContentLoaded', function () {
     // Calls the below fetchData function 3 times. Once for each table.
-    fetchData('http://localhost:3000/bugs', 'table1');
-    fetchData('http://localhost:3000/projects', 'table2');
-    fetchData('http://localhost:3000/users', 'table3');
+    fetchData('all', 'http://localhost:3000/bugs/status/', 'table1');
+    fetchData(null, 'http://localhost:3000/projects', 'table2');
+    fetchData(null, 'http://localhost:3000/users', 'table3');
   });
   
   // fetchData takes a url and a table name, runs the 
-  function fetchData(url, tableName) {
+  function fetchData(status, url, tableName) {
+
+    if (status) {
+    url = url + status;}
     // fetch engages an asynchronous http request using the provided url.
     fetch(url)
       // Populates the table with the given tablename with the populateTable function
