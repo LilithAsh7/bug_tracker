@@ -9,7 +9,7 @@
 <body>
 <h2>Bug Form</h2>
 <h4>* fields are required</h4>
-    <form>
+    <form id="bugForm">
       <label for="bug_type">* Bug type:</label>
       <input type="text" id="bug_type" name="bug_type" required>
       <br>
@@ -43,5 +43,38 @@
       <button type="button" onclick="submitForm()">Submit</button>
     </form>
 </body>
-<script src="updateBugsTable.js"></script>
+    <script src="updateBugsTable.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', async function () {
+        // Extract bug_id from URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const bug_id = urlParams.get('bug_id');
+
+        // Call the getBugById function if bug_id is available
+        if (bug_id) {
+          const response = await fetch(`http://localhost:3000/bugs/${bug_id}`)
+          let bugData = await response.json();
+          bugData = bugData[0]
+          console.log(bugData);
+
+          // Check if bugData is not null and set form values
+          if (bugData) {
+            const form = document.getElementById('bugForm');
+            console.log(bugData.bug_type);
+
+            // Set values for each form field
+            form.elements['bug_type'].value = bugData.bug_type || '';
+            form.elements['bug_description'].value = bugData.bug_description || '';
+            form.elements['file'].value = bugData.file || '';
+            form.elements['line'].value = bugData.line || '';
+            form.elements['priority'].value = bugData.priority || '';
+            form.elements['status'].value = bugData.status || '';
+            form.elements['user_id'].value = bugData.user_id || '';
+            form.elements['project_id'].value = bugData.project_id || '';
+            form.elements['fixer_notes'].value = bugData.fixer_notes || '';
+            form.elements['reason'].value = bugData.reason || '';
+          }
+        }
+      });
+    </script>
 </html>
