@@ -8,11 +8,12 @@
 </head>
 <body>
 <h2>Bug Form</h2>
+<h4>* fields are required</h4>
     <form>
-      <label for="bug_type">Bug type:</label>
+      <label for="bug_type">* Bug type:</label>
       <input type="text" id="bug_type" name="bug_type" required>
       <br>
-      <label for="bug_description">Bug description:</label>
+      <label for="bug_description">* Bug description:</label>
       <input type="text" id="bug_description" name="bug_description" required>
       <br>
       <label for="file">File:</label>
@@ -21,16 +22,16 @@
       <label for="line">Line:</label>
       <input type="text" id="line" name="line">
       <br>
-      <label for="priority">Priority:</label>
+      <label for="priority">* Priority: [low, medium, or high]</label>
       <input type="text" id="priority" name="priority" required>
       <br>
-      <label for="status">Status:</label>
+      <label for="status">* Status:</label>
       <input type="text" id="status" name="status" required>
       <br>
-      <label for="user_id">User ID:</label>
+      <label for="user_id">* User ID:</label>
       <input type="text" id="user_id" name="user_id" required>
       <br>
-      <label for="project_id">Project ID:</label>
+      <label for="project_id">* Project ID:</label>
       <input type="text" id="project_id" name="project_id" required>
       <br>
       <label for="fixer_notes">Fixer Notes:</label>
