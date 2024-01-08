@@ -80,6 +80,7 @@ app.get('/bugs', bugsQueries.getBugs);
 app.get('/bugs/:bug_id', bugsQueries.getBugsById);
 app.post('/bugs/', bugsQueries.createBug);
 app.put('/bugs/:bug_id', bugsQueries.updateBug);
+app.put('/bugs/inactive/:bug_id', bugsQueries.setBugToInactive);
 app.delete('/bugs/:bug_id', bugsQueries.deleteBug);
 
 //Starts the application listening for api calls
