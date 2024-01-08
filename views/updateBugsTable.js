@@ -172,7 +172,7 @@
       var url = `http://localhost:3000/bugForm?bug_id=${bug_id}&mode=update`;
     }
     
-    var newWindow = window.open(url, '_blank', 'scrollbars=yes,resizable=yes,width=400,height=400');
+    var newWindow = window.open(url, '_blank', 'scrollbars=yes,resizable=yes,width=500,height=400');
     if (newWindow) {
       newWindow.focus();
     }
