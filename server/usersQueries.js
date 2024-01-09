@@ -147,7 +147,7 @@ const loginUser = (request, response) => {
         }
         // If the passwords match it loads the dashboard html page
         if (passwordMatch) {
-          response.render('dashboard');
+          response.render('main_menu');
         // If passwords don't match it just loads a page that said incorrect password
         } else {
           response.status(401).send('Authentication failed. Incorrect password.');
