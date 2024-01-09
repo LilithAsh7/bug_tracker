@@ -1,8 +1,12 @@
 // Importing bcrypt for hash checking and LocalStategy for username/password authentication
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
+const Sequelize = require('sequelize');
 // Imports userQueries API calls
 const usersQueries = require('./usersQueries');
+const { User, Group, UserGroup } = require('./sequelized');
+
+const sequelize = new Sequelize('bug_tracker', process.env.db_user, process.env.db_password, {host: 'localhost', dialect: 'postgres'});
 
 // Initializes passport.js with authentication login
 function initialize(passport) {
