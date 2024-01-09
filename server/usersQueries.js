@@ -26,6 +26,10 @@ const getUsers = (request, response) => {
   })
 }
 
+const loadUsersTable = (request, response) => {
+  response.render('userTable');
+}
+
 // API call to get user by a specific ID
 const getUserById = (request, response) => {
   // Specified ID to grab
@@ -165,5 +169,6 @@ module.exports = {
   updateUser,
   deleteUser,
   loginUser,
-  getUserByUsername
+  getUserByUsername,
+  loadUsersTable
 };
