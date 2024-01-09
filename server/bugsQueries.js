@@ -9,6 +9,10 @@ const pool = new Pool({
   port: 5432,
 });
 
+const loadBugsTable = (request, response) => {
+  response.render('dashboard');
+}
+
 // API call for getting all data from the bugs table
 const getAllBugs = (request, response) => {
   // Actual sql code  
@@ -133,5 +137,6 @@ module.exports = {
     createBug,
     updateBug, 
     deleteBug,
-    setBugToInactive
+    setBugToInactive,
+    loadBugsTable
   };
