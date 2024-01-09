@@ -71,11 +71,14 @@ app.post('/users', usersQueries.createUser);
 app.post('/login', usersQueries.loginUser);
 app.put('/users/:id', usersQueries.updateUser);
 app.delete('/users/:id', usersQueries.deleteUser);
+
 app.get('/projects', projectsQueries.getProjects);
 app.get('/projects/:id', projectsQueries.getProjectById);
 app.post('/projects', projectsQueries.createProject);
 app.put('/projects/:id', projectsQueries.updateProject);
 app.delete('/projects/:id', projectsQueries.deleteProject);
+app.get('/projectTable', projectsQueries.loadProjectsTable)
+
 app.get('/bugs', bugsQueries.getAllBugs);
 app.get('/bugs/:bug_id', bugsQueries.getBugsById);
 app.get('/bugs/status/:status', bugsQueries.getBugsByStatus);
