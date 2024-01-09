@@ -9,6 +9,10 @@ const pool = new Pool({
   port: 5432,
 });
 
+const loadProjectsTable = (request, response) => {
+  response.render('projectTable');
+}
+
 // API call for getting all data from the projects table
 const getProjects= (request, response) => {
 // Actual sql code  
@@ -108,4 +112,5 @@ module.exports = {
   createProject,
   updateProject,
   deleteProject,
+  loadProjectsTable
 };
