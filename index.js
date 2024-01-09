@@ -83,7 +83,7 @@ app.post('/bugs/', bugsQueries.createBug);
 app.put('/bugs/:bug_id', bugsQueries.updateBug);
 app.put('/bugs/inactive/:bug_id', bugsQueries.setBugToInactive);
 app.delete('/bugs/:bug_id', bugsQueries.deleteBug);
-app.get('/dashboard', bugsQueries.loadBugsTable);
+app.get('/bugTable', bugsQueries.loadBugsTable);
 
 //Starts the application listening for api calls
 app.listen(port, () => {
