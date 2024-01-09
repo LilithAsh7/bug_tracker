@@ -10,7 +10,7 @@ const pool = new Pool({
 });
 
 const loadBugsTable = (request, response) => {
-  response.render('dashboard');
+  response.render('bugTable');
 }
 
 // API call for getting all data from the bugs table
