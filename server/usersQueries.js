@@ -13,8 +13,12 @@ const pool = new Pool({
 const bcrypt = require('bcrypt')
 const saltRounds = 10;
 
+const passport = require("passport");
+
 // API call to get all data from users table
 const getUsers = (request, response) => {
+  
+  console.log("isAuthenticated() in getUsers: " + request.isAuthenticated());
   // Constructs sql code
   pool.query('SELECT * FROM users ORDER BY id ASC', (error, results) => {
     // Error handling
@@ -83,6 +87,7 @@ const createUser = (request, response) => {
   });
 };
 
+
 // API call to update entry in user table
 const updateUser = (request, response) => {
   // Specific ID of entry to update
@@ -141,6 +146,9 @@ const loginUser = (request, response) => {
     if (results.rows.length === 0) {
       response.status(401).send('Authentication failed. User not found.');
     } else {
+      
+      const user_id = results.rows[0].id;
+      
       // When a user is found the supplied password gets hashed
       const hashedPassword = results.rows[0].password;
       // The hased password gets compared to the one in the database
@@ -151,7 +159,9 @@ const loginUser = (request, response) => {
         }
         // If the passwords match it loads the dashboard html page
         if (passwordMatch) {
-          response.render('main_menu');
+          request.login(user_id, function(err) {
+            response.render('main_menu');
+          });
         // If passwords don't match it just loads a page that said incorrect password
         } else {
           response.status(401).send('Authentication failed. Incorrect password.');
@@ -160,6 +170,11 @@ const loginUser = (request, response) => {
     }
   });
 };
+
+// Serializes user object so it can be stored in the session (This stores only the users ID)
+passport.serializeUser((user_id, done) => done(null, user_id));
+// Deserialize user object, meaning it reverts it back to it's original state
+passport.deserializeUser(async (user_id, done) => done(null, user_id));
 
 // Exporting API calls
 module.exports = {
