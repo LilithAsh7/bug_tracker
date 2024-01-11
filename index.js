@@ -7,6 +7,7 @@ const passport = require("passport");
 const initializePassport = require('./server/passport-config');
 // Session module for keeping track of sessions
 const session = require("express-session");
+const cookieParser = require('cookie-parser');
 // For parsing body api requests
 const bodyParser = require('body-parser');
 // API call files
@@ -27,15 +28,18 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 // Using path module to allow static files
 // This removes compatibility issues with ejs and css files
+app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'views')));
 app.set('view engine', 'ejs');
 
+app.use(passport.initialize());
 //Setting up cookies so that authentication can be kept track of
 app.use(
   session({
     secret: process.env.secret_key,
     resave: false,
     saveUninitialized: false
+    // cookie: { secure: true }
   })
 );
 
@@ -45,7 +49,13 @@ app.use(passport.session());
 
 // Renders login page upon visiting http://localhost:3000
 app.get('/', (request, response) => {
+  console.log("Testing for user in GET / " + request.user);
+  console.log("isAuthenticated() in GET / " + request.isAuthenticated());
     response.render('login');
+  });
+
+  app.post('/register', (request, response) => {
+      response.render('register');
   });
 
 app.get('/bugForm', (request, response) => {
