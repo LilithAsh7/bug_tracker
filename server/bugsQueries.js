@@ -1,12 +1,13 @@
 // Importing and creating new instance of Pool class
 // The pg library is a postgres client for node
 const Pool = require('pg').Pool
+require('dotenv').config();
 const pool = new Pool({
-  user: 'postgres',
-  host: 'localhost',
-  database: 'bug_tracker',
-  password: 'postgres',
-  port: 5432,
+  user: process.env.db_user,
+  host: process.env.db_host,
+  database: process.env.db_name,
+  password: process.env.db_password,
+  port: process.env.db_port
 });
 
 const loadBugsTable = (request, response) => {
