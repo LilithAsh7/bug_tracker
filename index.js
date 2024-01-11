@@ -14,12 +14,22 @@ const bodyParser = require('body-parser');
 const usersQueries = require('./server/usersQueries');
 const projectsQueries = require('./server/projectsQueries');
 const bugsQueries = require('./server/bugsQueries');
+const pgSession = require('connect-pg-simple')(session);
 // Module for working with file paths
 const path = require('path');
+require('dotenv').config();
+
+const Pool = require('pg').Pool
+const pool = new Pool({
+  user: process.env.db_user,
+  host: process.env.db_host,
+  database: process.env.db_name,
+  password: process.env.db_password,
+  port: process.env.db_port
+});
 
 
 // dotenv is for variables that should be kept seperate for security
-require('dotenv').config();
 initializePassport(passport);
 
 // Setting app to use bodyParser
@@ -36,10 +46,14 @@ app.use(passport.initialize());
 //Setting up cookies so that authentication can be kept track of
 app.use(
   session({
+    store: new pgSession({
+      pool,
+      tablename: 'session'
+    }),
     secret: process.env.secret_key,
     resave: false,
-    saveUninitialized: false
-    // cookie: { secure: true }
+    saveUninitialized: false,
+    cookie: { maxAge: 30 * 24 * 60 * 60 * 1000}
   })
 );
 
