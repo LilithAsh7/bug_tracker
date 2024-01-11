@@ -10,14 +10,15 @@
 
 <body>
   <h2>Login:&nbsp;&nbsp;</h2>
-  <form action="/login" method="POST">
+  <form>
     <label for="username">Username:</label>
-    <input type="text" id="username" name="username" required>
+    <input type="text" id="username" name="username">
 
     <label for="password">Password:</label>
-    <input type="password" id="password" name="password" required>
+    <input type="password" id="password" name="password">
 
-    <button type="submit">Login</button>
+    <button type="submit" formaction="/login" formmethod="POST">Login</button>
+    <button type="submit" formaction="/register" formmethod="GET">New User</button>
   </form>
 </body>
 </html>
