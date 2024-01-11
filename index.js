@@ -54,7 +54,7 @@ app.get('/', (request, response) => {
     response.render('login');
   });
 
-  app.post('/register', (request, response) => {
+  app.get('/register', (request, response) => {
       response.render('register');
   });
 
