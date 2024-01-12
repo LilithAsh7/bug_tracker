@@ -78,6 +78,10 @@ app.get('/', (request, response) => {
     response.render('login');
   });
 
+app.get('/main_menu', (request, response) => {
+  response.render('main_menu')
+})
+
   app.get('/register', (request, response) => {
       response.render('register');
   });
