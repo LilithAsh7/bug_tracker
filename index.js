@@ -4,7 +4,7 @@ const app = express();
 const port = 3000;
 // Passport module for authentication and authorization
 const passport = require("passport");
-// Session module for keeping track of sessions
+// Session module for authorization and authentication
 const session = require("express-session");
 const cookieParser = require('cookie-parser');
 // For parsing body api requests
