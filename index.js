@@ -36,8 +36,9 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'views')));
 app.set('view engine', 'ejs');
-
+// Initialize passport
 app.use(passport.initialize());
+app.use(passport.session());
 //Setting up cookies so that authentication can be kept track of
 app.use(
   session({
@@ -51,10 +52,6 @@ app.use(
     cookie: { maxAge: 30 * 24 * 60 * 60 * 1000}
   })
 );
-
-//Initializes passport and sets it up to use session
-app.use(passport.initialize());
-app.use(passport.session());
 
 function authenticationMiddleware () {  
 	return (req, res, next) => {
@@ -82,17 +79,14 @@ app.get('/main_menu', authenticationMiddleware(), (request, response) => {
   });
 
 app.get('/bugForm', authenticationMiddleware(), (request, response) => {
-  // Add authenticated check here
   response.render('bugForm');
 });
 
 app.get('/projectForm', authenticationMiddleware(), (request, response) => {
-  // Add authenticated check here
   response.render('projectForm');
 });
 
 app.get('/userForm', authenticationMiddleware(), (request, response) => {
-  // Add authenticated check here
   response.render('userForm');
 });
 
