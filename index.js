@@ -61,6 +61,16 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+function authenticationMiddleware () {  
+	return (req, res, next) => {
+		console.log(`req.session.passport.user: ${JSON.stringify(req.session.passport)}`);
+
+	    if (req.isAuthenticated()){ return next(); }
+	    
+      else { res.redirect('/') }
+	}
+}
+
 // Renders login page upon visiting http://localhost:3000
 app.get('/', (request, response) => {
   console.log("Testing for user in GET / " + request.user);
@@ -72,46 +82,46 @@ app.get('/', (request, response) => {
       response.render('register');
   });
 
-app.get('/bugForm', (request, response) => {
+app.get('/bugForm', authenticationMiddleware(), (request, response) => {
   // Add authenticated check here
   response.render('bugForm');
 });
 
-app.get('/projectForm', (request, response) => {
+app.get('/projectForm', authenticationMiddleware(), (request, response) => {
   // Add authenticated check here
   response.render('projectForm');
 });
 
-app.get('/userForm', (request, response) => {
+app.get('/userForm', authenticationMiddleware(), (request, response) => {
   // Add authenticated check here
   response.render('userForm');
 });
 
 // Sets up api calls for use in app
-app.get('/users', usersQueries.getUsers);
-app.get('/users/:id', usersQueries.getUserById);
-app.get('/users/:username', usersQueries.getUserByUsername);
-app.post('/users', usersQueries.createUser);
+app.get('/users', authenticationMiddleware(), usersQueries.getUsers);
+app.get('/users/:id', authenticationMiddleware(), usersQueries.getUserById);
+app.get('/users/:username', authenticationMiddleware(), usersQueries.getUserByUsername);
+app.post('/users', authenticationMiddleware(), usersQueries.createUser);
 app.post('/login', usersQueries.loginUser);
-app.put('/users/:id', usersQueries.updateUser);
-app.delete('/users/:id', usersQueries.deleteUser);
-app.get('/userTable', usersQueries.loadUsersTable);
+app.put('/users/:id', authenticationMiddleware(), usersQueries.updateUser);
+app.delete('/users/:id', authenticationMiddleware(), usersQueries.deleteUser);
+app.get('/userTable', authenticationMiddleware(), usersQueries.loadUsersTable);
 
-app.get('/projects', projectsQueries.getProjects);
-app.get('/projects/:id', projectsQueries.getProjectById);
-app.post('/projects', projectsQueries.createProject);
-app.put('/projects/:id', projectsQueries.updateProject);
-app.delete('/projects/:id', projectsQueries.deleteProject);
-app.get('/projectTable', projectsQueries.loadProjectsTable);
+app.get('/projects', authenticationMiddleware(), projectsQueries.getProjects);
+app.get('/projects/:id', authenticationMiddleware(), projectsQueries.getProjectById);
+app.post('/projects', authenticationMiddleware(), projectsQueries.createProject);
+app.put('/projects/:id', authenticationMiddleware(), projectsQueries.updateProject);
+app.delete('/projects/:id', authenticationMiddleware(), projectsQueries.deleteProject);
+app.get('/projectTable', authenticationMiddleware(), projectsQueries.loadProjectsTable);
 
-app.get('/bugs', bugsQueries.getAllBugs);
-app.get('/bugs/:bug_id', bugsQueries.getBugsById);
-app.get('/bugs/status/:status', bugsQueries.getBugsByStatus);
-app.post('/bugs/', bugsQueries.createBug);
-app.put('/bugs/:bug_id', bugsQueries.updateBug);
-app.put('/bugs/inactive/:bug_id', bugsQueries.setBugToInactive);
-app.delete('/bugs/:bug_id', bugsQueries.deleteBug);
-app.get('/bugTable', bugsQueries.loadBugsTable);
+app.get('/bugs', authenticationMiddleware(), bugsQueries.getAllBugs);
+app.get('/bugs/:bug_id', authenticationMiddleware(), bugsQueries.getBugsById);
+app.get('/bugs/status/:status', authenticationMiddleware(), bugsQueries.getBugsByStatus);
+app.post('/bugs/', authenticationMiddleware(), bugsQueries.createBug);
+app.put('/bugs/:bug_id', authenticationMiddleware(), bugsQueries.updateBug);
+app.put('/bugs/inactive/:bug_id', authenticationMiddleware(), bugsQueries.setBugToInactive);
+app.delete('/bugs/:bug_id', authenticationMiddleware(), bugsQueries.deleteBug);
+app.get('/bugTable', authenticationMiddleware(), bugsQueries.loadBugsTable);
 
 //Starts the application listening for api calls
 app.listen(port, () => {
