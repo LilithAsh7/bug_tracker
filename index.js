@@ -4,7 +4,6 @@ const app = express();
 const port = 3000;
 // Passport module for authentication and authorization
 const passport = require("passport");
-const initializePassport = require('./server/passport-config');
 // Session module for keeping track of sessions
 const session = require("express-session");
 const cookieParser = require('cookie-parser');
@@ -27,10 +26,6 @@ const pool = new Pool({
   password: process.env.db_password,
   port: process.env.db_port
 });
-
-
-// dotenv is for variables that should be kept seperate for security
-initializePassport(passport);
 
 // Setting app to use bodyParser
 app.use(bodyParser.json());
@@ -78,7 +73,7 @@ app.get('/', (request, response) => {
     response.render('login');
   });
 
-app.get('/main_menu', (request, response) => {
+app.get('/main_menu', authenticationMiddleware(), (request, response) => {
   response.render('main_menu')
 })
 
@@ -100,6 +95,11 @@ app.get('/userForm', authenticationMiddleware(), (request, response) => {
   // Add authenticated check here
   response.render('userForm');
 });
+
+app.get('/logout', (request, response) => {
+  request.session.destroy();
+  response.redirect('/');
+})
 
 // Sets up api calls for use in app
 app.get('/users', authenticationMiddleware(), usersQueries.getUsers);
