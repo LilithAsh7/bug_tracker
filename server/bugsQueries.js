@@ -31,8 +31,10 @@ const getAllBugs = (request, response) => {
 const getBugsByStatus = (request, response) => {
   
   const bug_status = (request.params.status);
+  const user_id = request.session.passport.user.user_id;
   if (bug_status === 'all'){
-    pool.query("SELECT * FROM bugs WHERE status <> 'inactive' ORDER BY project_id ASC, CASE WHEN status = 'pending' THEN 0 ELSE 1 END, status ASC, bug_type ASC, CASE priority WHEN 'high' THEN 1 WHEN 'medium' THEN 2 WHEN 'low' THEN 3 ELSE 4 END", (error, results) => {
+    //pool.query("SELECT * FROM bugs WHERE status <> 'inactive' ORDER BY project_id ASC, CASE WHEN status = 'pending' THEN 0 ELSE 1 END, status ASC, bug_type ASC, CASE priority WHEN 'high' THEN 1 WHEN 'medium' THEN 2 WHEN 'low' THEN 3 ELSE 4 END", (error, results) => {
+      pool.query("SELECT bugs.* FROM bugs JOIN users_projects ON bugs.project_id = users_projects.project_id WHERE users_projects.user_id = $1 AND bugs.status <> 'inactive' ORDER BY project_id ASC, CASE WHEN status = 'pending' THEN 0 ELSE 1 END, status ASC, bug_type ASC, CASE priority WHEN 'high' THEN 1 WHEN 'medium' THEN 2 WHEN 'low' THEN 3 ELSE 4 END", [user_id], (error, results) => {  
       // Error handling  
       if (error) {
           throw error
@@ -42,7 +44,7 @@ const getBugsByStatus = (request, response) => {
     })
   } else {
     // Actual sql code  
-    pool.query("SELECT * FROM bugs WHERE status = $1 ORDER BY project_id ASC, bug_type ASC, CASE priority WHEN 'high' THEN 1 WHEN 'medium' THEN 2 WHEN 'low' THEN 3 ELSE 4 END", [bug_status], (error, results) => {
+    pool.query("SELECT bugs.* FROM bugs JOIN users_projects ON bugs.project_id = users_projects.project_id WHERE users_projects.user_id = $1 AND bugs.status = $2 ORDER BY project_id ASC, bug_type ASC, CASE priority WHEN 'high' THEN 1 WHEN 'medium' THEN 2 WHEN 'low' THEN 3 ELSE 4 END", [user_id, bug_status], (error, results) => {
       // Error handling  
       if (error) {
           throw error
