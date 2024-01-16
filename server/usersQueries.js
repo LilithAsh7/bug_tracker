@@ -65,6 +65,17 @@ const getUserByUsername = (request, response) => {
   })
 }
 
+const setDefaultRole = (user_id) => {
+    pool.query('INSERT INTO user_groups (user_id, group_id) VALUES ($1, 2);', [user_id], (error, results) => {
+      if (error) {
+        throw error;
+      } else {
+        console.log("User role set");
+        return;
+      }
+    });
+  }
+
 // API call to create entry into user database
 const createUser = (request, response) => {
   // Variables to be inserted into database
@@ -83,7 +94,8 @@ const createUser = (request, response) => {
           throw error;
       }
       // Returns response that user was created with specific ID.
-      response.status(201).send(`User added with ID: ${results.rows[0].id}`);
+      setDefaultRole(results.rows[0].id)
+      response.status(201).redirect('/');
     });
   });
 };
