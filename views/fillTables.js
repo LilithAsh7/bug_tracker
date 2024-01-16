@@ -17,12 +17,19 @@ function reloadData(table) {
 // Creates listener and performs the following fetchData functions
 document.addEventListener('DOMContentLoaded', function () {
     // Calls the below fetchData function 3 times. Once for each table.
+    if (currentHTMLFile === "bugTable.ejs") {
+    console.log("Loading bug table");
     fetchData('all', 'http://localhost:3000/bugs/status/', 'table1');
+    } else if (currentHTMLFile === "projectTable.ejs") {
+    console.log("Loading projects table");
     fetchData(null, 'http://localhost:3000/projects', 'table2');
+    } else if (currentHTMLFile === "userTable.ejs") {
+    console.log("Loading users table");
     fetchData(null, 'http://localhost:3000/users', 'table3');
+    }
   });
   
-  // fetchData takes a url and a table name, runs the 
+  // fetchData takes a url and a table name, runs the
   function fetchData(status, url, tableName) {
 
     if (status) {
