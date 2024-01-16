@@ -73,20 +73,20 @@ router.delete('/users/:id', authorizationMiddleware('admin'), authenticationMidd
 router.get('/userTable', authorizationMiddleware('admin'), authenticationMiddleware(), usersQueries.loadUsersTable);
 router.get('/userGroups/login/:id', authorizationMiddleware('admin'), authenticationMiddleware(), usersQueries.getUserGroupsById);
 
-router.get('/projects', authenticationMiddleware(), projectsQueries.getProjects);
-router.get('/projects/:id', authenticationMiddleware(), projectsQueries.getProjectById);
-router.post('/projects', authenticationMiddleware(), projectsQueries.createProject);
-router.put('/projects/:id', authenticationMiddleware(), projectsQueries.updateProject);
-router.delete('/projects/:id', authenticationMiddleware(), projectsQueries.deleteProject);
-router.get('/projectTable', authenticationMiddleware(), projectsQueries.loadProjectsTable);
+router.get('/projects', authorizationMiddleware('admin'), authenticationMiddleware(), projectsQueries.getProjects);
+router.get('/projects/:id', authorizationMiddleware('admin'), authenticationMiddleware(), projectsQueries.getProjectById);
+router.post('/projects', authorizationMiddleware('admin'), authenticationMiddleware(), projectsQueries.createProject);
+router.put('/projects/:id', authorizationMiddleware('admin'), authenticationMiddleware(), projectsQueries.updateProject);
+router.delete('/projects/:id', authorizationMiddleware('admin'), authenticationMiddleware(), projectsQueries.deleteProject);
+router.get('/projectTable', authorizationMiddleware('admin'), authenticationMiddleware(), projectsQueries.loadProjectsTable);
 
-router.get('/bugs', authenticationMiddleware(), bugsQueries.getAllBugs);
-router.get('/bugs/:bug_id', authenticationMiddleware(), bugsQueries.getBugsById);
-router.get('/bugs/status/:status', authenticationMiddleware(), bugsQueries.getBugsByStatus);
-router.post('/bugs/', authenticationMiddleware(), bugsQueries.createBug);
-router.put('/bugs/:bug_id', authenticationMiddleware(), bugsQueries.updateBug);
-router.put('/bugs/inactive/:bug_id', authenticationMiddleware(), bugsQueries.setBugToInactive);
-router.delete('/bugs/:bug_id', authenticationMiddleware(), bugsQueries.deleteBug);
-router.get('/bugTable', authenticationMiddleware(), bugsQueries.loadBugsTable);
+router.get('/bugs', authorizationMiddleware('user'), authenticationMiddleware(), bugsQueries.getAllBugs);
+router.get('/bugs/:bug_id', authorizationMiddleware('user'), authenticationMiddleware(), bugsQueries.getBugsById);
+router.get('/bugs/status/:status', authorizationMiddleware('user'), authenticationMiddleware(), bugsQueries.getBugsByStatus);
+router.post('/bugs/', authorizationMiddleware('user'), authenticationMiddleware(), bugsQueries.createBug);
+router.put('/bugs/:bug_id', authorizationMiddleware('user'), authenticationMiddleware(), bugsQueries.updateBug);
+router.put('/bugs/inactive/:bug_id', authorizationMiddleware('user'), authenticationMiddleware(), bugsQueries.setBugToInactive);
+router.delete('/bugs/:bug_id', authorizationMiddleware('user'), authenticationMiddleware(), bugsQueries.deleteBug);
+router.get('/bugTable', authorizationMiddleware('user'), authenticationMiddleware(), bugsQueries.loadBugsTable);
 
 module.exports = router;
