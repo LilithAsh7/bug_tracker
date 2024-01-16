@@ -21,7 +21,7 @@ const getUsers = (request, response) => {
   
   console.log("isAuthenticated() in getUsers: " + request.isAuthenticated());
   // Constructs sql code
-  pool.query('SELECT * FROM users ORDER BY id ASC', (error, results) => {
+  pool.query('SELECT id, username FROM users ORDER BY id ASC', (error, results) => {
     // Error handling
     if (error) {
       throw error
@@ -133,12 +133,26 @@ const deleteUser = (request, response) => {
   })
 }
 
+const getUserGroupsById = (user_id) => {
+  return new Promise((resolve, reject) => {
+    pool.query('SELECT groups.name FROM users JOIN user_groups ON users.id = user_groups.user_id JOIN groups ON user_groups.group_id = groups.id WHERE users.id = $1', [user_id], (error, results) => {
+      if (error) {
+        reject(error);
+      } else {
+        console.log("Results in getUserGroupsById:");
+        console.log(results.rows);
+        resolve(results.rows);
+      }
+    });
+  });
+};
+
 // API call to authenticate user
-const loginUser = (request, response) => {
+const loginUser = async (request, response) => {
   // Variables to be checked
   const { username, password } = request.body;
   // SQL query to find user with specified username
-  pool.query('SELECT * FROM users WHERE username = $1', [username], (error, results) => {
+  pool.query('SELECT * FROM users WHERE username = $1', [username], async (error, results) => {
     // Error handling
     if (error) {
       response.status(500).send("Idk what the heck happen");
@@ -153,24 +167,28 @@ const loginUser = (request, response) => {
       // When a user is found the supplied password gets hashed
       const hashedPassword = results.rows[0].password;
       // The hased password gets compared to the one in the database
-      bcrypt.compare(password, hashedPassword, (err, passwordMatch) => {
-        // Error handling
-        if (err) {
-          throw err;
-        }
+      const passwordMatch = await bcrypt.compare(password, hashedPassword);
         // If the passwords match it loads the dashboard html page
         if (passwordMatch) {
-          request.login(user_id, function(err) {
+          
+          const user_groups = await getUserGroupsById(user_id)
+          console.log('Users groups in loginUser():');
+          console.log(user_groups);
+          const user_object = {
+            user_id: user_id,
+            user_groups: user_groups
+          }
+
+          request.login(user_object, function(err) {
             response.redirect('/main_menu');
           });
         // If passwords don't match it just loads a page that said incorrect password
         } else {
           response.status(401).send('Authentication failed. Incorrect password.');
         }
-      });
-    }
-  });
-};
+      };
+    });
+  }
 
 // Serializes user object so it can be stored in the session (This stores only the users ID)
 passport.serializeUser((user_id, done) => done(null, user_id));
@@ -186,5 +204,6 @@ module.exports = {
   deleteUser,
   loginUser,
   getUserByUsername,
-  loadUsersTable
+  loadUsersTable,
+  getUserGroupsById
 };
