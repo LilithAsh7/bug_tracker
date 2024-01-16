@@ -159,6 +159,20 @@ const getUserGroupsById = (user_id) => {
   });
 };
 
+const getUserProjectsById = (user_id) => {
+  return new Promise((resolve, reject) => {
+    pool.query('SELECT projects.id FROM users JOIN users_projects ON users.id = users_projects.user_id JOIN projects ON users_projects.project_id = projects.id WHERE users.id = $1', [user_id], (error, results) => {
+      if (error) {
+        reject(error);
+      } else {
+        console.log("Results in getUserProjectsById:");
+        console.log(results.rows);
+        resolve(results.rows);
+      }
+    });
+  });
+};
+
 // API call to authenticate user
 const loginUser = async (request, response) => {
   // Variables to be checked
@@ -183,12 +197,14 @@ const loginUser = async (request, response) => {
         // If the passwords match it loads the dashboard html page
         if (passwordMatch) {
           
-          const user_groups = await getUserGroupsById(user_id)
+          const user_groups = await getUserGroupsById(user_id);
+          const user_projects = await getUserProjectsById(user_id);
           console.log('Users groups in loginUser():');
           console.log(user_groups);
           const user_object = {
             user_id: user_id,
-            user_groups: user_groups
+            user_groups: user_groups,
+            user_projects: user_projects
           }
 
           request.login(user_object, function(err) {
