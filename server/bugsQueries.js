@@ -14,6 +14,36 @@ const loadBugsTable = (request, response) => {
   response.render('bugTable');
 }
 
+const bugAuthorizationMiddleware = (request, response, next) => {
+  const bug_id = parseInt(request.params.bug_id);
+
+  pool.query("SELECT * FROM bugs WHERE bug_id = $1", [bug_id], (error, result) => {
+    if (error) {
+      throw error;
+    }
+
+    const bugProjectId = result.rows[0].project_id;
+    console.log("bugProjectId: " + bugProjectId);
+    const bug = result.rows[0];
+
+    if (!bug) {
+      // Bug not found
+      return response.status(404).json({ error: 'Bug not found' });
+    }
+
+    const userProjects = request.session.passport.user.user_projects;
+    console.log(userProjects)
+    const authorizedProject = userProjects.find(project => project.id === bugProjectId);
+
+    if (!authorizedProject) {
+      // User is not authorized to access this bug
+      console.log("Unauthorized for this bug, loser.");
+      return response.redirect('/main_menu');
+    }
+    next();
+  });
+}
+
 // API call for getting all data from the bugs table
 const getAllBugs = (request, response) => {
   // Actual sql code  
@@ -57,15 +87,17 @@ const getBugsByStatus = (request, response) => {
 
   // API call for getting specific bug by ID from bugs table
 const getBugsById = (request, response) => {
-  // ID of specific bug you want the data from
-  const bug_id = parseInt(request.params.bug_id)
-  const user_id = request.session.passport.user.user_id;
-  // Works similarly to getBugs()
-  pool.query("SELECT bugs.* FROM bugs JOIN users_projects ON bugs.project_id = users_projects.project_id WHERE users_projects.user_id = $1 AND bugs.status <> 'inactive' AND bug_id = $2", [user_id, bug_id], (error, results) => {
-    if (error) {
-      throw error
-    }
-    response.status(200).json(results.rows)
+  bugAuthorizationMiddleware(request, response, () => {
+    // ID of specific bug you want the data from
+    const bug_id = parseInt(request.params.bug_id)
+    const user_id = request.session.passport.user.user_id;
+    // Works similarly to getBugs()
+    pool.query("SELECT bugs.* FROM bugs JOIN users_projects ON bugs.project_id = users_projects.project_id WHERE users_projects.user_id = $1 AND bugs.status <> 'inactive' AND bug_id = $2", [user_id, bug_id], (error, results) => {
+      if (error) {
+        throw error
+      }
+      response.status(200).json(results.rows)
+    })
   })
 }
 
