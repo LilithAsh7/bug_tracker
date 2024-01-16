@@ -45,19 +45,19 @@ router.get('/main_menu', authenticationMiddleware(), (request, response) => {
       response.render('register');
   });
 
-router.get('/bugForm', authenticationMiddleware(), (request, response) => {
+router.get('/bugForm', authorizationMiddleware('user'), authenticationMiddleware(), (request, response) => {
   response.render('bugForm');
 });
 
-router.get('/projectForm', authenticationMiddleware(), (request, response) => {
+router.get('/projectForm', authorizationMiddleware('admin'), authenticationMiddleware(), (request, response) => {
   response.render('projectForm');
 });
 
-router.get('/userForm', authenticationMiddleware(), (request, response) => {
+router.get('/userForm', authorizationMiddleware('admin'), authenticationMiddleware(), (request, response) => {
   response.render('userForm');
 });
 
-router.get('/logout', (request, response) => {
+router.get('/logout', authenticationMiddleware(), (request, response) => {
   request.session.destroy();
   response.redirect('/');
 })
