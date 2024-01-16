@@ -59,8 +59,9 @@ const getBugsByStatus = (request, response) => {
 const getBugsById = (request, response) => {
   // ID of specific bug you want the data from
   const bug_id = parseInt(request.params.bug_id)
+  const user_id = request.session.passport.user.user_id;
   // Works similarly to getBugs()
-  pool.query('SELECT * FROM bugs WHERE bug_id = $1', [bug_id], (error, results) => {
+  pool.query("SELECT bugs.* FROM bugs JOIN users_projects ON bugs.project_id = users_projects.project_id WHERE users_projects.user_id = $1 AND bugs.status <> 'inactive' AND bug_id = $2", [user_id, bug_id], (error, results) => {
     if (error) {
       throw error
     }
