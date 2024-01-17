@@ -26,7 +26,7 @@
         if (response.ok) {
           console.log('Project created successfully.');
           // Reload the dashboard page
-          window.location.reload();
+          window.close()
         } else {
           console.error('Failed to create project.');
         }
@@ -97,7 +97,7 @@ function updateProject(formValues, project_id) {
             if (response.ok) {
               console.log(`Project with id ${projectIdToUpdate} updated successfully.`);
               // Reload the dashboard page
-              window.location.reload();
+              window.close()
             } else {
               console.error(`Failed to update project with id ${projectIdToUpdate}.`);
             }

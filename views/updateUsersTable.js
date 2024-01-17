@@ -27,7 +27,7 @@
         if (response.ok) {
           console.log('User created successfully.');
           // Reload the dashboard page
-          window.location.reload();
+          window.close()
         } else {
           console.error('Failed to create user.');
         }
@@ -97,7 +97,7 @@ function updateUser(formValues, user_id) {
             if (response.ok) {
               console.log(`User with id ${userIdToUpdate} updated successfully.`);
               // Reload the dashboard page
-              window.location.reload();
+              window.close()
             } else {
               console.error(`Failed to update user with id ${userIdToUpdate}.`);
             }
