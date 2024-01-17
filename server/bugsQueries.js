@@ -38,7 +38,7 @@ const bugAuthorizationMiddleware = (request, response, next) => {
     if (!authorizedProject) {
       // User is not authorized to access this bug
       console.log("Unauthorized for this bug, loser.");
-      return response.redirect('/main_menu');
+      return response.redirect('/');
     }
     next();
   });

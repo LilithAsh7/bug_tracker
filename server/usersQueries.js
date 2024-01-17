@@ -208,7 +208,7 @@ const loginUser = async (request, response) => {
           }
 
           request.login(user_object, function(err) {
-            response.redirect('/main_menu');
+            response.redirect('/');
           });
         // If passwords don't match it just loads a page that said incorrect password
         } else {
