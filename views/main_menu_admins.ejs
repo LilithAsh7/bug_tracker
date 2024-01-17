@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Menu</title>
+    <link rel="stylesheet" type="text/css" href="/styles.css">
+</head>
+<body>
+    <h2>Bug Bridge</h2>
+    <div class="dashboard">
+        <button onclick="openNewTab('/bugTable')">Bugs</button>
+        <button onclick="openNewTab('/projectTable')">Projects</button>
+        <button onclick="openNewTab('/userTable')">Users</button>
+        <a href="/logout">
+            <button>Log out</button>
+        </a>
+    </div>
+
+    <script>
+        function openNewTab(route) {
+            const url = window.location.origin + route;
+            window.open(url, '_blank');
+        }
+    </script>
+
+</body>
+</html>
