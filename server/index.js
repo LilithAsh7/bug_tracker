@@ -37,8 +37,13 @@ router.get('/', (request, response) => {
   if(!request.user) {
     response.render('login');
   } else {
-    response.render('main_menu');
-  }
+    const user_groups = request.session.passport.user.user_groups;
+    if (user_groups.find(obj => obj.name === 'admin')) {
+      response.render('main_menu_admins');
+    } else if (user_groups.find(obj => obj.name === 'user')) {
+      response.render('main_menu');
+    }
+  } 
 });
 
 router.get('/main_menu', authenticationMiddleware(), (request, response) => {
