@@ -58,7 +58,8 @@ const getProjectById = (request, response) => {
 // API call for creating an entry in the project table
 const createProject = (request, response) => {
   // Variables to be put into fields
-  const { name, user_id } = request.body
+  const { name } = request.body
+  const user_id = request.session.passport.user.user_id;
   // Constructs sql code
   pool.query('INSERT INTO projects (name, user_id) VALUES ($1,$2) RETURNING *', [name, user_id], (error, results) => {
     // Error handling
@@ -75,7 +76,8 @@ const updateProject = (request, response) => {
   // ID of specific entry to be updated
   const id = parseInt(request.params.id)
   // Variables to be inserted into fields
-  const { name, user_id } = request.body
+  const { name } = request.body
+  const user_id = request.session.passport.user.user_id;
   // Constructs sql code
   pool.query(
     'UPDATE projects SET name = $1, user_id = $2 WHERE id = $3',

@@ -6,11 +6,10 @@
     // Construct project data object
     const projectData = {
       name: formValues.name || null, 
-      user_id: formValues.user_id || null
     };
 
     // Stop server from crashing if a field is left empty
-    if (!(projectData.name || projectData.user_id)) {
+    if (!(projectData.name)) {
       alert('One or more required fields left empty. Prompt canceled.');
       return;
     }
@@ -78,11 +77,10 @@ function updateProject(formValues, project_id) {
         // Construct project data object
         const projectData = {
           name: formValues.name || null, 
-          user_id: formValues.user_id || null
         };
 
         // Stop server from crashing if a field is left empty
-        if (!(projectData.name || projectData.user_id)) {
+        if (!(projectData.name)) {
           alert('One or more required fields left empty. Prompt canceled.');
           return;
         }
