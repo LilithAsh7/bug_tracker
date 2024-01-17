@@ -71,14 +71,36 @@
           // Check if bugData is not null and set form values
           if (bugData) {
             const form = document.getElementById('bugForm');
+            const bugTypeValue = bugData.bug_type;
+            const bugTypeSelect = document.getElementById('bug_type');
+            const priorityValue = bugData.priority;
+            const prioritySelect = document.getElementById('priority')
+            const statusValue = bugData.status;
+            const statusSelect = document.getElementById('status')
             console.log(bugData.bug_type);
 
             // Set values for each form field
-            form.elements['bug_type'].value = bugData.bug_type || '';
+            for (var i = 0; i < bugTypeSelect.options.length; i++) {
+              if (bugTypeSelect.options[i].value === bugTypeValue) {
+                bugTypeSelect.options[i].selected = true;
+                break;
+              }
+            }
             form.elements['bug_description'].value = bugData.bug_description || '';
             form.elements['file'].value = bugData.file || '';
             form.elements['line'].value = bugData.line || '';
-            form.elements['priority'].value = bugData.priority || '';
+            for (var i = 0; i < prioritySelect.options.length; i++) {
+              if (prioritySelect.options[i].value === priorityValue) {
+                prioritySelect.options[i].selected = true;
+                break;
+              }
+            }
+            for (var i = 0; i < statusSelect.options.length; i++) {
+              if (statusSelect.options[i].value === statusValue) {
+                statusSelect.options[i].selected = true;
+                break;
+              }
+            }
             form.elements['status'].value = bugData.status || '';
             form.elements['project_id'].value = bugData.project_id || '';
             form.elements['fixer_notes'].value = bugData.fixer_notes || '';
