@@ -117,7 +117,6 @@ function submitForm() {
   // Create an object with all field values
   const formValues = {
     name: document.getElementById('name').value,
-    user_id: document.getElementById('user_id').value
   };
 
   // Call correct function with the array of values

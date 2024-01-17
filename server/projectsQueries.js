@@ -41,27 +41,12 @@ const getProjectById = (request, response) => {
   })
 }
 
-// Working code for getting projects that correspond to user_id
-  /*
-  const getProjectByCurrentUserId = (request, response) => {
-    const id = parseInt(request.params.id)
-  
-    pool.query('SELECT * FROM projects WHERE id = $1', [id], (error, results) => {
-      if (error) {
-        throw error
-      }
-      response.status(200).json(results.rows)
-    })
-  }
-*/
-
 // API call for creating an entry in the project table
 const createProject = (request, response) => {
   // Variables to be put into fields
-  const { name } = request.body
-  const user_id = request.session.passport.user.user_id;
+  const { name } = request.body;
   // Constructs sql code
-  pool.query('INSERT INTO projects (name, user_id) VALUES ($1,$2) RETURNING *', [name, user_id], (error, results) => {
+  pool.query('INSERT INTO projects (name) VALUES ($1) RETURNING *', [name], (error, results) => {
     // Error handling
     if (error) {
       throw error
@@ -77,11 +62,10 @@ const updateProject = (request, response) => {
   const id = parseInt(request.params.id)
   // Variables to be inserted into fields
   const { name } = request.body
-  const user_id = request.session.passport.user.user_id;
   // Constructs sql code
   pool.query(
-    'UPDATE projects SET name = $1, user_id = $2 WHERE id = $3',
-    [name, user_id, id],
+    'UPDATE projects SET name = $1 WHERE id = $2',
+    [name, id],
     // Error handling
     (error, results) => {
       if (error) {
