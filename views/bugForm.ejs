@@ -11,7 +11,12 @@
 <h4>* fields are required</h4>
     <form id="bugForm">
       <label for="bug_type">* Bug type:</label>
-      <input type="text" id="bug_type" name="bug_type" required>
+      <select name="bug_type" id="bug_type">
+        <option value="functional">Functional</option>
+        <option value="security">Security</option>
+        <option value="aesthetic">Aesthetic</option>
+        <option value="other">Other</option>
+      </select>
       <br>
       <label for="bug_description">* Bug description:</label>
       <input type="text" id="bug_description" name="bug_description" required>
@@ -23,10 +28,19 @@
       <input type="text" id="line" name="line">
       <br>
       <label for="priority">* Priority: [low, medium, or high]</label>
-      <input type="text" id="priority" name="priority" required>
+      <select name="priority" id="priority">
+        <option value="low">Low</option>
+        <option value="medium">Medium</option>
+        <option value="high">High</option>
+      </select>
       <br>
       <label for="status">* Status:</label>
-      <input type="text" id="status" name="status" required>
+      <select name="status" id="status">
+        <option value="pending">Pending</option>
+        <option value="working">Working</option>
+        <option value="completed">Completed</option>
+        <option value="rejected">Rejected</option>
+      </select>
       <br>
       <label for="project_id">* Project ID:</label>
       <input type="text" id="project_id" name="project_id" required>
