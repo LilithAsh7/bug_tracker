@@ -9,7 +9,7 @@
 <body>
 <h2>Project Form</h2>
 <h4>* fields are required</h4>
-    <form>
+    <form id="projectForm">
       <label for="name">* Project name:</label>
       <input type="text" id="name" name="name" required>
       <br>
@@ -17,4 +17,29 @@
     </form>
 </body>
 <script src="updateProjectsTable.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', async function () {
+    // Extract project_id from URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const project_id = urlParams.get('project_id');
+
+    // Call the getprojectById function if project_id is available
+    if (project_id) {
+      const response = await fetch(`http://localhost:3000/projects/${project_id}`)
+      let projectData = await response.json();
+      projectData = projectData[0]
+      console.log(projectData);
+
+      // Check if projectData is not null and set form values
+      if (projectData) {
+        const form = document.getElementById('projectForm');
+        console.log(projectData.name);
+
+        // Set values for each form field
+        form.elements['name'].value = projectData.name;
+
+      }
+    }
+  });
+</script>
 </html>
