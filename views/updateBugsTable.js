@@ -156,7 +156,7 @@
     }
   }
   
-  function openBugForm(mode){
+  async function openBugForm(mode){
     
     if (mode === 'create') {
       var url = 'http://localhost:3000/bugForm?mode=create';
@@ -164,8 +164,16 @@
       bug_id = prompt("Enter the id of the bug you would like to update:");
       if (bug_id === null || bug_id.trim() === '') {
         return;
+      } else {
+        const response = await fetch(`http://localhost:3000/bugs/${bug_id}`);
+        let bugData = await response.json();
+        bugData = bugData[0];
+        if (!bugData) {
+          return;
+        } else {
+          var url = `http://localhost:3000/bugForm?bug_id=${bug_id}&mode=update`;
+        }
       }
-      var url = `http://localhost:3000/bugForm?bug_id=${bug_id}&mode=update`;
     }
     
     var newWindow = window.open(url, '_blank', 'scrollbars=yes,resizable=yes,width=500,height=400');
