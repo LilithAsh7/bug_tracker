@@ -13,8 +13,8 @@ const pool = new Pool({
 // saltRounds dictates how much power to put towards hashing
 const bcrypt = require('bcrypt')
 const saltRounds = 10;
-
 const passport = require("passport");
+const validator = require('validator');
 
 // API call to get all data from users table
 const getUsers = (request, response) => {
@@ -37,17 +37,21 @@ const loadUsersTable = (request, response) => {
 
 // API call to get user by a specific ID
 const getUserById = (request, response) => {
-  // Specified ID to grab
-  const id = parseInt(request.params.id)
-  // Constructs sql code
-  pool.query('SELECT * FROM users WHERE id = $1', [id], (error, results) => {
-    // Error handling
-    if (error) {
-      throw error
-    }
-    // Returns all data gotten by sql code
-    response.status(200).json(results.rows)
-  })
+  
+  if (validator.isNumeric(request.params.id)) {
+    // Specified ID to grab
+    const id = parseInt(request.params.id)
+    console.log(validator.isNumeric(request.params.id))
+    // Constructs sql code
+    pool.query('SELECT * FROM users WHERE id = $1', [id], (error, results) => {
+      // Error handling
+      if (error) {
+        throw error
+      }
+      // Returns all data gotten by sql code
+      response.status(200).json(results.rows)
+    })
+  } else { return; }
 }
 
 // API call to get user by a specific username

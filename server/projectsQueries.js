@@ -10,6 +10,8 @@ const pool = new Pool({
   port: process.env.db_port
 });
 
+const validator = require('validator');
+
 const loadProjectsTable = (request, response) => {
   response.render('projectTable');
 }
