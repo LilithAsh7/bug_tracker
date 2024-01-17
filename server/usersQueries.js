@@ -84,24 +84,31 @@ const setDefaultRole = (user_id) => {
 const createUser = (request, response) => {
   // Variables to be inserted into database
   const { username, password } = request.body;
-  // Encrypts password
-  bcrypt.hash(password, saltRounds, (err, hashedPassword) => {
-    // Error handling for bcrypt.hash function  
-    if (err) {
-          throw err;
-    }
-    // Constructs sql code
-    // Note this adds the hashed password to the database, not the input password
-    pool.query('INSERT INTO users (username, password) VALUES ($1, $2) RETURNING *', [username, hashedPassword], (error, results) => {
-      // Error handling
-      if (error) {
-          throw error;
+  const passwordIsDangerous = checkForSqlCharacters(password);
+  const usernameIsDangerous = checkForSqlCharacters(username);
+  if (!usernameIsDangerous && !passwordIsDangerous) {
+    // Encrypts password
+    bcrypt.hash(password, saltRounds, (err, hashedPassword) => {
+      // Error handling for bcrypt.hash function  
+      if (err) {
+            throw err;
       }
-      // Returns response that user was created with specific ID.
-      setDefaultRole(results.rows[0].id)
-      response.status(201).redirect('/');
+      // Constructs sql code
+      // Note this adds the hashed password to the database, not the input password
+      pool.query('INSERT INTO users (username, password) VALUES ($1, $2) RETURNING *', [username, hashedPassword], (error, results) => {
+        // Error handling
+        if (error) {
+            throw error;
+        }
+        // Returns response that user was created with specific ID.
+        setDefaultRole(results.rows[0].id)
+        response.status(201).redirect('/');
+      });
     });
-  });
+  } else {
+    console.log("DANGEROUS INPUT DETECTED ON USERNAME OR PASSWORD!");
+    response.redirect('/register');
+  }
 };
 
 
@@ -111,27 +118,34 @@ const updateUser = (request, response) => {
   const id = parseInt(request.params.id);
   // Variables to be put into database
   const { username, password } = request.body;
-  // Encrypts password
-  bcrypt.hash(password, saltRounds, (err, hashedPassword) => {
-    // Error handling for encryption
-    if (err) {
-      throw err;
-    }
-    // Constructs sql code
-    pool.query(
-      'UPDATE users SET username = $1, password = $2 WHERE id = $3',
-      [username, hashedPassword, id],
-      (error, results) => {
-        // Error handling
-        if (error) {
-          response.status(500).send('Error updating user.');
-        } else {
-          // Returns response saying entry was modified
-          response.status(200).send(`User modified with ID: ${id}`);
-        }
+  const passwordIsDangerous = checkForSqlCharacters(password);
+  const usernameIsDangerous = checkForSqlCharacters(username);
+  if (!usernameIsDangerous && !passwordIsDangerous) {
+    // Encrypts password
+    bcrypt.hash(password, saltRounds, (err, hashedPassword) => {
+      // Error handling for encryption
+      if (err) {
+        throw err;
       }
-    );
-  });
+      // Constructs sql code
+      pool.query(
+        'UPDATE users SET username = $1, password = $2 WHERE id = $3',
+        [username, hashedPassword, id],
+        (error, results) => {
+          // Error handling
+          if (error) {
+            response.status(500).send('Error updating user.');
+          } else {
+            // Returns response saying entry was modified
+            response.status(200).send(`User modified with ID: ${id}`);
+          }
+        }
+      );
+    });
+  } else {
+    console.log("DANGEROUS INPUT DETECTED ON USERNAME OR PASSWORD!");
+    return;
+  }
 };
 
 // API call to delete entry from user table
@@ -177,50 +191,63 @@ const getUserProjectsById = (user_id) => {
   });
 };
 
+const checkForSqlCharacters = (string) => {
+  if (validator.contains(string, ';') || validator.contains(string, "--") || validator.contains(string, "'")) {
+    return true;
+  } else { return false; }
+}
+
 // API call to authenticate user
 const loginUser = async (request, response) => {
   // Variables to be checked
   const { username, password } = request.body;
-  // SQL query to find user with specified username
-  pool.query('SELECT * FROM users WHERE username = $1', [username], async (error, results) => {
-    // Error handling
-    if (error) {
-      response.status(500).send("Idk what the heck happen");
-    }
-    // If the result is empty then it knows that no user was found
-    if (results.rows.length === 0) {
-      response.status(401).send('Authentication failed. User not found.');
-    } else {
-      
-      const user_id = results.rows[0].id;
-      
-      // When a user is found the supplied password gets hashed
-      const hashedPassword = results.rows[0].password;
-      // The hased password gets compared to the one in the database
-      const passwordMatch = await bcrypt.compare(password, hashedPassword);
-        // If the passwords match it loads the dashboard html page
-        if (passwordMatch) {
-          
-          const user_groups = await getUserGroupsById(user_id);
-          const user_projects = await getUserProjectsById(user_id);
-          console.log('Users groups in loginUser():');
-          console.log(user_groups);
-          const user_object = {
-            user_id: user_id,
-            user_groups: user_groups,
-            user_projects: user_projects
-          }
+  const passwordIsDangerous = checkForSqlCharacters(password);
+  const usernameIsDangerous = checkForSqlCharacters(username)
+  if (!usernameIsDangerous && !passwordIsDangerous) {
+    // SQL query to find user with specified username
+    pool.query('SELECT * FROM users WHERE username = $1', [username], async (error, results) => {
+      // Error handling
+      if (error) {
+        response.status(500).send("Idk what the heck happen");
+      }
+      // If the result is empty then it knows that no user was found
+      if (results.rows.length === 0) {
+        response.status(401).send('Authentication failed. User not found.');
+      } else {
+        
+        const user_id = results.rows[0].id;
+        
+        // When a user is found the supplied password gets hashed
+        const hashedPassword = results.rows[0].password;
+        // The hased password gets compared to the one in the database
+        const passwordMatch = await bcrypt.compare(password, hashedPassword);
+          // If the passwords match it loads the dashboard html page
+          if (passwordMatch) {
+            
+            const user_groups = await getUserGroupsById(user_id);
+            const user_projects = await getUserProjectsById(user_id);
+            console.log('Users groups in loginUser():');
+            console.log(user_groups);
+            const user_object = {
+              user_id: user_id,
+              user_groups: user_groups,
+              user_projects: user_projects
+            }
 
-          request.login(user_object, function(err) {
-            response.redirect('/');
-          });
-        // If passwords don't match it just loads a page that said incorrect password
-        } else {
-          response.status(401).send('Authentication failed. Incorrect password.');
-        }
+            request.login(user_object, function(err) {
+              response.redirect('/');
+            });
+          // If passwords don't match it just loads a page that said incorrect password
+          } else {
+            response.status(401).send('Authentication failed. Incorrect password.');
+          }
       };
     });
+  } else {
+    console.log("DANGEROUS INPUT DETECTED ON USERNAME OR PASSWORD!");
+    response.redirect('/register');
   }
+}
 
 // Serializes user object so it can be stored in the session (This stores only the users ID)
 passport.serializeUser((user_id, done) => done(null, user_id));
