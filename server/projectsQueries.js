@@ -31,16 +31,18 @@ const getProjects= (request, response) => {
 // API call for getting specific project by ID from projects table
 const getProjectById = (request, response) => {
   //ID of specific project to get
-  const id = parseInt(request.params.id)
-  // Constructing sql code
-  pool.query('SELECT * FROM projects WHERE id = $1', [id], (error, results) => {
-    // Error handling
-    if (error) {
-      throw error
-    }
-    // Returns rows gotten by sql code
-    response.status(200).json(results.rows)
-  })
+  if (validator.isNumeric(request.params.id)) {
+    const id = parseInt(request.params.id)
+    // Constructing sql code
+    pool.query('SELECT * FROM projects WHERE id = $1', [id], (error, results) => {
+      // Error handling
+      if (error) {
+        throw error
+      }
+      // Returns rows gotten by sql code
+      response.status(200).json(results.rows)
+      })
+  } else { return; }
 }
 
 // API call for creating an entry in the project table

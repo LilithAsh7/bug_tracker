@@ -22,6 +22,8 @@ const bugAuthorizationMiddleware = (request, response, next) => {
   pool.query("SELECT * FROM bugs WHERE bug_id = $1", [bug_id], (error, result) => {
     if (error) {
       throw error;
+    } else if (!result.rows[0]) {
+      return;
     }
 
     const bugProjectId = result.rows[0].project_id;
@@ -89,16 +91,18 @@ const getBugsByStatus = (request, response) => {
   // API call for getting specific bug by ID from bugs table
 const getBugsById = (request, response) => {
   bugAuthorizationMiddleware(request, response, () => {
-    // ID of specific bug you want the data from
-    const bug_id = parseInt(request.params.bug_id)
-    const user_id = request.session.passport.user.user_id;
-    // Works similarly to getBugs()
-    pool.query("SELECT bugs.* FROM bugs JOIN users_projects ON bugs.project_id = users_projects.project_id WHERE users_projects.user_id = $1 AND bugs.status <> 'inactive' AND bug_id = $2", [user_id, bug_id], (error, results) => {
-      if (error) {
-        throw error
-      }
-      response.status(200).json(results.rows)
-    })
+    if (validator.isNumeric(request.params.bug_id)) {
+      // ID of specific bug you want the data from
+      const bug_id = parseInt(request.params.bug_id)
+      const user_id = request.session.passport.user.user_id;
+      // Works similarly to getBugs()
+      pool.query("SELECT bugs.* FROM bugs JOIN users_projects ON bugs.project_id = users_projects.project_id WHERE users_projects.user_id = $1 AND bugs.status <> 'inactive' AND bug_id = $2", [user_id, bug_id], (error, results) => {
+        if (error) {
+          throw error
+        }
+        response.status(200).json(results.rows)
+      })
+    } else { return; }
   })
 }
 
