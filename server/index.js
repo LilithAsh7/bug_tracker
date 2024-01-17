@@ -25,7 +25,7 @@ function groupAuthorizationMiddleware (authedGroup) {
       return next();
     } else { 
       console.log("User is not authorized with group:" + authedGroup); 
-      res.redirect('/main_menu') 
+      res.redirect('/') 
     }
   }
 }
@@ -46,13 +46,9 @@ router.get('/', (request, response) => {
   } 
 });
 
-router.get('/main_menu', authenticationMiddleware(), (request, response) => {
-  response.render('main_menu')
-})
-
-  router.get('/register', (request, response) => {
-      response.render('register');
-  });
+router.get('/register', (request, response) => {
+    response.render('register');
+});
 
 router.get('/bugForm', groupAuthorizationMiddleware('user'), authenticationMiddleware(), (request, response) => {
   response.render('bugForm');
