@@ -37,7 +37,7 @@
         if (response.ok) {
           console.log('Bug created successfully.');
           // Reload the dashboard page
-          window.location.reload();
+          window.close()
         } else {
           console.error('Failed to create bug.');
         }
