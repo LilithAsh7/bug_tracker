@@ -28,9 +28,6 @@
       <label for="status">* Status:</label>
       <input type="text" id="status" name="status" required>
       <br>
-      <label for="user_id">* User ID:</label>
-      <input type="text" id="user_id" name="user_id" required>
-      <br>
       <label for="project_id">* Project ID:</label>
       <input type="text" id="project_id" name="project_id" required>
       <br>
@@ -69,7 +66,6 @@
             form.elements['line'].value = bugData.line || '';
             form.elements['priority'].value = bugData.priority || '';
             form.elements['status'].value = bugData.status || '';
-            form.elements['user_id'].value = bugData.user_id || '';
             form.elements['project_id'].value = bugData.project_id || '';
             form.elements['fixer_notes'].value = bugData.fixer_notes || '';
             form.elements['reason'].value = bugData.reason || '';

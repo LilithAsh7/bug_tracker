@@ -103,7 +103,8 @@ const getBugsById = (request, response) => {
 // API call for creating an entry into the bugs table
 const createBug = (request, response) => {
   // Variables to fill each field
-  const { bug_type, bug_description, file, line, priority, status, user_id, project_id, fixer_notes, reason } = request.body
+  const { bug_type, bug_description, file, line, priority, status, project_id, fixer_notes, reason } = request.body
+  const user_id = request.session.passport.user.user_id;
   // Constructs sql code
   pool.query('INSERT INTO bugs ( bug_type, bug_description, file, line, priority, status, user_id, project_id, fixer_notes, reason ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *', 
   [bug_type, bug_description, file, line, priority, status, user_id, project_id, fixer_notes, reason], (error, results) => {
@@ -119,8 +120,9 @@ const createBug = (request, response) => {
 const updateBug = (request, response) => {
   // ID of specific but to be updated
   const bug_id = parseInt(request.params.bug_id)
+  const user_id = request.session.passport.user.user_id;
   // Variables to fill each field
-  const { bug_type, bug_description, file, line, priority, status, user_id, project_id, fixer_notes, reason } = request.body
+  const { bug_type, bug_description, file, line, priority, status, project_id, fixer_notes, reason } = request.body
   // Constructs sql code
   pool.query(
     'UPDATE bugs SET bug_type = $2, bug_description = $3, file = $4, line = $5, priority = $6, status = $7, user_id = $8, project_id = $9, fixer_notes = $10, reason = $11 WHERE bug_id = $1',

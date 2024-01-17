@@ -11,14 +11,13 @@
       line: formValues.line || null,
       priority: formValues.priority || null,
       status: formValues.status || null,
-      user_id: formValues.user_id || null,
       project_id: formValues.project_id || null,
       fixer_notes: formValues.fixer_notes || null,
       reason: formValues.reason || null,
     };
 
     // Stop server from crashing if fields are left empty
-    if (!(bugData.bug_type || bugData.bug_description || bugData.priority || bugData.status || bugData.user_id || bugData.project_id)) {
+    if (!(bugData.bug_type || bugData.bug_description || bugData.priority || bugData.status || bugData.project_id)) {
       alert('One or more required fields left empty. Prompt canceled.');
       return;
     } else if (bugData.priority !== "low" && bugData.priority !== "medium" && bugData.priority !== "high") {
@@ -94,14 +93,13 @@
                 line: formValues.line || null,
                 priority: formValues.priority || null,
                 status: formValues.status || null,
-                user_id: formValues.user_id || null,
                 project_id: formValues.project_id || null,
                 fixer_notes: formValues.fixer_notes || null,
                 reason: formValues.reason || null,
             };
 
             // Stop server from crashing if fields are left empty
-          if (!(bugData.bug_type || bugData.bug_description || bugData.priority || bugData.status || bugData.user_id || bugData.project_id)) {
+          if (!(bugData.bug_type || bugData.bug_description || bugData.priority || bugData.status || bugData.project_id)) {
             alert('One or more required fields left empty. Prompt canceled.');
             return;
           } else if (bugData.priority !== "low" && bugData.priority !== "medium" && bugData.priority !== "high") {
@@ -145,7 +143,6 @@
       line: document.getElementById('line').value,
       priority: document.getElementById('priority').value,
       status: document.getElementById('status').value,
-      user_id: document.getElementById('user_id').value,
       project_id: document.getElementById('project_id').value,
       fixer_notes: document.getElementById('fixer_notes').value,
       reason: document.getElementById('reason').value
