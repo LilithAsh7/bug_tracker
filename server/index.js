@@ -23,7 +23,7 @@ function groupAuthorizationMiddleware (authedGroup) {
     if (foundObject) {
       console.log("User is authorized with group: " + authedGroup);
       return next();
-    } else{ 
+    } else { 
       console.log("User is not authorized with group:" + authedGroup); 
       res.redirect('/main_menu') 
     }
@@ -34,8 +34,12 @@ function groupAuthorizationMiddleware (authedGroup) {
 router.get('/', (request, response) => {
   console.log("Testing for user in GET / " + request.user);
   console.log("isAuthenticated() in GET / " + request.isAuthenticated());
+  if(!request.user) {
     response.render('login');
-  });
+  } else {
+    response.render('main_menu');
+  }
+});
 
 router.get('/main_menu', authenticationMiddleware(), (request, response) => {
   response.render('main_menu')
