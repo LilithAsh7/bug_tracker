@@ -20,7 +20,7 @@ const sqlInjectionSecurity = require('./sqlInjectionSecurity')
 // API call to get all data from users table
 const getUsers = (req, res) => {
   
-  console.log("isAuthenticated() in getUsers: " + req.isAuthenticated());
+  console.log("getUsers() in usersQueries.js");
   // Constructs sql code
   pool.query('SELECT id, username FROM users ORDER BY id ASC', (error, results) => {
     // Error handling
@@ -33,16 +33,17 @@ const getUsers = (req, res) => {
 }
 
 const loadUsersTable = (req, res) => {
+  console.log("loadUsersTable() in usersQueries.js");
   res.render('userTable');
 }
 
 // API call to get user by a specific ID
 const getUserById = (req, res) => {
+  console.log("getUserById() in usersQueries.js");
   
   if (validator.isNumeric(req.params.id)) {
     // Specified ID to grab
     const id = parseInt(req.params.id)
-    console.log(validator.isNumeric(req.params.id))
     // Constructs sql code
     pool.query('SELECT * FROM users WHERE id = $1', [id], (error, results) => {
       // Error handling
@@ -57,6 +58,7 @@ const getUserById = (req, res) => {
 
 // API call to get user by a specific username
 const getUserByUsername = (req, res) => {
+  console.log("getUserByUsername() in usersQueries.js");
   // Specified username to grab
   const username = parseInt(req.params.username)
   // Constructs sql code
@@ -71,18 +73,20 @@ const getUserByUsername = (req, res) => {
 }
 
 const setDefaultRole = (user_id) => {
-    pool.query('INSERT INTO user_groups (user_id, group_id) VALUES ($1, 2);', [user_id], (error, results) => {
+  console.log("setDefaultRole() in usersQueries.js");
+    pool.query('INSERT INTO users_groups (user_id, group_id) VALUES ($1, 2);', [user_id], (error, results) => {
       if (error) {
         throw error;
       } else {
-        console.log("User role set");
-        return;
+        console.log("-User role set");
+        //return;
       }
     });
   }
 
 // API call to create entry into user database
 const createUser = (req, res) => {
+  console.log("createUser() in usersQueries.js");
   // Variables to be inserted into database
   const { username, password } = req.body;
   const passwordIsDangerous = sqlInjectionSecurity.checkForSqlCharacters(password);
@@ -103,7 +107,8 @@ const createUser = (req, res) => {
         }
         // Returns res that user was created with specific ID.
         setDefaultRole(results.rows[0].id)
-        res.status(201).redirect('/');
+        if(!req.isAuthenticated()) { res.status(201).redirect('/'); }
+        else if (req.isAuthenticated()) { res.sendStatus(201); }
       });
     });
   } else {
@@ -115,6 +120,7 @@ const createUser = (req, res) => {
 
 // API call to update entry in user table
 const updateUser = (req, res) => {
+  console.log("updateUser() in usersQueries.js");
   // Specific ID of entry to update
   const id = parseInt(req.params.id);
   // Variables to be put into database
@@ -151,6 +157,7 @@ const updateUser = (req, res) => {
 
 // API call to delete entry from user table
 const deleteUser = (req, res) => {
+  console.log("deleteUser() in usersQueries.js");
   // Specific id of entry to delete
   const id = parseInt(req.params.id)
   // Constructs sql code
@@ -165,13 +172,12 @@ const deleteUser = (req, res) => {
 }
 
 const getUserGroupsById = (user_id) => {
+  console.log("getUserGroupsbyId() in usersQueries.js");
   return new Promise((resolve, reject) => {
-    pool.query('SELECT groups.name FROM users JOIN user_groups ON users.id = user_groups.user_id JOIN groups ON user_groups.group_id = groups.id WHERE users.id = $1', [user_id], (error, results) => {
+    pool.query('SELECT groups.name FROM users JOIN users_groups ON users.id = users_groups.user_id JOIN groups ON users_groups.group_id = groups.id WHERE users.id = $1', [user_id], (error, results) => {
       if (error) {
         reject(error);
       } else {
-        console.log("Results in getUserGroupsById:");
-        console.log(results.rows);
         resolve(results.rows);
       }
     });
@@ -179,13 +185,12 @@ const getUserGroupsById = (user_id) => {
 };
 
 const getUserProjectsById = (user_id) => {
+  console.log("getUserProjectsById() in usersQueries.js");
   return new Promise((resolve, reject) => {
     pool.query('SELECT projects.id FROM users JOIN users_projects ON users.id = users_projects.user_id JOIN projects ON users_projects.project_id = projects.id WHERE users.id = $1', [user_id], (error, results) => {
       if (error) {
         reject(error);
       } else {
-        console.log("Results in getUserProjectsById:");
-        console.log(results.rows);
         resolve(results.rows);
       }
     });
@@ -194,6 +199,7 @@ const getUserProjectsById = (user_id) => {
 
 // API call to authenticate user
 const loginUser = async (req, res) => {
+  console.log("loginUser() in usersQueries.js");
   // Variables to be checked
   const { username, password } = req.body;
   const passwordIsDangerous = sqlInjectionSecurity.checkForSqlCharacters(password);
@@ -221,8 +227,6 @@ const loginUser = async (req, res) => {
             
             const user_groups = await getUserGroupsById(user_id);
             const user_projects = await getUserProjectsById(user_id);
-            console.log('Users groups in loginUser():');
-            console.log(user_groups);
             const user_object = {
               user_id: user_id,
               user_groups: user_groups,
