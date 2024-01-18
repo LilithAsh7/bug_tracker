@@ -13,12 +13,13 @@ const pool = new Pool({
 const validator = require('validator');
 
 const loadProjectsTable = (req, res) => {
+  console.log('loadProjectsTable() in projectsQueries.js')
   res.render('projectTable');
 }
 
 // API call for getting all data from the projects table
 const getProjects= (req, res) => {
-// Actual sql code  
+  console.log('getProjects() in projectsQueries.js')  
   pool.query('SELECT * FROM projects ORDER BY id ASC', (error, results) => {
     // Error handling
     if (error) {
@@ -30,6 +31,7 @@ const getProjects= (req, res) => {
 
 // API call for getting specific project by ID from projects table
 const getProjectById = (req, res) => {
+  console.log('getProjectById() in projectsQueries.js')
   //ID of specific project to get
   if (validator.isNumeric(req.params.id)) {
     const id = parseInt(req.params.id)
@@ -47,6 +49,7 @@ const getProjectById = (req, res) => {
 
 // API call for creating an entry in the project table
 const createProject = (req, res) => {
+  console.log('createProject() in projectsQueries.js')
   // Variables to be put into fields
   const { name } = req.body;
   // Constructs sql code
@@ -62,6 +65,7 @@ const createProject = (req, res) => {
 
 // API call to edit/update entry in projects table
 const updateProject = (req, res) => {
+  console.log('updateProject() in projectsQueries.js')
   // ID of specific entry to be updated
   const id = parseInt(req.params.id)
   // Variables to be inserted into fields
@@ -83,6 +87,7 @@ const updateProject = (req, res) => {
 
 // API call for deleting entry in projects table
 const deleteProject = (req, res) => {
+  console.log('deleteProject() in projectsQueries.js')
   // ID of specific project to be deleted
   const id = parseInt(req.params.id)
   // Constructs sql code
