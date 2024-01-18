@@ -13,7 +13,7 @@ const pool = new Pool({
 const validator = require('validator');
 
 const loadBugsTable = (req, res) => {
-  console.log('-loadBugsTable() in bugsQueries.js');
+  console.log('loadBugsTable() in bugsQueries.js');
   res.render('bugTable');
 }
 
