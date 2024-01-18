@@ -13,10 +13,12 @@ const pool = new Pool({
 const validator = require('validator');
 
 const loadBugsTable = (request, response) => {
+  console.log('-loadBugsTable() in bugsQueries.js');
   response.render('bugTable');
 }
 
 const bugAuthorizationMiddleware = (request, response, next) => {
+  console.log('bugAuthorizationMiddleware() in bugsQueries.js');
   const bug_id = parseInt(request.params.bug_id);
 
   pool.query("SELECT * FROM bugs WHERE bug_id = $1", [bug_id], (error, result) => {
@@ -27,7 +29,6 @@ const bugAuthorizationMiddleware = (request, response, next) => {
     }
 
     const bugProjectId = result.rows[0].project_id;
-    console.log("bugProjectId: " + bugProjectId);
     const bug = result.rows[0];
 
     if (!bug) {
@@ -36,7 +37,6 @@ const bugAuthorizationMiddleware = (request, response, next) => {
     }
 
     const userProjects = request.session.passport.user.user_projects;
-    console.log(userProjects)
     const authorizedProject = userProjects.find(project => project.id === bugProjectId);
 
     if (!authorizedProject) {
@@ -50,6 +50,7 @@ const bugAuthorizationMiddleware = (request, response, next) => {
 
 // API call for getting all data from the bugs table
 const getAllBugs = (request, response) => {
+  console.log('getAllBugs in bugsQueries.js')
   // Actual sql code  
   pool.query("SELECT * FROM bugs WHERE status <> 'inactive' ORDER BY project_id ASC, CASE WHEN status = 'pending' THEN 0 ELSE 1 END, status ASC, bug_type ASC, CASE priority WHEN 'high' THEN 1 WHEN 'medium' THEN 2 WHEN 'low' THEN 3 ELSE 4 END", (error, results) => {
     // Error handling  
@@ -64,6 +65,7 @@ const getAllBugs = (request, response) => {
 // API call for getting all data from the bugs table
 const getBugsByStatus = (request, response) => {
   
+  console.log('getBugsByStatus() in bugsQueries.js')
   const bug_status = (request.params.status);
   const user_id = request.session.passport.user.user_id;
   if (bug_status === 'all'){
@@ -90,6 +92,7 @@ const getBugsByStatus = (request, response) => {
 
   // API call for getting specific bug by ID from bugs table
 const getBugsById = (request, response) => {
+  console.log('getBugsbyId() in bugsQueries.js')
   bugAuthorizationMiddleware(request, response, () => {
     if (validator.isNumeric(request.params.bug_id)) {
       // ID of specific bug you want the data from
@@ -108,6 +111,7 @@ const getBugsById = (request, response) => {
 
 // API call for creating an entry into the bugs table
 const createBug = (request, response) => {
+  console.log('createBug() in bugsQueries.js')
   // Variables to fill each field
   const { bug_type, bug_description, file, line, priority, status, project_id, fixer_notes, reason } = request.body
   const user_id = request.session.passport.user.user_id;
@@ -124,6 +128,7 @@ const createBug = (request, response) => {
 
 // API call for updating an entry into the bug table
 const updateBug = (request, response) => {
+  console.log('updateBugbyId() in bugsQueries.js')
   // ID of specific but to be updated
   const bug_id = parseInt(request.params.bug_id)
   const user_id = request.session.passport.user.user_id;
@@ -145,6 +150,7 @@ const updateBug = (request, response) => {
 
 // API call for deleting entry in bug table
 const deleteBug = (request, response) => {
+  console.log('deteleBug() in bugsQueries.js')
   //ID of specific bug to be deleted
   const bug_id = parseInt(request.params.bug_id)
   // Constructs sql code
@@ -159,6 +165,7 @@ const deleteBug = (request, response) => {
 
 // API call for deleting entry in bug table
 const setBugToInactive = (request, response) => {
+  console.log('setBugToInactive() in bugsQueries.js')
   //ID of specific bug to be deleted
   const bug_id = parseInt(request.params.bug_id)
   // Constructs sql code
