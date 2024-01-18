@@ -2,7 +2,7 @@
 
   // Define function to handle creating a bug
   function createBug(formValues) {
-
+    console.log(formValues.csrf);
     // Construct bug data object
     const bugData = {
       bug_type: formValues.bug_type || null, 
@@ -30,6 +30,7 @@
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'CSRF-Token': formValues.csrf
       },
       body: JSON.stringify(bugData),
     })
@@ -112,6 +113,7 @@
             method: 'PUT',
             headers: {
               'Content-Type': 'application/json',
+              'CSRF-Token': formValues.csrf
             },
             body: JSON.stringify(bugData),
           })
@@ -145,9 +147,10 @@
       status: document.getElementById('status').value,
       project_id: document.getElementById('project_id').value,
       fixer_notes: document.getElementById('fixer_notes').value,
-      reason: document.getElementById('reason').value
+      reason: document.getElementById('reason').value,
+      csrf:document.getElementsByName('_csrf')[0].value
     };
-  
+    console.log(formValues.csrf);
     // Call correct function with the array of values
     if (mode === 'create') {
         createBug(formValues);
