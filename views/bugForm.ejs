@@ -10,6 +10,7 @@
 <h2>Bug Form</h2>
 <h4>* fields are required</h4>
     <form id="bugForm">
+      <input type="hidden" name="_csrf" value="{{csrfToken}}">
       <label for="bug_type">* Bug type:</label>
       <select name="bug_type" id="bug_type">
         <option value="functional">Functional</option>

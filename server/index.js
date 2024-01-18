@@ -3,7 +3,12 @@ const usersQueries = require('./usersQueries');
 const projectsQueries = require('./projectsQueries');
 const bugsQueries = require('./bugsQueries');
 const express = require('express');
+const csrf = require('csurf');
+const cookieParser = require('cookie-parser');
 const router = express.Router();
+
+router.use(cookieParser());
+const csrfProtect = csrf({ cookie: true });
 
 function authenticationMiddleware () {  
 	return (req, res, next) => {
@@ -30,10 +35,20 @@ function groupAuthorizationMiddleware (authedGroup) {
   }
 }
 
+// Example route for testing CSRF protection
+router.get('/test-csrf', csrfProtect, (req, res) => {
+  res.render('test-csrf', { csrfToken: req.csrfToken() });
+});
+
+router.post('/test-csrf', csrfProtect, (req, res) => {
+  res.send('CSRF token is valid!');
+});
+
 // Renders login page upon visiting http://localhost:3000
-router.get('/', (req, res) => {
+router.get('/', csrfProtect, (req, res) => {
   console.log("-Testing for user object in GET / " + req.user);
   console.log("-Testing isAuthenticated() in GET / " + req.isAuthenticated());
+  console.log(req.csrfToken());
   if(!req.user) {
     res.render('login');
   } else {
@@ -92,8 +107,8 @@ router.get('/projectTable', groupAuthorizationMiddleware('admin'), authenticatio
 router.get('/bugs', groupAuthorizationMiddleware('user'), authenticationMiddleware(), bugsQueries.getAllBugs);
 router.get('/bugs/:bug_id', groupAuthorizationMiddleware('user'), authenticationMiddleware(), bugsQueries.getBugsById);
 router.get('/bugs/status/:status', groupAuthorizationMiddleware('user'), authenticationMiddleware(), bugsQueries.getBugsByStatus);
-router.post('/bugs/', groupAuthorizationMiddleware('user'), authenticationMiddleware(), bugsQueries.createBug);
-router.put('/bugs/:bug_id', groupAuthorizationMiddleware('user'), authenticationMiddleware(), bugsQueries.updateBug);
+router.post('/bugs/', groupAuthorizationMiddleware('user'), authenticationMiddleware(), csrfProtect, bugsQueries.createBug);
+router.put('/bugs/:bug_id', groupAuthorizationMiddleware('user'), authenticationMiddleware(), csrfProtect, bugsQueries.updateBug);
 router.put('/bugs/inactive/:bug_id', groupAuthorizationMiddleware('user'), authenticationMiddleware(), bugsQueries.setBugToInactive);
 router.delete('/bugs/:bug_id', groupAuthorizationMiddleware('user'), authenticationMiddleware(), bugsQueries.deleteBug);
 router.get('/bugTable', groupAuthorizationMiddleware('user'), authenticationMiddleware(), bugsQueries.loadBugsTable);

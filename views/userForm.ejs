@@ -10,6 +10,7 @@
 <h2>User Form</h2>
 <h4>* fields are required</h4>
     <form id="userForm">
+      <input type="hidden" name="_csrf" value="{{csrfToken}}">
       <label for="username">* Your username:</label>
       <input type="text" id="username" name="username" required>
       <br>
