@@ -5,3 +5,7 @@ const checkForSqlCharacters = (string) => {
     return true;
   } else { return false; }
 }
+
+module.exports = {
+  checkForSqlCharacters
+}
