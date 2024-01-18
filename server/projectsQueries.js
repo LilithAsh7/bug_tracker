@@ -12,27 +12,27 @@ const pool = new Pool({
 
 const validator = require('validator');
 
-const loadProjectsTable = (request, response) => {
-  response.render('projectTable');
+const loadProjectsTable = (req, res) => {
+  res.render('projectTable');
 }
 
 // API call for getting all data from the projects table
-const getProjects= (request, response) => {
+const getProjects= (req, res) => {
 // Actual sql code  
   pool.query('SELECT * FROM projects ORDER BY id ASC', (error, results) => {
     // Error handling
     if (error) {
       throw error
     }
-    response.status(200).json(results.rows)
+    res.status(200).json(results.rows)
   })
 }
 
 // API call for getting specific project by ID from projects table
-const getProjectById = (request, response) => {
+const getProjectById = (req, res) => {
   //ID of specific project to get
-  if (validator.isNumeric(request.params.id)) {
-    const id = parseInt(request.params.id)
+  if (validator.isNumeric(req.params.id)) {
+    const id = parseInt(req.params.id)
     // Constructing sql code
     pool.query('SELECT * FROM projects WHERE id = $1', [id], (error, results) => {
       // Error handling
@@ -40,32 +40,32 @@ const getProjectById = (request, response) => {
         throw error
       }
       // Returns rows gotten by sql code
-      response.status(200).json(results.rows)
+      res.status(200).json(results.rows)
       })
   } else { return; }
 }
 
 // API call for creating an entry in the project table
-const createProject = (request, response) => {
+const createProject = (req, res) => {
   // Variables to be put into fields
-  const { name } = request.body;
+  const { name } = req.body;
   // Constructs sql code
   pool.query('INSERT INTO projects (name) VALUES ($1) RETURNING *', [name], (error, results) => {
     // Error handling
     if (error) {
       throw error
     }
-    // Returns response that lets the user know an entry has been made
-    response.status(201).send(`Project added with ID: ${results.rows[0].id}`)
+    // Returns res that lets the user know an entry has been made
+    res.status(201).send(`Project added with ID: ${results.rows[0].id}`)
   })
 }
 
 // API call to edit/update entry in projects table
-const updateProject = (request, response) => {
+const updateProject = (req, res) => {
   // ID of specific entry to be updated
-  const id = parseInt(request.params.id)
+  const id = parseInt(req.params.id)
   // Variables to be inserted into fields
-  const { name } = request.body
+  const { name } = req.body
   // Constructs sql code
   pool.query(
     'UPDATE projects SET name = $1 WHERE id = $2',
@@ -75,24 +75,24 @@ const updateProject = (request, response) => {
       if (error) {
         throw error
       }
-      // Returns response that lets the user know that the entry with specified ID has been edited
-      response.status(200).send(`Project modified with ID: ${id}`)
+      // Returns res that lets the user know that the entry with specified ID has been edited
+      res.status(200).send(`Project modified with ID: ${id}`)
     }
   )
 }
 
 // API call for deleting entry in projects table
-const deleteProject = (request, response) => {
+const deleteProject = (req, res) => {
   // ID of specific project to be deleted
-  const id = parseInt(request.params.id)
+  const id = parseInt(req.params.id)
   // Constructs sql code
   pool.query('DELETE FROM projects WHERE id = $1', [id], (error, results) => {
     // Error handling
     if (error) {
       throw error
     }
-    // Returns response that lets user know that the entry with specific ID has been deleted
-    response.status(200).send(`Project deleted with ID: ${id}`)
+    // Returns res that lets user know that the entry with specific ID has been deleted
+    res.status(200).send(`Project deleted with ID: ${id}`)
   })
 }
 
