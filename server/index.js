@@ -31,40 +31,42 @@ function groupAuthorizationMiddleware (authedGroup) {
 }
 
 // Renders login page upon visiting http://localhost:3000
-router.get('/', (request, response) => {
-  console.log("Testing for user in GET / " + request.user);
-  console.log("isAuthenticated() in GET / " + request.isAuthenticated());
-  if(!request.user) {
-    response.render('login');
+router.get('/', (req, res) => {
+  console.log("-Testing for user object in GET / " + req.user);
+  console.log("-Testing isAuthenticated() in GET / " + req.isAuthenticated());
+  if(!req.user) {
+    res.render('login');
   } else {
-    const user_groups = request.session.passport.user.user_groups;
+    const user_groups = req.session.passport.user.user_groups;
     if (user_groups.find(obj => obj.name === 'admin')) {
-      response.render('main_menu_admins');
+      console.log(`-User with id ${req.session.passport.user.user_id} logged into admin page with groups ${req.session.passport.user.user_groups[0].name}, ${req.session.passport.user.user_groups[1].name} and projects ${req.session.passport.user.user_projects[0].id}, ${req.session.passport.user.user_projects[1].id}`);
+      res.render('main_menu_admins');
     } else if (user_groups.find(obj => obj.name === 'user')) {
-      response.render('main_menu');
+      console.log(`-User with id ${req.session.passport.user.user_id} logged into user page with groups ${req.session.passport.user.user_groups[0].name}, ${req.session.passport.user.user_groups[1].name} and projects ${req.session.passport.user.user_projects[0].id}, ${req.session.passport.user.user_projects[1].id}`);
+      res.render('main_menu');
     }
   } 
 });
 
-router.get('/register', (request, response) => {
-    response.render('register');
+router.get('/register', (req, res) => {
+    res.render('register');
 });
 
-router.get('/bugForm', groupAuthorizationMiddleware('user'), authenticationMiddleware(), (request, response) => {
-  response.render('bugForm');
+router.get('/bugForm', groupAuthorizationMiddleware('user'), authenticationMiddleware(), (req, res) => {
+  res.render('bugForm');
 });
 
-router.get('/projectForm', groupAuthorizationMiddleware('admin'), authenticationMiddleware(), (request, response) => {
-  response.render('projectForm');
+router.get('/projectForm', groupAuthorizationMiddleware('admin'), authenticationMiddleware(), (req, res) => {
+  res.render('projectForm');
 });
 
-router.get('/userForm', groupAuthorizationMiddleware('admin'), authenticationMiddleware(), (request, response) => {
-  response.render('userForm');
+router.get('/userForm', groupAuthorizationMiddleware('admin'), authenticationMiddleware(), (req, res) => {
+  res.render('userForm');
 });
 
-router.get('/logout', authenticationMiddleware(), (request, response) => {
-  request.session.destroy();
-  response.redirect('/');
+router.get('/logout', authenticationMiddleware(), (req, res) => {
+  req.session.destroy();
+  res.redirect('/');
 })
 
 // Sets up api calls for use in router
