@@ -45,7 +45,7 @@ router.post('/test-csrf', csrfProtect, (req, res) => {
 });
 
 // Renders login page upon visiting http://localhost:3000
-router.get('/', csrfProtect, (req, res) => {
+router.get('/', (req, res) => {
   console.log("-Testing for user object in GET / " + req.user);
   console.log("-Testing isAuthenticated() in GET / " + req.isAuthenticated());
   console.log(req.csrfToken());
@@ -68,8 +68,8 @@ router.get('/register', (req, res) => {
     res.render('register');
 });
 
-router.get('/bugForm', groupAuthorizationMiddleware('user'), authenticationMiddleware(), (req, res) => {
-  res.render('bugForm');
+router.get('/bugForm', csrfProtect, groupAuthorizationMiddleware('user'), authenticationMiddleware(), (req, res) => {
+  res.render('bugForm', { csrfToken: req.csrfToken() });
 });
 
 router.get('/projectForm', groupAuthorizationMiddleware('admin'), authenticationMiddleware(), (req, res) => {
