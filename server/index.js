@@ -7,9 +7,10 @@ const router = express.Router();
 
 function authenticationMiddleware () {  
 	return (req, res, next) => {
-		console.log(`req.session.passport.user in authentication Middleware: ${JSON.stringify(req.session.passport)}`);
 
-	    if (req.isAuthenticated()){ return next(); }
+	    if (req.isAuthenticated()){ 
+        console.log('-User is authenticated')
+        return next(); }
 	    
       else { res.redirect('/') }
 	}
@@ -17,14 +18,13 @@ function authenticationMiddleware () {
 
 function groupAuthorizationMiddleware (authedGroup) {
   return (req, res, next) => {
-    console.log(`req.session.passport.user.user_groups in authorization Middleware: ${JSON.stringify(req.session.passport.user.user_groups)}`);
     const user_groups = req.session.passport.user.user_groups;
     const foundObject = user_groups.find(obj => obj.name === authedGroup);
     if (foundObject) {
-      console.log("User is authorized with group: " + authedGroup);
+      console.log("-User is authorized with group: " + authedGroup);
       return next();
     } else { 
-      console.log("User is not authorized with group:" + authedGroup); 
+      console.log("-User is not authorized with group:" + authedGroup); 
       res.redirect('/') 
     }
   }
@@ -37,12 +37,13 @@ router.get('/', (req, res) => {
   if(!req.user) {
     res.render('login');
   } else {
+    console.log(`-req.session.passport.user in '/' route: ${JSON.stringify(req.session.passport.user)}`);
     const user_groups = req.session.passport.user.user_groups;
     if (user_groups.find(obj => obj.name === 'admin')) {
-      console.log(`-User with id ${req.session.passport.user.user_id} logged into admin page with groups ${req.session.passport.user.user_groups[0].name}, ${req.session.passport.user.user_groups[1].name} and projects ${req.session.passport.user.user_projects[0].id}, ${req.session.passport.user.user_projects[1].id}`);
+      console.log(`-User with id ${req.session.passport.user.user_id} logged into admin main menu.`);
       res.render('main_menu_admins');
     } else if (user_groups.find(obj => obj.name === 'user')) {
-      console.log(`-User with id ${req.session.passport.user.user_id} logged into user page with groups ${req.session.passport.user.user_groups[0].name}, ${req.session.passport.user.user_groups[1].name} and projects ${req.session.passport.user.user_projects[0].id}, ${req.session.passport.user.user_projects[1].id}`);
+      console.log(`-User with id ${req.session.passport.user.user_id} logged into user main menu.`);
       res.render('main_menu');
     }
   } 
@@ -66,6 +67,7 @@ router.get('/userForm', groupAuthorizationMiddleware('admin'), authenticationMid
 
 router.get('/logout', authenticationMiddleware(), (req, res) => {
   req.session.destroy();
+  console.log("-User logged out.");
   res.redirect('/');
 })
 
