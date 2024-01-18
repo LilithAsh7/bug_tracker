@@ -12,14 +12,14 @@ const pool = new Pool({
 
 const validator = require('validator');
 
-const loadBugsTable = (request, response) => {
+const loadBugsTable = (req, res) => {
   console.log('-loadBugsTable() in bugsQueries.js');
-  response.render('bugTable');
+  res.render('bugTable');
 }
 
-const bugAuthorizationMiddleware = (request, response, next) => {
+const bugAuthorizationMiddleware = (req, res, next) => {
   console.log('bugAuthorizationMiddleware() in bugsQueries.js');
-  const bug_id = parseInt(request.params.bug_id);
+  const bug_id = parseInt(req.params.bug_id);
 
   pool.query("SELECT * FROM bugs WHERE bug_id = $1", [bug_id], (error, result) => {
     if (error) {
@@ -33,23 +33,23 @@ const bugAuthorizationMiddleware = (request, response, next) => {
 
     if (!bug) {
       // Bug not found
-      return response.status(404).json({ error: 'Bug not found' });
+      return res.status(404).json({ error: 'Bug not found' });
     }
 
-    const userProjects = request.session.passport.user.user_projects;
+    const userProjects = req.session.passport.user.user_projects;
     const authorizedProject = userProjects.find(project => project.id === bugProjectId);
 
     if (!authorizedProject) {
       // User is not authorized to access this bug
       console.log("Unauthorized for this bug, loser.");
-      return response.redirect('/');
+      return res.redirect('/');
     }
     next();
   });
 }
 
 // API call for getting all data from the bugs table
-const getAllBugs = (request, response) => {
+const getAllBugs = (req, res) => {
   console.log('getAllBugs in bugsQueries.js')
   // Actual sql code  
   pool.query("SELECT * FROM bugs WHERE status <> 'inactive' ORDER BY project_id ASC, CASE WHEN status = 'pending' THEN 0 ELSE 1 END, status ASC, bug_type ASC, CASE priority WHEN 'high' THEN 1 WHEN 'medium' THEN 2 WHEN 'low' THEN 3 ELSE 4 END", (error, results) => {
@@ -57,25 +57,25 @@ const getAllBugs = (request, response) => {
     if (error) {
         throw error
       }
-      // Returns all rows gotten by get request
-      response.status(200).json(results.rows)
+      // Returns all rows gotten by get req
+      res.status(200).json(results.rows)
   })
 };
 
 // API call for getting all data from the bugs table
-const getBugsByStatus = (request, response) => {
+const getBugsByStatus = (req, res) => {
   
   console.log('getBugsByStatus() in bugsQueries.js')
-  const bug_status = (request.params.status);
-  const user_id = request.session.passport.user.user_id;
+  const bug_status = (req.params.status);
+  const user_id = req.session.passport.user.user_id;
   if (bug_status === 'all'){
       pool.query("SELECT bugs.* FROM bugs JOIN users_projects ON bugs.project_id = users_projects.project_id WHERE users_projects.user_id = $1 AND bugs.status <> 'inactive' ORDER BY project_id ASC, CASE WHEN status = 'pending' THEN 0 ELSE 1 END, status ASC, bug_type ASC, CASE priority WHEN 'high' THEN 1 WHEN 'medium' THEN 2 WHEN 'low' THEN 3 ELSE 4 END", [user_id], (error, results) => {  
       // Error handling  
       if (error) {
           throw error
         }
-        // Returns all rows gotten by get request
-        response.status(200).json(results.rows)
+        // Returns all rows gotten by get req
+        res.status(200).json(results.rows)
     })
   } else {
     // Actual sql code  
@@ -84,37 +84,37 @@ const getBugsByStatus = (request, response) => {
       if (error) {
           throw error
         }
-        // Returns all rows gotten by get request
-        response.status(200).json(results.rows)
+        // Returns all rows gotten by get req
+        res.status(200).json(results.rows)
     })
   }
 };
 
   // API call for getting specific bug by ID from bugs table
-const getBugsById = (request, response) => {
+const getBugsById = (req, res) => {
   console.log('getBugsbyId() in bugsQueries.js')
-  bugAuthorizationMiddleware(request, response, () => {
-    if (validator.isNumeric(request.params.bug_id)) {
+  bugAuthorizationMiddleware(req, res, () => {
+    if (validator.isNumeric(req.params.bug_id)) {
       // ID of specific bug you want the data from
-      const bug_id = parseInt(request.params.bug_id)
-      const user_id = request.session.passport.user.user_id;
+      const bug_id = parseInt(req.params.bug_id)
+      const user_id = req.session.passport.user.user_id;
       // Works similarly to getBugs()
       pool.query("SELECT bugs.* FROM bugs JOIN users_projects ON bugs.project_id = users_projects.project_id WHERE users_projects.user_id = $1 AND bugs.status <> 'inactive' AND bug_id = $2", [user_id, bug_id], (error, results) => {
         if (error) {
           throw error
         }
-        response.status(200).json(results.rows)
+        res.status(200).json(results.rows)
       })
     } else { return; }
   })
 }
 
 // API call for creating an entry into the bugs table
-const createBug = (request, response) => {
+const createBug = (req, res) => {
   console.log('createBug() in bugsQueries.js')
   // Variables to fill each field
-  const { bug_type, bug_description, file, line, priority, status, project_id, fixer_notes, reason } = request.body
-  const user_id = request.session.passport.user.user_id;
+  const { bug_type, bug_description, file, line, priority, status, project_id, fixer_notes, reason } = req.body
+  const user_id = req.session.passport.user.user_id;
   // Constructs sql code
   pool.query('INSERT INTO bugs ( bug_type, bug_description, file, line, priority, status, user_id, project_id, fixer_notes, reason ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *', 
   [bug_type, bug_description, file, line, priority, status, user_id, project_id, fixer_notes, reason], (error, results) => {
@@ -122,18 +122,18 @@ const createBug = (request, response) => {
     if (error) {
       throw error
     }
-    response.status(201).send(`Bug added with ID: ${results.rows[0].bug_id}`)
+    res.status(201).send(`Bug added with ID: ${results.rows[0].bug_id}`)
   })
 }
 
 // API call for updating an entry into the bug table
-const updateBug = (request, response) => {
+const updateBug = (req, res) => {
   console.log('updateBugbyId() in bugsQueries.js')
   // ID of specific but to be updated
-  const bug_id = parseInt(request.params.bug_id)
-  const user_id = request.session.passport.user.user_id;
+  const bug_id = parseInt(req.params.bug_id)
+  const user_id = req.session.passport.user.user_id;
   // Variables to fill each field
-  const { bug_type, bug_description, file, line, priority, status, project_id, fixer_notes, reason } = request.body
+  const { bug_type, bug_description, file, line, priority, status, project_id, fixer_notes, reason } = req.body
   // Constructs sql code
   pool.query(
     'UPDATE bugs SET bug_type = $2, bug_description = $3, file = $4, line = $5, priority = $6, status = $7, user_id = $8, project_id = $9, fixer_notes = $10, reason = $11 WHERE bug_id = $1',
@@ -143,31 +143,31 @@ const updateBug = (request, response) => {
       if (error) {
         throw error
       }
-      response.status(200).send(`Bug modified with ID: ${bug_id}`)
+      res.status(200).send(`Bug modified with ID: ${bug_id}`)
     }
   )
 }
 
 // API call for deleting entry in bug table
-const deleteBug = (request, response) => {
+const deleteBug = (req, res) => {
   console.log('deteleBug() in bugsQueries.js')
   //ID of specific bug to be deleted
-  const bug_id = parseInt(request.params.bug_id)
+  const bug_id = parseInt(req.params.bug_id)
   // Constructs sql code
   pool.query('DELETE FROM bugs WHERE bug_id = $1', [bug_id], (error, results) => {
     //Error handling
     if (error) {
       throw error
     }
-    response.status(200).send(`Bug deleted with ID: ${bug_id}`)
+    res.status(200).send(`Bug deleted with ID: ${bug_id}`)
   })
 }
 
 // API call for deleting entry in bug table
-const setBugToInactive = (request, response) => {
+const setBugToInactive = (req, res) => {
   console.log('setBugToInactive() in bugsQueries.js')
   //ID of specific bug to be deleted
-  const bug_id = parseInt(request.params.bug_id)
+  const bug_id = parseInt(req.params.bug_id)
   // Constructs sql code
   pool.query("UPDATE bugs SET status = 'inactive' WHERE bug_id = $1",
     [bug_id], (error, results) => {
@@ -175,7 +175,7 @@ const setBugToInactive = (request, response) => {
     if (error) {
       throw error
     }
-    response.status(200).send(`Bug with ID ${bug_id} set to inactive.`)
+    res.status(200).send(`Bug with ID ${bug_id} set to inactive.`)
   })
 }
 
