@@ -55,5 +55,5 @@ app.use('/', indexRouter);
 
 //Starts the application listening for api calls
 app.listen(port, () => {
-  console.log(`App running on port ${port}.`)
+  console.log(`App started and running on port ${port}.`)
 })
