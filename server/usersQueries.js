@@ -15,33 +15,34 @@ const bcrypt = require('bcrypt')
 const saltRounds = 10;
 const passport = require("passport");
 const validator = require('validator');
+const sqlInjectionSecurity = require('./sqlInjectionSecurity')
 
 // API call to get all data from users table
-const getUsers = (request, response) => {
+const getUsers = (req, res) => {
   
-  console.log("isAuthenticated() in getUsers: " + request.isAuthenticated());
+  console.log("isAuthenticated() in getUsers: " + req.isAuthenticated());
   // Constructs sql code
   pool.query('SELECT id, username FROM users ORDER BY id ASC', (error, results) => {
     // Error handling
     if (error) {
       throw error
     }
-    //Returns response that consists of all data gotten by sql code
-    response.status(200).json(results.rows)
+    //Returns res that consists of all data gotten by sql code
+    res.status(200).json(results.rows)
   })
 }
 
-const loadUsersTable = (request, response) => {
-  response.render('userTable');
+const loadUsersTable = (req, res) => {
+  res.render('userTable');
 }
 
 // API call to get user by a specific ID
-const getUserById = (request, response) => {
+const getUserById = (req, res) => {
   
-  if (validator.isNumeric(request.params.id)) {
+  if (validator.isNumeric(req.params.id)) {
     // Specified ID to grab
-    const id = parseInt(request.params.id)
-    console.log(validator.isNumeric(request.params.id))
+    const id = parseInt(req.params.id)
+    console.log(validator.isNumeric(req.params.id))
     // Constructs sql code
     pool.query('SELECT * FROM users WHERE id = $1', [id], (error, results) => {
       // Error handling
@@ -49,15 +50,15 @@ const getUserById = (request, response) => {
         throw error
       }
       // Returns all data gotten by sql code
-      response.status(200).json(results.rows)
+      res.status(200).json(results.rows)
     })
   } else { return; }
 }
 
 // API call to get user by a specific username
-const getUserByUsername = (request, response) => {
+const getUserByUsername = (req, res) => {
   // Specified username to grab
-  const username = parseInt(request.params.username)
+  const username = parseInt(req.params.username)
   // Constructs sql code
   pool.query('SELECT * FROM users WHERE id = $1', [username], (error, results) => {
     // Error handling
@@ -65,7 +66,7 @@ const getUserByUsername = (request, response) => {
       throw error
     }
     // Returns all data gotten by sql code
-    response.status(200).json(results.rows)
+    res.status(200).json(results.rows)
   })
 }
 
@@ -81,11 +82,11 @@ const setDefaultRole = (user_id) => {
   }
 
 // API call to create entry into user database
-const createUser = (request, response) => {
+const createUser = (req, res) => {
   // Variables to be inserted into database
-  const { username, password } = request.body;
-  const passwordIsDangerous = checkForSqlCharacters(password);
-  const usernameIsDangerous = checkForSqlCharacters(username);
+  const { username, password } = req.body;
+  const passwordIsDangerous = sqlInjectionSecurity.checkForSqlCharacters(password);
+  const usernameIsDangerous = sqlInjectionSecurity.checkForSqlCharacters(username);
   if (!usernameIsDangerous && !passwordIsDangerous) {
     // Encrypts password
     bcrypt.hash(password, saltRounds, (err, hashedPassword) => {
@@ -100,26 +101,26 @@ const createUser = (request, response) => {
         if (error) {
             throw error;
         }
-        // Returns response that user was created with specific ID.
+        // Returns res that user was created with specific ID.
         setDefaultRole(results.rows[0].id)
-        response.status(201).redirect('/');
+        res.status(201).redirect('/');
       });
     });
   } else {
     console.log("DANGEROUS INPUT DETECTED ON USERNAME OR PASSWORD!");
-    response.redirect('/register');
+    res.redirect('/register');
   }
 };
 
 
 // API call to update entry in user table
-const updateUser = (request, response) => {
+const updateUser = (req, res) => {
   // Specific ID of entry to update
-  const id = parseInt(request.params.id);
+  const id = parseInt(req.params.id);
   // Variables to be put into database
-  const { username, password } = request.body;
-  const passwordIsDangerous = checkForSqlCharacters(password);
-  const usernameIsDangerous = checkForSqlCharacters(username);
+  const { username, password } = req.body;
+  const passwordIsDangerous = sqlInjectionSecurity.checkForSqlCharacters(password);
+  const usernameIsDangerous = sqlInjectionSecurity.checkForSqlCharacters(username);
   if (!usernameIsDangerous && !passwordIsDangerous) {
     // Encrypts password
     bcrypt.hash(password, saltRounds, (err, hashedPassword) => {
@@ -134,10 +135,10 @@ const updateUser = (request, response) => {
         (error, results) => {
           // Error handling
           if (error) {
-            response.status(500).send('Error updating user.');
+            res.status(500).send('Error updating user.');
           } else {
-            // Returns response saying entry was modified
-            response.status(200).send(`User modified with ID: ${id}`);
+            // Returns res saying entry was modified
+            res.status(200).send(`User modified with ID: ${id}`);
           }
         }
       );
@@ -149,17 +150,17 @@ const updateUser = (request, response) => {
 };
 
 // API call to delete entry from user table
-const deleteUser = (request, response) => {
+const deleteUser = (req, res) => {
   // Specific id of entry to delete
-  const id = parseInt(request.params.id)
+  const id = parseInt(req.params.id)
   // Constructs sql code
   pool.query('DELETE FROM users WHERE id = $1', [id], (error, results) => {
     // Error handling
     if (error) {
       throw error
     }
-    // Returns response saying that specified entry in users table was deleted
-    response.status(200).send(`User deleted with ID: ${id}`)
+    // Returns res saying that specified entry in users table was deleted
+    res.status(200).send(`User deleted with ID: ${id}`)
   })
 }
 
@@ -191,28 +192,22 @@ const getUserProjectsById = (user_id) => {
   });
 };
 
-const checkForSqlCharacters = (string) => {
-  if (validator.contains(string, ';') || validator.contains(string, "--") || validator.contains(string, "'")) {
-    return true;
-  } else { return false; }
-}
-
 // API call to authenticate user
-const loginUser = async (request, response) => {
+const loginUser = async (req, res) => {
   // Variables to be checked
-  const { username, password } = request.body;
-  const passwordIsDangerous = checkForSqlCharacters(password);
-  const usernameIsDangerous = checkForSqlCharacters(username)
+  const { username, password } = req.body;
+  const passwordIsDangerous = sqlInjectionSecurity.checkForSqlCharacters(password);
+  const usernameIsDangerous = sqlInjectionSecurity.checkForSqlCharacters(username)
   if (!usernameIsDangerous && !passwordIsDangerous) {
     // SQL query to find user with specified username
     pool.query('SELECT * FROM users WHERE username = $1', [username], async (error, results) => {
       // Error handling
       if (error) {
-        response.status(500).send("Idk what the heck happen");
+        res.status(500).send("Idk what the heck happen");
       }
       // If the result is empty then it knows that no user was found
       if (results.rows.length === 0) {
-        response.status(401).send('Authentication failed. User not found.');
+        res.status(401).send('Authentication failed. User not found.');
       } else {
         
         const user_id = results.rows[0].id;
@@ -234,18 +229,18 @@ const loginUser = async (request, response) => {
               user_projects: user_projects
             }
 
-            request.login(user_object, function(err) {
-              response.redirect('/');
+            req.login(user_object, function(err) {
+              res.redirect('/');
             });
           // If passwords don't match it just loads a page that said incorrect password
           } else {
-            response.status(401).send('Authentication failed. Incorrect password.');
+            res.status(401).send('Authentication failed. Incorrect password.');
           }
       };
     });
   } else {
     console.log("DANGEROUS INPUT DETECTED ON USERNAME OR PASSWORD!");
-    response.redirect('/register');
+    res.redirect('/register');
   }
 }
 
