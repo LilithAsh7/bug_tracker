@@ -244,7 +244,7 @@ const loginUser = async (req, res) => {
     });
   } else {
     console.log("DANGEROUS INPUT DETECTED ON USERNAME OR PASSWORD!");
-    res.redirect('/register');
+    res.redirect('/');
   }
 }
 
