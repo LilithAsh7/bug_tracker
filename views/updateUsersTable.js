@@ -20,6 +20,7 @@
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'CSRF-Token': formValues.csrf
       },
       body: JSON.stringify(userData),
     })
@@ -90,6 +91,7 @@ function updateUser(formValues, user_id) {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
+            'CSRF-Token': formValues.csrf
           },
           body: JSON.stringify(userData),
         })
@@ -117,7 +119,8 @@ function submitForm() {
   // Create an object with all field values
   const formValues = {
     username: document.getElementById('username').value,
-    password: document.getElementById('password').value
+    password: document.getElementById('password').value,
+    csrf:document.getElementsByName('_csrf')[0].value
   };
 
   // Call correct function with the array of values

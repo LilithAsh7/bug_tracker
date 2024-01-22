@@ -19,6 +19,7 @@
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'CSRF-Token': formValues.csrf
       },
       body: JSON.stringify(projectData),
     })
@@ -90,6 +91,7 @@ function updateProject(formValues, project_id) {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
+            'CSRF-Token': formValues.csrf
           },
           body: JSON.stringify(projectData),
         })
@@ -117,6 +119,7 @@ function submitForm() {
   // Create an object with all field values
   const formValues = {
     name: document.getElementById('name').value,
+    csrf:document.getElementsByName('_csrf')[0].value
   };
 
   // Call correct function with the array of values

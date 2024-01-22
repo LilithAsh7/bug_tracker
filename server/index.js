@@ -45,12 +45,12 @@ router.post('/test-csrf', csrfProtect, (req, res) => {
 });
 
 // Renders login page upon visiting http://localhost:3000
-router.get('/', (req, res) => {
+router.get('/', csrfProtect, (req, res) => {
   console.log("-Testing for user object in GET / " + req.user);
   console.log("-Testing isAuthenticated() in GET / " + req.isAuthenticated());
   console.log(req.csrfToken());
   if(!req.user) {
-    res.render('login');
+    res.render('login', { csrfToken: req.csrfToken() });
   } else {
     console.log(`-req.session.passport.user in '/' route: ${JSON.stringify(req.session.passport.user)}`);
     const user_groups = req.session.passport.user.user_groups;
@@ -72,12 +72,12 @@ router.get('/bugForm', csrfProtect, groupAuthorizationMiddleware('user'), authen
   res.render('bugForm', { csrfToken: req.csrfToken() });
 });
 
-router.get('/projectForm', groupAuthorizationMiddleware('admin'), authenticationMiddleware(), (req, res) => {
-  res.render('projectForm');
+router.get('/projectForm', csrfProtect, groupAuthorizationMiddleware('admin'), authenticationMiddleware(), (req, res) => {
+  res.render('projectForm', { csrfToken: req.csrfToken() });
 });
 
-router.get('/userForm', groupAuthorizationMiddleware('admin'), authenticationMiddleware(), (req, res) => {
-  res.render('userForm');
+router.get('/userForm', csrfProtect, groupAuthorizationMiddleware('admin'), authenticationMiddleware(), (req, res) => {
+  res.render('userForm', { csrfToken: req.csrfToken() });
 });
 
 router.get('/logout', authenticationMiddleware(), (req, res) => {
@@ -90,27 +90,27 @@ router.get('/logout', authenticationMiddleware(), (req, res) => {
 router.get('/users', groupAuthorizationMiddleware('admin'), authenticationMiddleware(), usersQueries.getUsers);
 router.get('/users/:id', groupAuthorizationMiddleware('admin'), authenticationMiddleware(), usersQueries.getUserById);
 router.get('/users/:username', groupAuthorizationMiddleware('admin'), authenticationMiddleware(), usersQueries.getUserByUsername);
-router.post('/users', usersQueries.createUser);
-router.post('/login', usersQueries.loginUser);
-router.put('/users/:id', groupAuthorizationMiddleware('admin'), authenticationMiddleware(), usersQueries.updateUser);
-router.delete('/users/:id', groupAuthorizationMiddleware('admin'), authenticationMiddleware(), usersQueries.deleteUser);
+router.post('/users', csrfProtect, usersQueries.createUser);
+router.post('/login', csrfProtect, usersQueries.loginUser);
+router.put('/users/:id', groupAuthorizationMiddleware('admin'), csrfProtect, authenticationMiddleware(), usersQueries.updateUser);
+//router.delete('/users/:id', groupAuthorizationMiddleware('admin'), authenticationMiddleware(), usersQueries.deleteUser);
 router.get('/userTable', groupAuthorizationMiddleware('admin'), authenticationMiddleware(), usersQueries.loadUsersTable);
 router.get('/userGroups/login/:id', groupAuthorizationMiddleware('admin'), authenticationMiddleware(), usersQueries.getUserGroupsById);
 
 router.get('/projects', groupAuthorizationMiddleware('admin'), authenticationMiddleware(), projectsQueries.getProjects);
 router.get('/projects/:id', groupAuthorizationMiddleware('admin'), authenticationMiddleware(), projectsQueries.getProjectById);
-router.post('/projects', groupAuthorizationMiddleware('admin'), authenticationMiddleware(), projectsQueries.createProject);
-router.put('/projects/:id', groupAuthorizationMiddleware('admin'), authenticationMiddleware(), projectsQueries.updateProject);
-router.delete('/projects/:id', groupAuthorizationMiddleware('admin'), authenticationMiddleware(), projectsQueries.deleteProject);
+router.post('/projects', groupAuthorizationMiddleware('admin'), csrfProtect, authenticationMiddleware(), projectsQueries.createProject);
+router.put('/projects/:id', groupAuthorizationMiddleware('admin'), csrfProtect, authenticationMiddleware(), projectsQueries.updateProject);
+//router.delete('/projects/:id', groupAuthorizationMiddleware('admin'), authenticationMiddleware(), projectsQueries.deleteProject);
 router.get('/projectTable', groupAuthorizationMiddleware('admin'), authenticationMiddleware(), projectsQueries.loadProjectsTable);
 
 router.get('/bugs', groupAuthorizationMiddleware('user'), authenticationMiddleware(), bugsQueries.getAllBugs);
 router.get('/bugs/:bug_id', groupAuthorizationMiddleware('user'), authenticationMiddleware(), bugsQueries.getBugsById);
 router.get('/bugs/status/:status', groupAuthorizationMiddleware('user'), authenticationMiddleware(), bugsQueries.getBugsByStatus);
-router.post('/bugs/', groupAuthorizationMiddleware('user'), authenticationMiddleware(), csrfProtect, bugsQueries.createBug);
-router.put('/bugs/:bug_id', groupAuthorizationMiddleware('user'), authenticationMiddleware(), csrfProtect, bugsQueries.updateBug);
-router.put('/bugs/inactive/:bug_id', groupAuthorizationMiddleware('user'), authenticationMiddleware(), bugsQueries.setBugToInactive);
-router.delete('/bugs/:bug_id', groupAuthorizationMiddleware('user'), authenticationMiddleware(), bugsQueries.deleteBug);
+router.post('/bugs/', groupAuthorizationMiddleware('user'), csrfProtect, authenticationMiddleware(), bugsQueries.createBug);
+router.put('/bugs/:bug_id', groupAuthorizationMiddleware('user'), csrfProtect, authenticationMiddleware(), bugsQueries.updateBug);
+//router.put('/bugs/inactive/:bug_id', groupAuthorizationMiddleware('user'), authenticationMiddleware(), bugsQueries.setBugToInactive);
+//router.delete('/bugs/:bug_id', groupAuthorizationMiddleware('user'), authenticationMiddleware(), bugsQueries.deleteBug);
 router.get('/bugTable', groupAuthorizationMiddleware('user'), authenticationMiddleware(), bugsQueries.loadBugsTable);
 
 module.exports = router;
