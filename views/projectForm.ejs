@@ -10,7 +10,7 @@
 <h2>Project Form</h2>
 <h4>* fields are required</h4>
     <form id="projectForm">
-      <input type="hidden" name="_csrf" value="{{csrfToken}}">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
       <label for="name">* Project name:</label>
       <input type="text" id="name" name="name" required>
       <br>
