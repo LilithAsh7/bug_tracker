@@ -4,6 +4,8 @@ const app = express();
 const port = 3000;
 // Passport module for authentication and authorization
 const passport = require("passport");
+const helmet = require("helmet");
+app.use(helmet());
 // Session module for authorization and authentication
 const session = require("express-session");
 const cookieParser = require('cookie-parser');
@@ -43,7 +45,11 @@ app.use(
     secret: process.env.secret_key,
     resave: false,
     saveUninitialized: false,
-    cookie: { maxAge: 86400000}
+    cookie: { 
+      maxAge: 86400000,
+      httpOnly: true
+      // secure: true (This line to be uncommented after going to a https connection.)
+    }
   })
 );
 
