@@ -5,7 +5,20 @@ const port = 3000;
 // Passport module for authentication and authorization
 const passport = require("passport");
 const helmet = require("helmet");
+//const crypto = require('crypto');
+//const nonce = crypto.randomBytes(16).toString('base64');
+
 app.use(helmet());
+
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      scriptSrc: ["'self'", "'unsafe-inline'"],
+    },
+  })
+);
+
+
 // Session module for authorization and authentication
 const session = require("express-session");
 const cookieParser = require('cookie-parser');
