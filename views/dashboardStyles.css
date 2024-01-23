@@ -8,9 +8,9 @@
     color: #fb9ec3; /* Pink color for headings */
   }
   
-  #table1-container,
-  #table2-container,
-  #table3-container {
+  #bugsTable,
+  #projectsTable,
+  #usersTable {
     margin-bottom: 20px;
     background-color: #ffffff; /* White background for table containers */
     border: 1px solid #d9d9d9; /* Light grey border */

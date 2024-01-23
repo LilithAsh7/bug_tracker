@@ -16,14 +16,18 @@ function reloadData(table) {
 
 // Creates listener and performs the following fetchData functions
 document.addEventListener('DOMContentLoaded', function () {
-    // Calls the below fetchData function 3 times. Once for each table.
-    if (currentHTMLFile === "bugTable.ejs") {
+    
+  const bugsTable = document.getElementById('bugsTable');
+  const projectsTable = document.getElementById('projectsTable');
+  const usersTable = document.getElementById('usersTable');
+  // Calls the below fetchData function 3 times. Once for each table.
+    if (bugsTable) {
     console.log("Loading bug table");
     fetchData('all', 'http://localhost:3000/bugs/status/', 'table1');
-    } else if (currentHTMLFile === "projectTable.ejs") {
+    } else if (projectsTable) {
     console.log("Loading projects table");
     fetchData(null, 'http://localhost:3000/projects', 'table2');
-    } else if (currentHTMLFile === "userTable.ejs") {
+    } else if (usersTable) {
     console.log("Loading users table");
     fetchData(null, 'http://localhost:3000/users', 'table3');
     }
