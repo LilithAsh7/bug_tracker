@@ -10,9 +10,9 @@
     <h1>Bug Bridge</h1>
     <!-- Buttons for Table 2 -->
     <div id="table2-buttons">
-        <button onclick="openProjectForm('create')">Create Project</button>
-        <button onclick="openProjectForm('update')">Update Project</button>
-        <button onclick="reloadData('projects')">Reload Table</button>
+        <button id="createProject">Create Project</button>
+        <button id="updateProject">Update Project</button>
+        <button id="reload">Reload Table</button>
         <a href="/">
           <button>Main Menu</button>
         </a>
@@ -28,9 +28,7 @@
       var currentHTMLFile = 'projectTable.ejs';
     </script>
     <script src="fillTables.js"></script>
-    <script src="updateBugsTable.js"></script>
-    <script src="updateProjectstable.js"></script>
-    <script src="updateUsersTable.js"></script>
+    <script src="projectTable.js"></script>
   
 </body>
 </html>
