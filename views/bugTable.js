@@ -65,3 +65,19 @@ document.getElementById('updateBug').addEventListener('click', function() {
 document.getElementById('reload').addEventListener('click', function() {
   reloadData('bugs');
 });
+
+document.getElementById('completed').addEventListener('click', function() {
+  updateTableByStatus('completed');
+});
+
+document.getElementById('all').addEventListener('click', function() {
+  updateTableByStatus('all');
+});
+
+document.getElementById('rejected').addEventListener('click', function() {
+  updateTableByStatus('rejected');
+});
+
+document.getElementById('pending').addEventListener('click', function() {
+  updateTableByStatus('pending');
+});
