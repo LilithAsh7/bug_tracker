@@ -17,32 +17,8 @@
       <label for="password">* Password:</label>
       <input type="text" id="password" name="password" required>
       <br>
-      <button type="button" onclick="submitForm()">Submit</button>
+      <button id="submitForm">Submit</button>
     </form>
 </body>
-<script src="updateUsersTable.js"></script>
-<script>
-  document.addEventListener('DOMContentLoaded', async function () {
-    // Extract user_id from URL parameters
-    const urlParams = new URLSearchParams(window.location.search);
-    const user_id = urlParams.get('user_id');
-
-    // Call the getuserById function if user_id is available
-    if (user_id) {
-      const response = await fetch(`http://localhost:3000/users/${user_id}`)
-      let userData = await response.json();
-      userData = userData[0]
-      console.log(userData);
-
-      // Check if userData is not null and set form values
-      if (userData) {
-        const form = document.getElementById('userForm');
-        console.log(userData.username);
-
-        // Set values for each form field
-        form.elements['username'].value = userData.username;
-      }
-    }
-  });
-</script>
+<script src="userForm.js"></script>
 </html>
