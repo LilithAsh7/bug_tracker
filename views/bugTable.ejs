@@ -11,19 +11,19 @@
   
     <!-- Buttons for Table 1 -->
     <div id="table1-buttons">
-      <button onclick="openBugForm('create')">Create Bug</button>
-      <button onclick="openBugForm('update')">Update Bug</button>
-      <button onclick="reloadData('bugs')">Reload Table</button>
+      <button id="createBug">Create Bug</button>
+      <button id="updateBug">Update Bug</button>
+      <button id="reload">Reload Table</button>
       <a href="/">
         <button>Main Menu</button>
       </a>
       <div class="dropdown">
         <button id="statusDropdownBtn">Status: all</button>
         <div class="dropdown-content">
-          <a href="#" onclick="updateTableByStatus('all')">all</a>
-          <a href="#" onclick="updateTableByStatus('completed')">completed</a>
-          <a href="#" onclick="updateTableByStatus('pending')">pending</a>
-          <a href="#" onclick="updateTableByStatus('rejected')">rejected</a>
+          <a href="#" id="all">all</a>
+          <a href="#" id="completed">completed</a>
+          <a href="#" id="pending">pending</a>
+          <a href="#" id="rejected">rejected</a>
         </div>
     </div>
   
@@ -37,7 +37,7 @@
       var currentHTMLFile = 'bugTable.ejs';
     </script>
     <script src="fillTables.js"></script>
-    <script src="updateBugsTable.js"></script>
+    <script src="bugTable.js"></script>
   
 </body>
 </html>
