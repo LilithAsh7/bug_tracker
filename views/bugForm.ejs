@@ -52,62 +52,8 @@
       <label for="reason">Reason:</label>
       <input type="text" id="reason" name="reason">
       <br>
-      <button type="button" onclick="submitForm()">Submit</button>
+      <button id="submitForm">Submit</button>
     </form>
 </body>
-    <script src="updateBugsTable.js"></script>
-    <script>
-      document.addEventListener('DOMContentLoaded', async function () {
-        // Extract bug_id from URL parameters
-        const urlParams = new URLSearchParams(window.location.search);
-        const bug_id = urlParams.get('bug_id');
-
-        // Call the getBugById function if bug_id is available
-        if (bug_id) {
-          const response = await fetch(`http://localhost:3000/bugs/${bug_id}`)
-          let bugData = await response.json();
-          bugData = bugData[0]
-          console.log(bugData);
-
-          // Check if bugData is not null and set form values
-          if (bugData) {
-            const form = document.getElementById('bugForm');
-            const bugTypeValue = bugData.bug_type;
-            const bugTypeSelect = document.getElementById('bug_type');
-            const priorityValue = bugData.priority;
-            const prioritySelect = document.getElementById('priority')
-            const statusValue = bugData.status;
-            const statusSelect = document.getElementById('status')
-            console.log(bugData.bug_type);
-
-            // Set values for each form field
-            for (var i = 0; i < bugTypeSelect.options.length; i++) {
-              if (bugTypeSelect.options[i].value === bugTypeValue) {
-                bugTypeSelect.options[i].selected = true;
-                break;
-              }
-            }
-            form.elements['bug_description'].value = bugData.bug_description || '';
-            form.elements['file'].value = bugData.file || '';
-            form.elements['line'].value = bugData.line || '';
-            for (var i = 0; i < prioritySelect.options.length; i++) {
-              if (prioritySelect.options[i].value === priorityValue) {
-                prioritySelect.options[i].selected = true;
-                break;
-              }
-            }
-            for (var i = 0; i < statusSelect.options.length; i++) {
-              if (statusSelect.options[i].value === statusValue) {
-                statusSelect.options[i].selected = true;
-                break;
-              }
-            }
-            form.elements['status'].value = bugData.status || '';
-            form.elements['project_id'].value = bugData.project_id || '';
-            form.elements['fixer_notes'].value = bugData.fixer_notes || '';
-            form.elements['reason'].value = bugData.reason || '';
-          }
-        }
-      });
-    </script>
+    <script src="bugForm.js"></script>
 </html>
