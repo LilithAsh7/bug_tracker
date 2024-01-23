@@ -1,31 +1,5 @@
   let bug_id;
 
-    // Delete bug function
-  
-    function deleteBug() {
-
-      console.log("deleteBug() in updateBugsTable.js")
-      // Prompt the user for bug_id
-      const bugIdToDelete = prompt("Enter the bug_id of the bug you would like to delete:");
-    
-      if (bugIdToDelete !== null && bugIdToDelete !== "") {
-        // Make a DELETE request to the server
-        fetch(`http://localhost:3000/bugs/inactive/${bugIdToDelete}`, {
-          method: 'PUT',
-        })
-          .then(response => {
-            if (response.ok) {
-              console.log(`Bug with bug_id ${bugIdToDelete} deleted successfully.`);
-              // Reload the dashboard page
-              window.location.reload();
-            } else {
-              console.error(`Failed to delete bug with bug_id ${bugIdToDelete}.`);
-            }
-          })
-          .catch(error => console.error('Error deleting bug:', error));
-      }
-    }
-  
   async function openBugForm(mode){
 
     console.log("openBugForm() in updateBugsTable.js")
