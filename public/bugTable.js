@@ -55,3 +55,16 @@ document.getElementById('rejected').addEventListener('click', function() {
 document.getElementById('pending').addEventListener('click', function() {
   updateTableByStatus('pending');
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+  const dropdownOptions = document.querySelectorAll('.dropdown-content a');
+
+  dropdownOptions.forEach((option, index) => {
+    option.addEventListener('click', function(event) {
+      event.preventDefault();
+      const projectId = event.target.id; // This will be like "project1", "project2", etc.
+      console.log(projectId);
+      //updateTableByProjectId(projectId);
+    });
+  });
+});
