@@ -4,6 +4,12 @@ function updateTableByStatus(status) {
   document.getElementById('statusDropdownBtn').textContent = `Status: ${status}`;
 }
 
+function updateTableByProjectId(project_id) {
+  fetchData("all", 'http://localhost:3000/bugs/project_id', 'table1');
+
+  document.getElementById('projectDropdownBtn').textContent = `Project ID: ${project_id}`;
+}
+
 function reloadData(table) {
   if (table === 'bugs'){
     fetchData('all', 'http://localhost:3000/bugs/status/', 'table1');
