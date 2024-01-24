@@ -47,6 +47,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 // This removes compatibility issues with ejs and css files
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'views')));
+app.use(express.static(path.join(__dirname, 'public')));
 app.set('view engine', 'ejs');
 //Setting up cookies so that authentication can be kept track of
 app.use(
