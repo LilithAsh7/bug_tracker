@@ -1,5 +1,7 @@
 // Express app
 const express = require('express');
+const https = require('https');
+const fs = require('fs');
 const app = express();
 // Passport module for authentication and authorization
 const passport = require("passport");
@@ -64,8 +66,8 @@ app.use(
     saveUninitialized: false,
     cookie: { 
       maxAge: 86400000,
-      httpOnly: true
-      // secure: true (This line to be uncommented after going to a https connection.)
+      httpOnly: true,
+      secure: true
     }
   })
 );
@@ -76,7 +78,13 @@ app.use(passport.session());
 
 app.use('/', indexRouter);
 
+const privateKey = fs.readFileSync('/etc/letsencrypt/live/bugbridge.duckdns.org/cert.pem', 'utf8');
+const certificate = fs.readFileSync('/etc/letsencrypt/live/bugbridge.duckdns.org/privkey.pem', 'utf8');
+const credentials = { key: privateKey, cert: certificate };
+
+const httpsServer = https.createServer(credentials, app);
+
 //Starts the application listening for api calls
-app.listen(port, () => {
+httpsServer.listen(port, () => {
   console.log(`-App started and running on port ${port}.`)
 })
