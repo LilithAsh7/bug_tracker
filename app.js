@@ -1,10 +1,10 @@
 // Express app
 const express = require('express');
 const app = express();
-const port = 3000;
 // Passport module for authentication and authorization
 const passport = require("passport");
 const helmet = require("helmet");
+const cors = require('cors');
 //const crypto = require('crypto');
 //const nonce = crypto.randomBytes(16).toString('base64');
 
@@ -18,6 +18,8 @@ app.use(
   })
 );
 
+app.use(cors());
+
 
 // Session module for authorization and authentication
 const session = require("express-session");
@@ -28,6 +30,7 @@ const pgSession = require('connect-pg-simple')(session);
 // Module for working with file paths
 const path = require('path');
 require('dotenv').config();
+const port = process.env.app_port;
 const indexRouter = require('./server/index');
 
 const Pool = require('pg').Pool
