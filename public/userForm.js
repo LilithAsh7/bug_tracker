@@ -14,7 +14,7 @@ function createUser(formValues) {
     }
   
     // Make a POST request to the server
-    fetch('http://localhost:3000/users/', {
+    fetch('/users/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -40,7 +40,7 @@ function updateUser(formValues, user_id) {
   const userIdToUpdate = user_id;
 
   // Fetch existing user data from the server
-  fetch(`http://localhost:3000/users/${userIdToUpdate}`)
+  fetch(`/users/${userIdToUpdate}`)
     .then(response => {
       if (!response.ok) {
         console.error(`Failed to fetch user data for id ${userIdToUpdate}.`);
@@ -62,7 +62,7 @@ function updateUser(formValues, user_id) {
         }
 
         // Make a PUT request to update the user
-        fetch(`http://localhost:3000/users/${userIdToUpdate}`, {
+        fetch(`/users/${userIdToUpdate}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     // Call the getuserById function if user_id is available
     if (user_id) {
-      const response = await fetch(`http://localhost:3000/users/${user_id}`)
+      const response = await fetch(`/users/${user_id}`)
       let userData = await response.json();
       userData = userData[0]
       console.log(userData);

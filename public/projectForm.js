@@ -13,7 +13,7 @@ function createProject(formValues) {
     }
   
     // Make a POST request to the server
-    fetch('http://localhost:3000/projects/', {
+    fetch('/projects/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -38,7 +38,7 @@ function createProject(formValues) {
     const projectIdToUpdate = project_id;
   
     // Fetch existing project data from the server
-    fetch(`http://localhost:3000/projects/${projectIdToUpdate}`)
+    fetch(`/projects/${projectIdToUpdate}`)
       .then(response => {
         if (!response.ok) {
           console.error(`Failed to fetch project data for id ${projectIdToUpdate}.`);
@@ -60,7 +60,7 @@ function createProject(formValues) {
           }
   
           // Make a PUT request to update the project
-          fetch(`http://localhost:3000/projects/${projectIdToUpdate}`, {
+          fetch(`/projects/${projectIdToUpdate}`, {
             method: 'PUT',
             headers: {
               'Content-Type': 'application/json',
@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     // Call the getprojectById function if project_id is available
     if (project_id) {
-      const response = await fetch(`http://localhost:3000/projects/${project_id}`)
+      const response = await fetch(`/projects/${project_id}`)
       let projectData = await response.json();
       projectData = projectData[0]
       console.log(projectData);

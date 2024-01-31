@@ -3,19 +3,19 @@
 async function openUserForm(mode){
   
   if (mode === 'create') {
-    var url = 'http://localhost:3000/userForm?mode=create';
+    var url = '/userForm?mode=create';
   } else {
     user_id = prompt("Enter the id of the user you would like to update:");
     if (user_id === null || user_id.trim() === '') {
       return;
     } else {
-      const response = await fetch(`http://localhost:3000/users/${user_id}`)
+      const response = await fetch(`/users/${user_id}`)
       let userData = await response.json();
       userData = userData[0]
       if (!userData) {
         return;
       } else {
-        var url = `http://localhost:3000/userForm?user_id=${user_id}&mode=update`;
+        var url = `/userForm?user_id=${user_id}&mode=update`;
       }
     }
   }

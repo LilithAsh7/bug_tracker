@@ -26,7 +26,7 @@ async function createBug(formValues) {
     }
   
     // Make POST request to the server
-    await fetch('http://localhost:3000/bugs/', {
+    await fetch(`/bugs/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -54,7 +54,7 @@ async function updateBug(formValues, bug_id) {
     const bugIdToUpdate = bug_id;
 
     // Fetch existing bug data from the server
-    await fetch(`http://localhost:3000/bugs/${bugIdToUpdate}`)
+    await fetch(`/bugs/${bugIdToUpdate}`)
         .then(response => {
         if (!response.ok) {
             console.error(`Failed to fetch bug data for bug_id ${bugIdToUpdate}.`);
@@ -87,7 +87,7 @@ async function updateBug(formValues, bug_id) {
             }
 
             // Make a PUT request to update the bug
-            fetch(`http://localhost:3000/bugs/${bugIdToUpdate}`, {
+            fetch(`/bugs/${bugIdToUpdate}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -155,7 +155,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     // Call the getBugById function if bug_id is available
     if (bug_id) {
-        const response = await fetch(`http://localhost:3000/bugs/${bug_id}`)
+        const response = await fetch(`/bugs/${bug_id}`)
         let bugData = await response.json();
         bugData = bugData[0]
         console.log(bugData);

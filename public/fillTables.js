@@ -1,22 +1,22 @@
 function updateTableByStatus(status) {
-  fetchData(status, 'http://localhost:3000/bugs/status/', 'table1');
+  fetchData(status, '/bugs/status/', 'table1');
 
   document.getElementById('statusDropdownBtn').textContent = `Status: ${status}`;
 }
 
 function updateTableByProjectId(project_id) {
-  fetchData("all", 'http://localhost:3000/bugs/project_id', 'table1');
+  fetchData("all", '/bugs/project_id', 'table1');
 
   document.getElementById('projectDropdownBtn').textContent = `Project ID: ${project_id}`;
 }
 
 function reloadData(table) {
   if (table === 'bugs'){
-    fetchData('all', 'http://localhost:3000/bugs/status/', 'table1');
+    fetchData('all', '/bugs/status/', 'table1');
   } else if (table === 'projects') {
-    fetchData(null, 'http://localhost:3000/projects', 'table2');
+    fetchData(null, '/projects', 'table2');
   } else if (table === 'users') {
-    fetchData(null, 'http://localhost:3000/users', 'table3');
+    fetchData(null, '/users', 'table3');
   }
 }
 
@@ -29,13 +29,13 @@ document.addEventListener('DOMContentLoaded', function () {
   // Calls the below fetchData function 3 times. Once for each table.
     if (bugsTable) {
     console.log("Loading bug table");
-    fetchData('all', 'http://localhost:3000/bugs/status/', 'table1');
+    fetchData('all', '/bugs/status/', 'table1');
     } else if (projectsTable) {
     console.log("Loading projects table");
-    fetchData(null, 'http://localhost:3000/projects', 'table2');
+    fetchData(null, '/projects', 'table2');
     } else if (usersTable) {
     console.log("Loading users table");
-    fetchData(null, 'http://localhost:3000/users', 'table3');
+    fetchData(null, '/users', 'table3');
     }
   });
   
