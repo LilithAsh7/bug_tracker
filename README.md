@@ -59,6 +59,8 @@ After logging in there are two main menus, one for the admins and one for the re
 
 ![Main Menu](bugBridgeMainMenu.PNG)
 
+Clicking on the Bugs button will take you to the bugs table. This table pulls all relevant data from the database. An admin can assign your user to specific projects and then 
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
