@@ -48,7 +48,7 @@ router.post('/test-csrf', csrfProtect, (req, res) => {
 router.get('/', csrfProtect, (req, res) => {
   console.log("-Testing for user object in GET / " + req.user);
   console.log("-Testing isAuthenticated() in GET / " + req.isAuthenticated());
-  console.log(req.csrfToken());
+  //console.log(req.csrfToken());
   if(!req.user) {
     res.render('login', { csrfToken: req.csrfToken() });
   } else {
