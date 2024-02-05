@@ -51,6 +51,8 @@ Goals of the project:
 * Make an application that would aid in the process of designing any and all future applications
 * Utilize my knowledge of full stack engineering to create a highly available and secure webb app.
 
+When a use first loads the app at the url <a href="https://bugbridge.duckdns.org" target="_blank">https://bugbridge.duckdns.org</a>, they will be directed to 
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
