@@ -43,8 +43,6 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-![Bugs Page](bugBridgeBugsPage.PNG)
-
 Bug Bridge is a web application built with Express.js and utilizes a PostgreSQL database. It allows users to efficiently track and manage software bugs by providing a user-friendly interface for creating, updating, and resolving issues. With robust features such as user authentication, issue categorization, and detailed status tracking, this app streamlines the bug tracking process for development teams. Extra effor was put into securing the application against different hacking strategies.
 
 Goals of the project:
@@ -59,7 +57,9 @@ After logging in there are two main menus, one for the admins and one for the re
 
 ![Main Menu](bugBridgeMainMenu.PNG)
 
-Clicking on the Bugs button will take you to the bugs table. This table pulls all relevant data from the database. An admin can assign your user to specific projects and then 
+Clicking on the Bugs button will take you to the bugs table. This table pulls all relevant data from the database. An admin can assign your user account to specific projects and the bug table only shows bugs that are related to the projects that your user account is assigned to. 
+
+![Bugs Page](bugBridgeBugsPage.PNG)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
