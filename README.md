@@ -51,7 +51,13 @@ Goals of the project:
 * Make an application that would aid in the process of designing any and all future applications
 * Utilize my knowledge of full stack engineering to create a highly available and secure webb app.
 
-When a use first loads the app at the url [https://bugbridge.duckdns.org](https://bugbridge.duckdns.org), they will be directed to 
+When a use first loads the app at the url [https://bugbridge.duckdns.org](https://bugbridge.duckdns.org), they will be directed to the login page.
+
+![Login Page](bugBridgeLogin.PNG)
+
+After logging in there are two main menus, one for the admins and one for the regular users. As of the current moment admins are the only people who can create projects and access the users data table. Here is a picture of the admin main menu: 
+
+![Main Menu](bugBridgeMainMenu.PNG)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
