@@ -79,7 +79,7 @@ The application in Node js using the Express js web application framework. It al
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
-<a name="themakingof"></a>
+<a name="makingof"></a>
 <!-- The Making Of -->
 ### The Making Of
 
