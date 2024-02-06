@@ -47,7 +47,7 @@ Goals of the project:
 * Make an application that would aid in the process of designing any and all future applications
 * Utilize my knowledge of full stack engineering to create a highly available and secure webb app.
 
-When a use first loads the app at the url [https://bugbridge.duckdns.org](https://bugbridge.duckdns.org), they will be directed to the login page.
+When a use first loads the app they will be directed to the login page.
 
 ![Login Page](bugBridgeLogin.PNG)
 
