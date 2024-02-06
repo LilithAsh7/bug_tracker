@@ -101,7 +101,7 @@ Then I began the process of creating containers on my home server for the applic
 ### Planned Updates
 
 
-- User different csrf prevention plugin
+- Use different csrf prevention plugin
 - Add more sorting options for the bug table
 - Implement admin privileges such as assigning users to projects
 - Add additional security practices
