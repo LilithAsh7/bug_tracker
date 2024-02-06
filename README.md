@@ -27,14 +27,11 @@
 <details>
   <summary>Table of Contents</summary>
   <ol>
-    <li>
-      <a href="#about-the-project">About The Project</a>
-      <ul>
+    <li><a href="#about-the-project">About The Project</a></li>
         <li><a href="#built-with">Built With</a></li>
-      </ul>
-    </li>
     <li><a href="#makingof">The Making Of</a></li>
     <li><a href="#plannedupdates">Planned Updates</a></li>
+    <li><a href="#pluginsused">Plugins Used</a></li>
   </ol>
 </details>
 
@@ -83,7 +80,7 @@ The application in Node js using the Express js web application framework. It al
 
 
 <!-- The Making Of -->
-## The Making Of
+### The Making Of
 
 To start this project I went through Codecademy's course on how to be a back end engineer. There I deepened my knowledge of javascript, learned about express apps, and learned how to make and utilize api calls. I also learned quite a bit about postgres and how to manage a database efficiently. 
 
@@ -100,7 +97,7 @@ Then I began the process of creating containers on my home server for the applic
 
 
 <!-- Planned Updates -->
-## Planned Updates
+### Planned Updates
 
 
 - Add more sorting options for the bug table
@@ -114,7 +111,7 @@ Then I began the process of creating containers on my home server for the applic
 
 
 <!-- ACKNOWLEDGMENTS -->
-## Plugins used
+### Plugins Used
 
 * [express](https://www.npmjs.com/package/express)
 * [helmet](https://www.npmjs.com/package/helmet)
