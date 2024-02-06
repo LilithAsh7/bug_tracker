@@ -34,7 +34,7 @@
       </ul>
     </li>
     <li><a href="#makingof">The Making Of</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#plannedupdates">Planned updates</a></li>
   </ol>
 </details>
 
@@ -99,8 +99,8 @@ Then I began the process of creating containers on my home server for the applic
 
 
 
-<!-- ROADMAP -->
-## Roadmap
+<!-- Planned Updates -->
+## Planned Updates
 
 
 - Add more sorting options for the bug table
