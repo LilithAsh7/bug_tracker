@@ -114,17 +114,16 @@ Then I began the process of creating containers on my home server for the applic
 
 
 <!-- ACKNOWLEDGMENTS -->
-## Acknowledgments
+## Plugins used
 
-Use this space to list resources you find helpful and would like to give credit to. I've included a few of my favorites to kick things off!
-
-* [Choose an Open Source License](https://choosealicense.com)
-* [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
-* [Malven's Flexbox Cheatsheet](https://flexbox.malven.co/)
-* [Malven's Grid Cheatsheet](https://grid.malven.co/)
-* [Img Shields](https://shields.io)
-* [GitHub Pages](https://pages.github.com)
-* [Font Awesome](https://fontawesome.com)
-* [React Icons](https://react-icons.github.io/react-icons/search)
+* [express](https://www.npmjs.com/package/express)
+* [helmet](https://www.npmjs.com/package/helmet)
+* [passport](https://www.npmjs.com/package/passport)
+* [connect-pg-simple](https://www.npmjs.com/package/connect-pg-simple)
+* [cors](https://www.npmjs.com/package/cors)
+* [body-parser](https://www.npmjs.com/package/body-parser)
+* [cookie-parser](https://www.npmjs.com/package/cookie-parser)
+* [https](https://www.npmjs.com/package/https)
+* [csurf](https://www.npmjs.com/package/csurf)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
