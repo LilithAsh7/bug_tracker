@@ -65,6 +65,8 @@ From here you can create or update bugs and you may sort the table based on stat
 
 ![Create Bugs](bugBridgeCreateBugForm.PNG)
 
+More features are planned for the future! See more in the <li><a href="#roadmap">Roadmap</a></li> below. 
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
