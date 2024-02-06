@@ -34,7 +34,7 @@
       </ul>
     </li>
     <li><a href="#makingof">The Making Of</a></li>
-    <li><a href="#plannedupdates">Planned updates</a></li>
+    <li><a href="#plannedupdates">Planned Updates</a></li>
   </ol>
 </details>
 
@@ -82,7 +82,7 @@ The application in Node js using the Express js web application framework. It al
 
 
 
-<!-- The making of -->
+<!-- The Making Of -->
 ## The Making Of
 
 To start this project I went through Codecademy's course on how to be a back end engineer. There I deepened my knowledge of javascript, learned about express apps, and learned how to make and utilize api calls. I also learned quite a bit about postgres and how to manage a database efficiently. 
