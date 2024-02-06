@@ -28,7 +28,7 @@
   <summary>Table of Contents</summary>
   <ol>
     <li><a href="#about-the-project">About The Project</a></li>
-        <li><a href="#built-with">Built With</a></li>
+    <li><a href="#built-with">Built With</a></li>
     <li><a href="#makingof">The Making Of</a></li>
     <li><a href="#plannedupdates">Planned Updates</a></li>
     <li><a href="#pluginsused">Plugins Used</a></li>
@@ -39,6 +39,7 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
+<a name="about-the-project"></a>
 
 Bug Bridge is a web application built with Express.js and utilizes a PostgreSQL database. It allows users to efficiently track and manage software bugs by providing a user-friendly interface for creating, updating, and resolving issues. With robust features such as user authentication, issue categorization, and detailed status tracking, this app streamlines the bug tracking process for development teams. Extra effor was put into securing the application against different hacking strategies.
 
@@ -66,7 +67,7 @@ More features are planned for the future! See more in the <a href="#roadmap">Roa
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
+<a name="built-with"></a>
 ### Built With
 
 The application in Node js using the Express js web application framework. It also utilizes a postgres database.
@@ -78,7 +79,7 @@ The application in Node js using the Express js web application framework. It al
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
-
+<a name="themakingof"></a>
 <!-- The Making Of -->
 ### The Making Of
 
@@ -95,7 +96,7 @@ Then I began the process of creating containers on my home server for the applic
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
-
+<a name="plannedupdates"></a>
 <!-- Planned Updates -->
 ### Planned Updates
 
@@ -109,7 +110,7 @@ Then I began the process of creating containers on my home server for the applic
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
+<a name="pluginsused"></a>
 <!-- ACKNOWLEDGMENTS -->
 ### Plugins Used
 
