@@ -101,11 +101,12 @@ Then I began the process of creating containers on my home server for the applic
 ### Planned Updates
 
 
+- User different csrf prevention plugin
 - Add more sorting options for the bug table
 - Implement admin privileges such as assigning users to projects
 - Add additional security practices
 - Make the front end prettier
-- -Make the back end more succinct and slimmed down
+- Make the back end more succinct and slimmed down
 - Make the entire project more comprehensive, responsive, and more detailed
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
