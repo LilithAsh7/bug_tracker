@@ -82,12 +82,18 @@ The application in Node js using the Express js web application framework. It al
 
 
 
-<!-- USAGE EXAMPLES -->
+<!-- The making of -->
 ## The Making Of
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+To start this project I went through Codecademy's course on how to be a back end engineer. There I deepened my knowledge of javascript, learned about express apps, and learned how to make and utilize api calls. I also learned quite a bit about postgres and how to manage a database efficiently. 
 
-_For more examples, please refer to the [Documentation](https://example.com)_
+From there I made the back end for this project. This included a new directory called "server" where I created a file for the users, projects, and bugs tables and put api calls to each of these tables in their own files. I then routed these api calls to the main app and made a file called index.js to handle assigning these api calls to their specific routes. Then I made a router to make all of this accessible to the main application which is created in app.js.
+
+Then I got to work on the front end. I used a pink and light grey color scheme because those are two of my favorite colors. :slightly_smiling_face: From here I worked my way through the logic of the application. Creating more api calls as they were needed and figuring out how to grab and utilize specific data. For this project I planned out about a quarter of it and then used a seat of the pants style coding for the rest. In the future I plan to be more thorough in whiteboarding out the process before beginning, but since this project was my first real foray into full stack engineering I decided to learn by doing. 
+
+When I started working on the login page I learned about sessions and cookies. I used passport to implement user authentication and implemented user authorization for added security. After getting the bugs, users, and projects tables working and the login page successfully logging in users I began the process of implementing as much security as possible. This included data hashing and preventing CSRF attacks, XSS attacks, and sql injections as well as other defensive measures. 
+
+Then I began the process of creating containers on my home server for the application and the database. This step was probably the most difficult because I had been learning so much about the developer side of things and was suddenly thrust into the ops world. It was also one of the most rewarding though and I got to utilize the limited knowledge I have of dev ops practices. The main thing I learned during this step of the process was implementing a reverse proxy for improved server security.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -96,15 +102,13 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 <!-- ROADMAP -->
 ## Roadmap
 
-- [x] Add Changelog
-- [x] Add back to top links
+- [ ] Add Changelog
+- [ ] Add back to top links
 - [ ] Add Additional Templates w/ Examples
 - [ ] Add "components" document to easily copy & paste sections of the readme
 - [ ] Multi-language Support
     - [ ] Chinese
     - [ ] Spanish
-
-See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -140,7 +144,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@your_twitter](https://twitter.com/your_username) - email@example.com
+Lilly - [@your_twitter](https://twitter.com/your_username) - lilly.ashbury@gmail.com
 
 Project Link: [https://github.com/your_username/repo_name](https://github.com/your_username/repo_name)
 
