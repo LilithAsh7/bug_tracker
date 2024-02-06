@@ -61,6 +61,10 @@ Clicking on the Bugs button will take you to the bugs table. This table pulls al
 
 ![Bugs Page](bugBridgeBugsPage.PNG)
 
+From here you can create or update bugs and you may sort the table based on status. Clicking either create or update bug brings up the create/update window. 
+
+![Create Bugs](bugBridgeCreateBugForm.PNG)
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
