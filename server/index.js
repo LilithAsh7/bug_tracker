@@ -45,17 +45,29 @@
     - GET '/bugTable': API endpoint to load bugs table.
 */
 
+// usersQueries.js, projectsQueries.js, bugsQueries.js house the functions where all the API calls are handled.
 const usersQueries = require('./usersQueries');
 const projectsQueries = require('./projectsQueries');
 const bugsQueries = require('./bugsQueries');
+
 const express = require('express');
 const csrf = require('csurf');
 const cookieParser = require('cookie-parser');
 const router = express.Router();
 
+/*
+  The csrfProtect works by generating a toke and passing it through to a specific form. Look at the bugForm (line 121)
+  The route is set up to use the csrfProtect middleware.
+  Line 122, res.render('bugForm', { csrfToken: req.csrfToken() });, renders bugForm.ejs and sends the csrf token. 
+  The route that the form actually calls when it is submitted also needs to be set up to take the csrfProtect middleware. 
+  All in all the csrf token is generated, sent to the form, then sent back when the form is submitted to ensure it is authentic.
+*/
+
 router.use(cookieParser());
 const csrfProtect = csrf({ cookie: true });
 
+// The authenticationMiddleware function uses the passport.js function isAuthenticated to check if the user has logged in
+// If they have logged in then it continues through the route, but if not it redirects them to the login page.
 function authenticationMiddleware () {  
 	return (req, res, next) => {
 
@@ -67,6 +79,9 @@ function authenticationMiddleware () {
 	}
 }
 
+// The groupAuthorizationMiddleware taked in a specific group that is allowed to access the desired API call.
+// It checks if the currently logged in users specific groups matches that group, and if so it allows them through. 
+// Else if will return them to the main menu.
 function groupAuthorizationMiddleware (authedGroup) {
   return (req, res, next) => {
     const user_groups = req.session.passport.user.user_groups;
