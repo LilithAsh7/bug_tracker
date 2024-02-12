@@ -1,10 +1,4 @@
 .env
 node_modules/
 .vscode/settings.json
-.PNG
 README.md
-bugBridgeBugsPage.PNG
-bugBridgeCreateBugForm.PNG
-bugBridgeLogin.PNG
-bugBridgeMainMenu.PNG
-bugBridgeUserMainMenu.PNG
