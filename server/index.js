@@ -1,3 +1,50 @@
+/*
+  File: routes.js
+  Description: This file defines the routes and middleware for the BugBridge project.
+               It handles user authentication, authorization, and API calls for users, projects, and bugs tables.
+               The file also sets up CSRF protection for form submissions and renders HTML views for various routes.
+  Author: Lilith Ashbury
+  Date: 2/12/2024
+
+  Dependencies:
+    - Express.js
+    - csurf
+    - cookie-parser
+
+  Middleware Functions:
+    - authenticationMiddleware: Middleware function for user authentication.
+    - groupAuthorizationMiddleware: Middleware function for group-based authorization.
+    - csrfProtect: Middleware function for CSRF protection.
+
+  Routes:
+    - GET '/': Renders login page or main menu based on user authentication and group.
+    - GET '/register': Renders user registration page.
+    - GET '/bugForm': Renders bug submission form.
+    - GET '/projectForm': Renders project creation form.
+    - GET '/userForm': Renders user creation form.
+    - GET '/logout': Logs out the user and redirects to the login page.
+    - GET '/users': API endpoint to get all users.
+    - GET '/users/:id': API endpoint to get user by ID.
+    - GET '/users/:username': API endpoint to get user by username.
+    - POST '/users': API endpoint to create a new user.
+    - POST '/login': API endpoint to log in a user.
+    - PUT '/users/:id': API endpoint to update user information.
+    - GET '/userTable': API endpoint to load users table.
+    - GET '/userGroups/login/:id': API endpoint to get user groups by user ID.
+    - GET '/projects': API endpoint to get all projects.
+    - GET '/projects/:id': API endpoint to get project by ID.
+    - POST '/projects': API endpoint to create a new project.
+    - PUT '/projects/:id': API endpoint to update project information.
+    - GET '/projectTable': API endpoint to load projects table.
+    - GET '/bugs': API endpoint to get all bugs.
+    - GET '/bugs/:bug_id': API endpoint to get bug by ID.
+    - GET '/bugs/status/:status': API endpoint to get bugs by status.
+    - GET '/bugs/:project_id': API endpoint to get bugs by project ID.
+    - POST '/bugs/': API endpoint to create a new bug.
+    - PUT '/bugs/:bug_id': API endpoint to update bug information.
+    - GET '/bugTable': API endpoint to load bugs table.
+*/
+
 const usersQueries = require('./usersQueries');
 const projectsQueries = require('./projectsQueries');
 const bugsQueries = require('./bugsQueries');
@@ -34,11 +81,9 @@ function groupAuthorizationMiddleware (authedGroup) {
   }
 }
 
-// Renders login page upon visiting http://localhost:3000
 router.get('/', csrfProtect, (req, res) => {
   console.log("-Testing for user object in GET / " + req.user);
   console.log("-Testing isAuthenticated() in GET / " + req.isAuthenticated());
-  //console.log(req.csrfToken());
   if(!req.user) {
     res.render('login', { csrfToken: req.csrfToken() });
   } else {
@@ -76,14 +121,14 @@ router.get('/logout', authenticationMiddleware(), (req, res) => {
   res.redirect('/');
 })
 
-// Sets up api calls for use in router
 router.get('/users', groupAuthorizationMiddleware('admin'), authenticationMiddleware(), usersQueries.getUsers);
 router.get('/users/:id', groupAuthorizationMiddleware('admin'), authenticationMiddleware(), usersQueries.getUserById);
 router.get('/users/:username', groupAuthorizationMiddleware('admin'), authenticationMiddleware(), usersQueries.getUserByUsername);
 router.post('/users', csrfProtect, usersQueries.createUser);
 router.post('/login', csrfProtect, usersQueries.loginUser);
 router.put('/users/:id', groupAuthorizationMiddleware('admin'), csrfProtect, authenticationMiddleware(), usersQueries.updateUser);
-//router.delete('/users/:id', groupAuthorizationMiddleware('admin'), authenticationMiddleware(), usersQueries.deleteUser);
+// Unused delete user API call
+// router.delete('/users/:id', groupAuthorizationMiddleware('admin'), authenticationMiddleware(), usersQueries.deleteUser);
 router.get('/userTable', groupAuthorizationMiddleware('admin'), authenticationMiddleware(), usersQueries.loadUsersTable);
 router.get('/userGroups/login/:id', groupAuthorizationMiddleware('admin'), authenticationMiddleware(), usersQueries.getUserGroupsById);
 
@@ -91,7 +136,8 @@ router.get('/projects', groupAuthorizationMiddleware('admin'), authenticationMid
 router.get('/projects/:id', groupAuthorizationMiddleware('admin'), authenticationMiddleware(), projectsQueries.getProjectById);
 router.post('/projects', groupAuthorizationMiddleware('admin'), csrfProtect, authenticationMiddleware(), projectsQueries.createProject);
 router.put('/projects/:id', groupAuthorizationMiddleware('admin'), csrfProtect, authenticationMiddleware(), projectsQueries.updateProject);
-//router.delete('/projects/:id', groupAuthorizationMiddleware('admin'), authenticationMiddleware(), projectsQueries.deleteProject);
+// Unused delete project API call
+// router.delete('/projects/:id', groupAuthorizationMiddleware('admin'), authenticationMiddleware(), projectsQueries.deleteProject);
 router.get('/projectTable', groupAuthorizationMiddleware('admin'), authenticationMiddleware(), projectsQueries.loadProjectsTable);
 
 router.get('/bugs', groupAuthorizationMiddleware('user'), authenticationMiddleware(), bugsQueries.getAllBugs);
