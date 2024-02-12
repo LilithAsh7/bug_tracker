@@ -104,12 +104,6 @@ app.use(passport.session());
 
 app.use('/', indexRouter);
 
-/*
-const certificate = fs.readFileSync('/etc/letsencrypt/live/bugbridge.duckdns.org/cert.pem', 'utf8');
-const privateKey = fs.readFileSync('/etc/letsencrypt/live/bugbridge.duckdns.org/privkey.pem', 'utf8');
-const credentials = { key: privateKey, cert: certificate };
-*/
-
 const sslCertPath = process.env.ssl_cert;
 const sslPrivateKeyPath = process.env.ssl_private_key;
 
