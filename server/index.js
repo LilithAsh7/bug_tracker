@@ -1,4 +1,3 @@
-// API call files
 const usersQueries = require('./usersQueries');
 const projectsQueries = require('./projectsQueries');
 const bugsQueries = require('./bugsQueries');
@@ -34,15 +33,6 @@ function groupAuthorizationMiddleware (authedGroup) {
     }
   }
 }
-
-// Example route for testing CSRF protection
-router.get('/test-csrf', csrfProtect, (req, res) => {
-  res.render('test-csrf', { csrfToken: req.csrfToken() });
-});
-
-router.post('/test-csrf', csrfProtect, (req, res) => {
-  res.send('CSRF token is valid!');
-});
 
 // Renders login page upon visiting http://localhost:3000
 router.get('/', csrfProtect, (req, res) => {
@@ -110,8 +100,6 @@ router.get('/bugs/status/:status', groupAuthorizationMiddleware('user'), authent
 router.get('/bugs/:project_id', groupAuthorizationMiddleware('user'), authenticationMiddleware(), bugsQueries.getBugsByProjectId);
 router.post('/bugs/', groupAuthorizationMiddleware('user'), csrfProtect, authenticationMiddleware(), bugsQueries.createBug);
 router.put('/bugs/:bug_id', groupAuthorizationMiddleware('user'), csrfProtect, authenticationMiddleware(), bugsQueries.updateBug);
-//router.put('/bugs/inactive/:bug_id', groupAuthorizationMiddleware('user'), authenticationMiddleware(), bugsQueries.setBugToInactive);
-//router.delete('/bugs/:bug_id', groupAuthorizationMiddleware('user'), authenticationMiddleware(), bugsQueries.deleteBug);
 router.get('/bugTable', groupAuthorizationMiddleware('user'), authenticationMiddleware(), bugsQueries.loadBugsTable);
 
 module.exports = router;
