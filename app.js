@@ -40,7 +40,6 @@
 const express = require('express');
 const https = require('https');
 const fs = require('fs');
-const app = express();
 const passport = require("passport");
 const helmet = require("helmet");
 const cors = require('cors');
@@ -50,13 +49,15 @@ const bodyParser = require('body-parser');
 const pgSession = require('connect-pg-simple')(session);
 const path = require('path');
 require('dotenv').config();
-const indexRouter = require('./server/index');
+const indexRouter = require('./server/index'); // indexRouter is a router in ./server/index.js that provides the routes for the API calls
 const Pool = require('pg').Pool
 
+// Environment variable declarations
 const port = process.env.app_port;
 const sslCertPath = process.env.ssl_cert;
 const sslPrivateKeyPath = process.env.ssl_private_key;
 
+// Postgres db configuration
 const pool = new Pool({
   user: process.env.db_user,
   host: process.env.db_host,
@@ -65,8 +66,15 @@ const pool = new Pool({
   port: process.env.db_port
 });
 
-app.use(helmet());
+// Initialize express application.
+const app = express();
 
+// All the following app.use statements configure the different plugins for the express app to use. 
+
+// Line 76 applies helmet for setting HTTP headers.
+// Line 77-83 configures the Content Security Policy (CSP) with Helmet.
+// These prevent certain common web app attacks, including XSS attacks.
+app.use(helmet());
 app.use(
   helmet.contentSecurityPolicy({
     directives: {
@@ -85,17 +93,18 @@ app.use(express.static(path.join(__dirname, 'views')));
 app.use(express.static(path.join(__dirname, 'public')));
 app.set('view engine', 'ejs');
 
+// Configure Express session which stores relevant data in the session table in the Postgres database
 app.use(
   session({
     store: new pgSession({
       pool,
       tablename: 'session'
     }),
-    secret: process.env.secret_key,
+    secret: process.env.secret_key, // Secret key in the .env for session encryption
     resave: false,
     saveUninitialized: false,
     cookie: { 
-      maxAge: 86400000,
+      maxAge: 86400000, // This sets the cookie to expire after 24 hours
       httpOnly: true,
       secure: true
     }
@@ -107,12 +116,13 @@ app.use(passport.session());
 
 app.use('/', indexRouter);
 
+// Gets the SSL certificate and private key and creates and HTTPS server with credentials
 const certificate = fs.readFileSync(sslCertPath, 'utf8');
 const privateKey = fs.readFileSync(sslPrivateKeyPath, 'utf8');
 const credentials = { key: privateKey, cert: certificate };
-
 const httpsServer = https.createServer(credentials, app);
 
+// Starts the HTTPS server
 httpsServer.listen(port, () => {
   console.log(`-App started and running on port ${port}.`)
 });
