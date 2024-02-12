@@ -49,19 +49,19 @@ Goals of the project:
 
 When a user first loads the app they will be directed to the login page.
 
-![Login Page](bugBridgeLogin.PNG)
+![Login Page](pics/bugBridgeLogin.PNG)
 
 After logging in there are two main menus, one for the admins and one for the regular users. As of the current moment admins are the only people who can create projects and access the users data table. Here is a picture of the admin main menu: 
 
-![Main Menu](bugBridgeMainMenu.PNG)
+![Main Menu](pics/bugBridgeMainMenu.PNG)
 
 Clicking on the Bugs button will take you to the bugs table. This table pulls all relevant data from the database. An admin can assign your user account to specific projects and the bug table only shows bugs that are related to the projects that your user account is assigned to. 
 
-![Bugs Page](bugBridgeBugsPage.PNG)
+![Bugs Page](pics/bugBridgeBugsPage.PNG)
 
 From here you can create or update bugs and you may sort the table based on status. Clicking either create or update bug brings up the create/update window. 
 
-![Create Bugs](bugBridgeCreateBugForm.PNG)
+![Create Bugs](pics/bugBridgeCreateBugForm.PNG)
 
 More features are planned for the future! See more in the <a href="#plannedupdates">planned updates section</a> below. 
 
