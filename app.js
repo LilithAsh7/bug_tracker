@@ -53,6 +53,18 @@ require('dotenv').config();
 const indexRouter = require('./server/index');
 const Pool = require('pg').Pool
 
+const port = process.env.app_port;
+const sslCertPath = process.env.ssl_cert;
+const sslPrivateKeyPath = process.env.ssl_private_key;
+
+const pool = new Pool({
+  user: process.env.db_user,
+  host: process.env.db_host,
+  database: process.env.db_name,
+  password: process.env.db_password,
+  port: process.env.db_port
+});
+
 app.use(helmet());
 
 app.use(
@@ -64,15 +76,6 @@ app.use(
 );
 
 app.use(cors());
-const port = process.env.app_port;
-
-const pool = new Pool({
-  user: process.env.db_user,
-  host: process.env.db_host,
-  database: process.env.db_name,
-  password: process.env.db_password,
-  port: process.env.db_port
-});
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -104,16 +107,12 @@ app.use(passport.session());
 
 app.use('/', indexRouter);
 
-const sslCertPath = process.env.ssl_cert;
-const sslPrivateKeyPath = process.env.ssl_private_key;
-
 const certificate = fs.readFileSync(sslCertPath, 'utf8');
 const privateKey = fs.readFileSync(sslPrivateKeyPath, 'utf8');
 const credentials = { key: privateKey, cert: certificate };
-
 
 const httpsServer = https.createServer(credentials, app);
 
 httpsServer.listen(port, () => {
   console.log(`-App started and running on port ${port}.`)
-})
+});
