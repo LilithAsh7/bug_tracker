@@ -1,14 +1,57 @@
-// Express app
+/*
+  File: app.js
+  Description: This file initializes and configures the Express application for Bug Bridge.
+               It sets up an HTTPS server with secure connections using SSL/TLS certificates.
+               The application utilizes Passport.js for authentication with authorization managed through PostgreSQL, 
+               which includes group-based access control specified in a dedicated table defining the relationship between 
+               user IDs and groups. Static files are served using Express static middleware.
+               CORS is enabled to allow cross-origin requests. Additionally, it configures Content Security Policy (CSP)
+               to mitigate various types of attacks such as Cross-Site Scripting (XSS).
+  Author: Lilith Ashbury
+  Date: 2/12/2024
+
+  Dependencies:
+    - Express.js
+    - Passport.js
+    - Helmet
+    - Cors
+    - Express-session
+    - Cookie-parser
+    - Body-parser
+    - Connect-pg-simple
+    - PostgreSQL
+    - Path
+    - dotenv
+    - pg
+
+  Environment Variables:
+    - app_port: Port on which the Express.js server listens.
+    - db_user: PostgreSQL database username.
+    - db_host: PostgreSQL database host.
+    - db_name: PostgreSQL database name.
+    - db_password: PostgreSQL database password.
+    - db_port: PostgreSQL database port.
+    - secret_key: Secret key used for session encryption.
+    - ssl_private_key: Private key for your ssl certification.
+    - ssl_cert: ssl certificate.
+
+*/
+
 const express = require('express');
 const https = require('https');
 const fs = require('fs');
 const app = express();
-// Passport module for authentication and authorization
 const passport = require("passport");
 const helmet = require("helmet");
 const cors = require('cors');
-//const crypto = require('crypto');
-//const nonce = crypto.randomBytes(16).toString('base64');
+const session = require("express-session");
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const pgSession = require('connect-pg-simple')(session);
+const path = require('path');
+require('dotenv').config();
+const indexRouter = require('./server/index');
+const Pool = require('pg').Pool
 
 app.use(helmet());
 
@@ -21,21 +64,8 @@ app.use(
 );
 
 app.use(cors());
-
-
-// Session module for authorization and authentication
-const session = require("express-session");
-const cookieParser = require('cookie-parser');
-// For parsing body api requests
-const bodyParser = require('body-parser');
-const pgSession = require('connect-pg-simple')(session);
-// Module for working with file paths
-const path = require('path');
-require('dotenv').config();
 const port = process.env.app_port;
-const indexRouter = require('./server/index');
 
-const Pool = require('pg').Pool
 const pool = new Pool({
   user: process.env.db_user,
   host: process.env.db_host,
@@ -44,17 +74,14 @@ const pool = new Pool({
   port: process.env.db_port
 });
 
-// Setting app to use bodyParser
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
-// Using path module to allow static files
-// This removes compatibility issues with ejs and css files
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'views')));
 app.use(express.static(path.join(__dirname, 'public')));
 app.set('view engine', 'ejs');
-//Setting up cookies so that authentication can be kept track of
+
 app.use(
   session({
     store: new pgSession({
@@ -72,19 +99,17 @@ app.use(
   })
 );
 
-//Initializes passport and sets it up to use session
 app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/', indexRouter);
 
-const certificate = fs.readFileSync('/etc/letsencrypt/live/bugbridge.duckdns.org/cert.pem', 'utf8');
-const privateKey = fs.readFileSync('/etc/letsencrypt/live/bugbridge.duckdns.org/privkey.pem', 'utf8');
+const certificate = fs.readFileSync(process.env.ssl_cert, 'utf8');
+const privateKey = fs.readFileSync(process.env.ssl_private_key, 'utf8');
 const credentials = { key: privateKey, cert: certificate };
 
 const httpsServer = https.createServer(credentials, app);
 
-//Starts the application listening for api calls
 httpsServer.listen(port, () => {
   console.log(`-App started and running on port ${port}.`)
 })
