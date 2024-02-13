@@ -203,7 +203,7 @@ const loginUser = async (req, res) => {
   // Variables to be checked
   const { username, password } = req.body;
   const passwordIsDangerous = sqlInjectionSecurity.checkForSqlCharacters(password);
-  const usernameIsDangerous = sqlInjectionSecurity.checkForSqlCharacters(username)
+  const usernameIsDangerous = sqlInjectionSecurity.checkForSqlCharacters(username);
   if (!usernameIsDangerous && !passwordIsDangerous) {
     // SQL query to find user with specified username
     pool.query('SELECT * FROM users WHERE username = $1', [username], async (error, results) => {
