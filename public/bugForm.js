@@ -1,4 +1,11 @@
-// Define function to handle creating a bug
+/*
+ * File: bugForm.js
+ * Description: Contains functions for handling bug creation and update in a web form.
+ *              This file defines functions to create, update, and submit bug data via API calls.
+ * Author: Lilith Ashbury
+ * Date: 2/13/2024
+ */
+
 async function createBug(formValues) {
 
     console.log("createBug() in updateBugsTable.js")

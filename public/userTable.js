@@ -1,4 +1,11 @@
-  let user_id;
+/*
+ * File: userTable.js
+ * Description: Contains functions for managing user table operations, such as opening user forms for creation or updating.
+ * Author: Lilith Ashbury
+ * Date: 2/13/2014
+ */
+
+let user_id;
 
 async function openUserForm(mode){
   

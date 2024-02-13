@@ -1,3 +1,10 @@
+/*
+ * File: bugTable.js
+ * Description: Contains functions for managing bug table operations, such as opening bug forms for creation or updating.
+ * Author: Lilith Ashbury
+ * Date: 2/13/2014
+ */
+
 let bug_id;
 
   async function openBugForm(mode){

@@ -1,3 +1,10 @@
+/*
+ * File: projectForm.js
+ * Description: Contains functions for creating and updating projects, as well as handling form submission.
+ * Author: Lilith Ashbury
+ * Date: 2/13/2024
+ */
+
 // Define function to handle creating a project
 function createProject(formValues) {
 

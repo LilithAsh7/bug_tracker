@@ -1,4 +1,11 @@
-  let project_id;
+/*
+ * File: projectTable.js
+ * Description: Contains functions for managing project table operations, such as opening project forms for creation or updating.
+ * Author: Lilith Ashbury
+ * Date: 2/13/2014
+ */
+
+let project_id;
 
 async function openProjectForm(mode){
   

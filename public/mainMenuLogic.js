@@ -1,3 +1,10 @@
+/*
+ * File: mainMenuLogic.js
+ * Description: Contains functions for opening new tabs and adding event listeners based on the current page.
+ * Author: Lilith Ashbury
+ * Date: 2/13/2024
+ */
+
 function openNewTab(route) {
     const url = window.location.origin + route;
     window.open(url, '_blank');

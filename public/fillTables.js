@@ -1,3 +1,10 @@
+/*
+ * File: fillTables.js
+ * Description: Contains functions for updating and populating HTML tables with data fetched from the server.
+ * Author: Lilith Ashbury
+ * Date: 2/13/2024
+ */
+
 function updateTableByStatus(status) {
   fetchData(status, '/bugs/status/', 'table1');
 
