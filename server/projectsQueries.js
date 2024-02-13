@@ -1,7 +1,14 @@
-// Importing and creating new instance of Pool class
-// The pg library is a postgres client for node
-const Pool = require('pg').Pool
+/*
+ * File: projectsQueries.js
+ * Description: Contains API calls for interacting with the projects table in the database.
+ *              This file includes functions for retrieving, creating, updating, and deleting projects.
+ *              It also initializes a connection pool to interact with the PostgreSQL database.
+ * Author: Lilith Ashbury 
+ * Date: 2/13/2024
+ */
+
 require('dotenv').config();
+const Pool = require('pg').Pool
 const pool = new Pool({
   user: process.env.db_user,
   host: process.env.db_host,
