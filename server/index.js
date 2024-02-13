@@ -1,5 +1,5 @@
 /*
-  File: routes.js
+  File: index.js
   Description: This file defines the routes and middleware for the BugBridge project.
                It handles user authentication, authorization, and API calls for users, projects, and bugs tables.
                The file also sets up CSRF protection for form submissions and renders HTML views for various routes.

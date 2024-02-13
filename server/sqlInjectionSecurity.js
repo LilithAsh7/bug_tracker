@@ -1,3 +1,11 @@
+/*
+ * File: sqlInjectionSecurity.js
+ * Description: Just some simple checks using validator to make sure dangerous sql characters aren't present in forms submissions.
+ *              
+ * Author: Lilith Ashbury 
+ * Date: 2/13/2024
+ */
+
 const validator = require('validator');
 
 const checkForSqlCharacters = (string) => {

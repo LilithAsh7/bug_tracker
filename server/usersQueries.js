@@ -1,7 +1,15 @@
-// Importing and creating new instance of Pool class
-// The pg library is a postgres client for node
-const Pool = require('pg').Pool
+/*
+ * File: usersQueries.js
+ * Description: Contains API calls for interacting with the users table in the database.
+ *              This file includes functions for retrieving, creating, updating, and deleting users.
+ *              It also initializes a connection pool to interact with the PostgreSQL database.
+ *              
+ * Author: Lilith Ashbury 
+ * Date: 2/13/2024
+ */
+
 require('dotenv').config();
+const Pool = require('pg').Pool
 const pool = new Pool({
   user: process.env.db_user,
   host: process.env.db_host,
@@ -72,17 +80,22 @@ const getUserByUsername = (req, res) => {
   })
 }
 
+/*
+ * Assigns a default role to a new user. This function inserts a new entry into the 
+ * users_groups table to assign a default group (role) to a user.
+ * The default group ID is hardcoded as 2.
+ */
 const setDefaultRole = (user_id) => {
   console.log("setDefaultRole() in usersQueries.js");
-    pool.query('INSERT INTO users_groups (user_id, group_id) VALUES ($1, 2);', [user_id], (error, results) => {
-      if (error) {
-        throw error;
-      } else {
-        console.log("-User role set");
-        //return;
-      }
-    });
-  }
+  pool.query('INSERT INTO users_groups (user_id, group_id) VALUES ($1, 2);', [user_id], (error, results) => {
+    if (error) {
+      throw error;
+    } else {
+      console.log("-User role set");
+      //return;
+    }
+  });
+}
 
 // API call to create entry into user database
 const createUser = (req, res) => {
