@@ -23,7 +23,7 @@ const bcrypt = require('bcrypt')
 const saltRounds = 10;
 const passport = require("passport");
 const validator = require('validator');
-const sqlInjectionSecurity = require('./sqlInjectionSecurity')
+const sqlSec = require('./sqlSec')
 
 // API call to get all data from users table
 const getUsers = (req, res) => {
@@ -102,9 +102,8 @@ const createUser = (req, res) => {
   console.log("createUser() in usersQueries.js");
   // Variables to be inserted into database
   const { username, password } = req.body;
-  const passwordIsDangerous = sqlInjectionSecurity.checkForSqlCharacters(password);
-  const usernameIsDangerous = sqlInjectionSecurity.checkForSqlCharacters(username);
-  if (!usernameIsDangerous && !passwordIsDangerous) {
+  const variables = [username, password];
+  if (!sqlSec.checkForSqlCharacters(variables)) {
     // Encrypts password
     bcrypt.hash(password, saltRounds, (err, hashedPassword) => {
       // Error handling for bcrypt.hash function  
@@ -138,9 +137,8 @@ const updateUser = (req, res) => {
   const id = parseInt(req.params.id);
   // Variables to be put into database
   const { username, password } = req.body;
-  const passwordIsDangerous = sqlInjectionSecurity.checkForSqlCharacters(password);
-  const usernameIsDangerous = sqlInjectionSecurity.checkForSqlCharacters(username);
-  if (!usernameIsDangerous && !passwordIsDangerous) {
+  const variables = [username, password];
+  if (!sqlSec.checkForSqlCharacters(variables)) {
     // Encrypts password
     bcrypt.hash(password, saltRounds, (err, hashedPassword) => {
       // Error handling for encryption
@@ -215,9 +213,8 @@ const loginUser = async (req, res) => {
   console.log("loginUser() in usersQueries.js");
   // Variables to be checked
   const { username, password } = req.body;
-  const passwordIsDangerous = sqlInjectionSecurity.checkForSqlCharacters(password);
-  const usernameIsDangerous = sqlInjectionSecurity.checkForSqlCharacters(username);
-  if (!usernameIsDangerous && !passwordIsDangerous) {
+  const variables = [username, password];
+  if (!sqlSec.checkForSqlCharacters(variables)) {
     // SQL query to find user with specified username
     pool.query('SELECT * FROM users WHERE username = $1', [username], async (error, results) => {
       // Error handling
