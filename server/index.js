@@ -139,7 +139,7 @@ router.get('/logout', authenticationMiddleware(), (req, res) => {
 router.get('/users', groupAuthorizationMiddleware('admin'), authenticationMiddleware(), usersQueries.getUsers);
 router.get('/users/:id', groupAuthorizationMiddleware('admin'), authenticationMiddleware(), usersQueries.getUserById);
 router.get('/users/:username', groupAuthorizationMiddleware('admin'), authenticationMiddleware(), usersQueries.getUserByUsername);
-router.post('/users', csrfProtect, usersQueries.createUser);
+router.post('/users', usersQueries.createUser);
 router.post('/login', csrfProtect, usersQueries.loginUser);
 router.put('/users/:id', groupAuthorizationMiddleware('admin'), csrfProtect, authenticationMiddleware(), usersQueries.updateUser);
 // Unused delete user API call
