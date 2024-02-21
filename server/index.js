@@ -114,8 +114,8 @@ router.get('/', csrfProtect, (req, res) => {
   } 
 });
 
-router.get('/register', csrfProtect, (req, res) => {
-    res.render('register', { csrfToken: req.csrfToken() });
+router.get('/register', (req, res) => {
+    res.render('register');
 });
 
 router.get('/bugForm', csrfProtect, groupAuthorizationMiddleware('user'), authenticationMiddleware(), (req, res) => {
