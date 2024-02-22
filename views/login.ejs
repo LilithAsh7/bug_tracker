@@ -10,16 +10,20 @@
 
 <body>
   <h2>Login:&nbsp;&nbsp;</h2>
-  <form>
-    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-    <label for="username">Username:</label>
-    <input type="text" id="username" name="username">
+  <div id="loginContainer">
+    <form>
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username">
 
-    <label for="password">Password:</label>
-    <input type="password" id="password" name="password">
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password">
 
-    <button type="submit" formaction="/login" formmethod="POST">Login</button>
-    <button type="submit" formaction="/register" formmethod="GET">New User</button>
-  </form>
+      <button type="submit" formaction="/login" formmethod="POST">Login</button>
+    </form>
+    <button id="toRegister">New User</button>
+  </div>
+
+  <script src="loginRegister.js"></script>
 </body>
 </html>
