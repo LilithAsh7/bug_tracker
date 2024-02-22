@@ -7,6 +7,36 @@
 
 let bug_id;
 
+// Prompt the user to input a bug number
+document.getElementById('deleteBug').addEventListener('click', function() {
+  // Prompt the user to input a bug number
+  var bugNumber = prompt("Enter the bug number you want to delete:");
+
+  // Check if the user entered a bug number
+  if (bugNumber !== null && bugNumber.trim() !== "") {
+      // Construct the URL with the bug number
+      var url = '/bugs/' + bugNumber.trim();
+
+      // Send a DELETE request
+      fetch(url, {
+          method: 'DELETE'
+      })
+      .then(response => {
+          if (response.ok) {
+              alert('Bug ' + bugNumber + ' deleted successfully.');
+          } else {
+              throw new Error('Failed to delete bug ' + bugNumber);
+          }
+      })
+      .catch(error => {
+          console.error('Error:', error);
+          alert('Failed to delete bug ' + bugNumber + '. Please try again later.');
+      });
+  } else {
+      alert('Please enter a valid bug number.');
+  }
+});
+
   async function openBugForm(mode){
 
     console.log("openBugForm() in updateBugsTable.js")
