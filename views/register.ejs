@@ -9,18 +9,20 @@
 <body>
 
     <h2>Register New User</h2>
-    <form>
-        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username">
+    <div id="loginContainer">
+        <form>
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username">
 
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password">
 
-        <button type="submit" formaction="/users" formmethod="POST">Register</button>
+            <button type="submit" formaction="/users" formmethod="POST">Register</button>
+        </form>
+        <button id="toMainMenu">Back</button>
+    </div>
 
-        <!-- "Back" button inside the form for aesthetic reasons -->
-        <button type ="submit" formaction="/" formmethod="GET">Back</button>
-    </form>
+    <script src="loginRegister.js"></script>
 </body>
 </html>
