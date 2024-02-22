@@ -162,5 +162,6 @@ router.get('/bugs/:project_id', groupAuthorizationMiddleware('user'), authentica
 router.post('/bugs/', groupAuthorizationMiddleware('user'), csrfProtect, authenticationMiddleware(), bugsQueries.createBug);
 router.put('/bugs/:bug_id', groupAuthorizationMiddleware('user'), csrfProtect, authenticationMiddleware(), bugsQueries.updateBug);
 router.get('/bugTable', groupAuthorizationMiddleware('user'), authenticationMiddleware(), bugsQueries.loadBugsTable);
+router.delete('/bugs:id', groupAuthorizationMiddleware('admin'), authenticationMiddleware(), bugsQueries.deleteBug);
 
 module.exports = router;
