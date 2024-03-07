@@ -65,9 +65,20 @@ const createProject = (req, res) => {
     if (error) {
       throw error
     }
-    // Returns res that lets the user know an entry has been made
-    res.status(201).send(`Project added with ID: ${results.rows[0].id}`)
-  })
+
+    const projectId = results.rows[0].id;
+
+      // Constructs SQL code for inserting into users_projects table
+      pool.query('INSERT INTO users_projects (project_id, user_id) VALUES ($1, $2)', [projectId, 4], (error, results) => {
+        // Error handling for the second query
+        if (error) {
+          throw error
+        }
+    
+        // Returns res that lets the user know an entry has been made
+      res.status(201).send(`Project added with ID: ${projectId} and linked to user ID: 4`)
+    });
+  });
 }
 
 // API call to edit/update entry in projects table
