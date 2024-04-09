@@ -77,31 +77,42 @@ document.getElementById('reload').addEventListener('click', function() {
   reloadData('bugs');
 });
 
-document.getElementById('completed').addEventListener('click', function() {
-  updateTableByStatus('completed');
+// Add event listener to the parent element containing the dropdown items
+document.getElementById('projectDropdownBtn').addEventListener('click', function() {
+  // Toggle the dropdown content
+  document.getElementById('projectDropdown').classList.toggle('show');
 });
 
-document.getElementById('all').addEventListener('click', function() {
-  updateTableByStatus('all');
+// Add event listener to handle clicks on status dropdown items
+document.querySelector('.status-dropdown .dropdown-content').addEventListener('click', function(event) {
+  if (event.target.tagName === 'A') {
+      // Extract the selected status value
+      const selectedStatus = event.target.id;
+
+      // Update the status dropdown button text
+      document.getElementById('statusDropdownBtn').textContent = `Status: ${selectedStatus}`;
+
+      // Get the selected project ID from the project dropdown button text
+      const selectedProjectId = document.getElementById('projectDropdownBtn').textContent.split(': ')[1];
+
+      // Call the updateTableByStatusProjectId function with the selected status and project ID
+      updateTableByStatusProjectId(selectedStatus, selectedProjectId);
+  }
 });
 
-document.getElementById('rejected').addEventListener('click', function() {
-  updateTableByStatus('rejected');
-});
+// Add event listener to handle clicks on project dropdown items
+document.querySelector('.project-dropdown .dropdown-content').addEventListener('click', function(event) {
+  if (event.target.tagName === 'A') {
+      // Extract the selected project ID
+      const selectedProjectId = event.target.id;
 
-document.getElementById('pending').addEventListener('click', function() {
-  updateTableByStatus('pending');
-});
+      // Update the project dropdown button text
+      document.getElementById('projectDropdownBtn').textContent = `Project: ${selectedProjectId === 'all' ? 'All' : selectedProjectId}`;
 
-document.addEventListener('DOMContentLoaded', function() {
-  const dropdownOptions = document.querySelectorAll('.dropdown-content a');
+      // Get the selected status from the status dropdown button text
+      const selectedStatus = document.getElementById('statusDropdownBtn').textContent.split(': ')[1];
 
-  dropdownOptions.forEach((option, index) => {
-    option.addEventListener('click', function(event) {
-      event.preventDefault();
-      const projectId = event.target.id; // This will be like "project1", "project2", etc.
-      console.log(projectId);
-      //updateTableByProjectId(projectId);
-    });
-  });
+      // Call the updateTableByStatusProjectId function with the selected status and project ID
+      updateTableByStatusProjectId(selectedStatus, selectedProjectId);
+  }
 });
