@@ -158,6 +158,7 @@ router.get('/projectTable', groupAuthorizationMiddleware('admin'), authenticatio
 router.get('/bugs', groupAuthorizationMiddleware('user'), authenticationMiddleware(), bugsQueries.getAllBugs);
 router.get('/bugs/:bug_id', groupAuthorizationMiddleware('user'), authenticationMiddleware(), bugsQueries.getBugsById);
 router.get('/bugs/status/:status', groupAuthorizationMiddleware('user'), authenticationMiddleware(), bugsQueries.getBugsByStatus);
+router.get('/bugs/statusprojectid/:status/:projectid', groupAuthorizationMiddleware('user'), authenticationMiddleware(), bugsQueries.getBugsByStatusProjectId);
 router.get('/bugs/:project_id', groupAuthorizationMiddleware('user'), authenticationMiddleware(), bugsQueries.getBugsByProjectId);
 router.post('/bugs/', groupAuthorizationMiddleware('user'), csrfProtect, authenticationMiddleware(), bugsQueries.createBug);
 router.put('/bugs/:bug_id', groupAuthorizationMiddleware('user'), csrfProtect, authenticationMiddleware(), bugsQueries.updateBug);
