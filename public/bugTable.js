@@ -2,7 +2,7 @@
  * File: bugTable.js
  * Description: Contains functions for managing bug table operations, such as opening bug forms for creation or updating.
  * Author: Lilith Ashbury
- * Date: 2/13/2014
+ * Date: 2/13/2024
  */
 
 let bug_id;
