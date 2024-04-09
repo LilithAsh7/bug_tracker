@@ -11,15 +11,15 @@ function updateTableByStatus(status) {
   document.getElementById('statusDropdownBtn').textContent = `Status: ${status}`;
 }
 
-function updateTableByProjectId(project_id) {
-  fetchData("all", '/bugs/project_id', 'table1');
+function updateTableByStatusProjectId(status, project_id) {
+  fetchData(status, project_id, '/bugs/statusprojectid/', 'table1');
 
   document.getElementById('projectDropdownBtn').textContent = `Project ID: ${project_id}`;
 }
 
 function reloadData(table) {
   if (table === 'bugs'){
-    fetchData('all', '/bugs/status/', 'table1');
+    fetchData('all', '/bugs/statusprojectid/', 'table1');
   } else if (table === 'projects') {
     fetchData(null, '/projects', 'table2');
   } else if (table === 'users') {
@@ -36,21 +36,25 @@ document.addEventListener('DOMContentLoaded', function () {
   // Calls the below fetchData function 3 times. Once for each table.
     if (bugsTable) {
     console.log("Loading bug table");
-    fetchData('all', '/bugs/status/', 'table1');
+    fetchData('all', 'all', '/bugs/statusprojectid/', 'table1');
     } else if (projectsTable) {
     console.log("Loading projects table");
-    fetchData(null, '/projects', 'table2');
+    fetchData(null, null, '/projects', 'table2');
     } else if (usersTable) {
     console.log("Loading users table");
-    fetchData(null, '/users', 'table3');
+    fetchData(null, null, '/users', 'table3');
     }
   });
   
   // fetchData takes a url and a table name, runs the
-  function fetchData(status, url, tableName) {
+  function fetchData(status, project_id, url, tableName) {
+
+    console.log(status);
+    console.log(project_id);
 
     if (status) {
-    url = url + status;}
+    url = url + status + '/' + project_id
+    };
     // fetch engages an asynchronous http request using the provided url.
     fetch(url)
       // Populates the table with the given tablename with the populateTable function
