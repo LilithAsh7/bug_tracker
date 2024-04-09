@@ -39,7 +39,13 @@
   }
   
   /* Dropdown styles */
-  .dropdown {
+  .project-dropdown {
+    position: relative;
+    float: right;
+  }
+
+  /* Dropdown styles */
+  .status-dropdown {
     position: relative;
     float: right;
   }
@@ -77,6 +83,10 @@
     background-color: #ddd;
   }
   
-  .dropdown:hover .dropdown-content {
+  .project-dropdown:hover .dropdown-content {
+    display: block;
+  }
+
+  .status-dropdown:hover .dropdown-content {
     display: block;
   }
