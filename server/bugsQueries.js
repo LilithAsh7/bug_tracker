@@ -106,6 +106,31 @@ const getBugsByStatus = (req, res) => {
 };
 
 // API call for getting all data from the bugs table
+const getBugsByStatusProjectId = (req, res) => {
+  
+  console.log('getBugsByStatus() in bugsQueries.js')
+  const bug_status = req.params.status;
+  const user_id = req.session.passport.user.user_id;
+  const project_id = req.params.projectid;
+  let query = "SELECT bugs.* FROM bugs JOIN users_projects ON bugs.project_id = users_projects.project_id WHERE users_projects.user_id = $1 AND bugs.status = $2 AND bugs.project_id = $3 ORDER BY project_id ASC, bug_type ASC, CASE priority WHEN 'high' THEN 1 WHEN 'medium' THEN 2 WHEN 'low' THEN 3 ELSE 4 END";
+  if (bug_status === 'all' && project_id === 'all'){
+    query = "SELECT bugs.* FROM bugs JOIN users_projects ON bugs.project_id = users_projects.project_id WHERE users_projects.user_id = $1 AND bugs.status <> 'inactive' ORDER BY project_id ASC, bug_type ASC, CASE priority WHEN 'high' THEN 1 WHEN 'medium' THEN 2 WHEN 'low' THEN 3 ELSE 4 END";
+  } else if (bug_status === 'all'){
+    query = "SELECT bugs.* FROM bugs JOIN users_projects ON bugs.project_id = users_projects.project_id WHERE users_projects.user_id = $1 AND bugs.status <> 'inactive' AND bugs.project_id = $3 ORDER BY project_id ASC, CASE WHEN status = 'pending' THEN 0 ELSE 1 END, status ASC, bug_type ASC, CASE priority WHEN 'high' THEN 1 WHEN 'medium' THEN 2 WHEN 'low' THEN 3 ELSE 4 END";
+  } else if (project_id === 'all') {
+    query = "SELECT bugs.* FROM bugs JOIN users_projects ON bugs.project_id = users_projects.project_id WHERE users_projects.user_id = $1 AND bugs.status = $2 ORDER BY project_id ASC, CASE WHEN status = 'pending' THEN 0 ELSE 1 END, status ASC, bug_type ASC, CASE priority WHEN 'high' THEN 1 WHEN 'medium' THEN 2 WHEN 'low' THEN 3 ELSE 4 END";
+  }
+  pool.query(query, [user_id, bug_status, project_id], (error, results) => {
+    // Error handling  
+    if (error) {
+        throw error
+      }
+      // Returns all rows gotten by get req
+      res.status(200).json(results.rows)
+  })
+};
+
+// API call for getting all data from the bugs table
 const getBugsByProjectId = (req, res) => {
   
   console.log('getBugsByProjectId() in bugsQueries.js')
@@ -232,5 +257,6 @@ module.exports = {
     deleteBug,
     setBugToInactive,
     loadBugsTable,
-    getBugsByProjectId
+    getBugsByProjectId,
+    getBugsByStatusProjectId
   };
